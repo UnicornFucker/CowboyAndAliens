@@ -1,5 +1,5 @@
 package de.comyoutech.cowboyandalien;
 
-public class GeorgIstDerGeilste {
+public class GeorgIstDerDuemmste {
 
 }
