@@ -17,6 +17,14 @@ public class GameScreen implements Screen {
 	OrthographicCamera camera;
 	SpriteBatch batch;
 
+	/** Variables for Character Movements **/
+
+	public float ply_x;
+	public float ply_y;
+	public float f_dx = 5;
+	public float f_dy = -9;
+	public float gravity = 0.5f;
+
 	/** Konstruktor der Klasse **/
 
 	public GameScreen(MyGdxGame game) {
@@ -31,15 +39,25 @@ public class GameScreen implements Screen {
 
 	public void generalUpdate(OrthographicCamera camera) {
 
-		  if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
+		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
 
-		} else if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
+		} else if (Gdx.input.isKeyPressed(Keys.D)
+				|| Gdx.input.isKeyPressed(Keys.RIGHT)) {
 
-		} if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
+		}
+		if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
 
-		} else if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
+		} else if (Gdx.input.isKeyPressed(Keys.W)
+				|| Gdx.input.isKeyPressed(Keys.UP)) {
 
 		} else if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+
+			if (ply_y == 450) {
+				f_dx = -9;
+				
+			}
+		
+			f_dy += gravity;
 
 		}
 
@@ -53,7 +71,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
-
+		generalUpdate(camera);
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
