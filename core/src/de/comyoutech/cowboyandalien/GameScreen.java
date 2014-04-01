@@ -20,10 +20,11 @@ public class GameScreen implements Screen {
 	/** Variables for Character Movements **/
 
 	public float ply_x = 250;
-	public float ply_y = 250;
+	public float ply_y = 650;
 	public float f_dx = 5;
 	public float f_dy = -9;
 	public float gravity = 0.5f;
+	boolean inAir = false;
 
 	/** Konstruktor der Klasse **/
 
@@ -39,6 +40,24 @@ public class GameScreen implements Screen {
 
 	public void generalUpdate(OrthographicCamera camera) {
 
+		/** Setzt die Größe der Welt wo der Spieler sich bewegen kann **/
+			if (getPly_x() >= 672) {
+	            ply_x = 672;
+	        }
+	        if (getPly_x() <= 0) {
+	            ply_x = 0;
+	        }
+
+	        if (getPly_y() >= 672) {
+	            ply_y = 672;
+	        }
+
+	        if (getPly_y() <= 0) {
+	            ply_y = 0;
+	        }
+
+	    /** Key Inputs **/
+	        
 		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
 			ply_x -= 5;
 		} else if (Gdx.input.isKeyPressed(Keys.D)
@@ -46,19 +65,23 @@ public class GameScreen implements Screen {
 			ply_x += 5;
 		}
 		if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
-
+			ply_y +=5;
 		} else if (Gdx.input.isKeyPressed(Keys.W)
 				|| Gdx.input.isKeyPressed(Keys.UP)) {
-
+			ply_y -=5;
 		} else if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 
-			if (ply_y == 450) {
-				f_dy = -9;
+			inAir = true;
+			if (inAir == true) {
+				if (ply_y == 450) {
+					f_dy = -9;
+					inAir = false;
+				}
+
+				f_dy += gravity;
+				ply_y += f_dy;
+
 			}
-
-			f_dy += gravity;
-			ply_y += f_dy;
-
 		}
 
 	}
@@ -116,4 +139,22 @@ public class GameScreen implements Screen {
 
 	}
 
+	public float getPly_x() {
+		return ply_x;
+	}
+
+	public void setPly_x(float ply_x) {
+		this.ply_x = ply_x;
+	}
+
+	public float getPly_y() {
+		return ply_y;
+	}
+
+	public void setPly_y(float ply_y) {
+		this.ply_y = ply_y;
+	}
+
+	
+	
 }
