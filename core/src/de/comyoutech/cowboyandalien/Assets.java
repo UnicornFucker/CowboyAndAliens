@@ -1,15 +1,29 @@
 package de.comyoutech.cowboyandalien;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 public class Assets {
-	
-	public Assets(){
-		/*
-		 * 
-		 * Hier werden Assets erstellt.
-		 */
+
+	public static Texture texture_figure;
+	public static Sprite sprite_figure;
+	public static Sound backgroundsound;
+
+	public Assets() {
+
 	}
-	
-	public void load(){
+
+	public void load() {
+		//backgroundsound = Gdx.audio.newSound(Gdx.files.internal("backgroundsoundhier!!"));
+		
+		/** Initial Player **/
+		
+		texture_figure = new Texture(Gdx.files.internal("toad.gif"));
+		sprite_figure = new Sprite(texture_figure);
+		
+		
 		
 	}
 
