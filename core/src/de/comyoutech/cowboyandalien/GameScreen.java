@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
 	/** GeneralUpdate Methode fuer Keylistener etc. **/
 
 	public void generalUpdate(OrthographicCamera camera) {
-		
+
 		gravity();
 		/** Setzt die Größe der Welt wo der Spieler sich bewegen kann **/
 
@@ -78,17 +78,16 @@ public class GameScreen implements Screen {
 
 			inAir = true;
 			if (inAir == true) {
-				if (ply_y == 672) {
+				for (int i = 0; i < f_dy; i--) {
 					f_dy = -9;
-					inAir = false;
 				}
-
-				f_dy += gravity;
-				ply_y += f_dy;
-
+				inAir = false;
 			}
-		}
 
+			f_dy += gravity;
+			ply_y += f_dy;
+
+		}
 	}
 
 	/** Render Methode wird immer aufgerufen um das Spiel zu updaten **/
@@ -107,9 +106,10 @@ public class GameScreen implements Screen {
 		batch.end();
 
 	}
-	
-	public void gravity(){
-		
+
+	public void gravity() {
+
+		ply_y = ply_y + 3;
 	}
 
 	@Override
