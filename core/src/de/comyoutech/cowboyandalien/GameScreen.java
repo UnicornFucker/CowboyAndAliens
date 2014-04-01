@@ -3,6 +3,7 @@ package de.comyoutech.cowboyandalien;
 /** Import **/
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -23,6 +24,24 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(true, 1920, 1080);
 		batch = new SpriteBatch();
+
+	}
+
+	/** GeneralUpdate Methode fuer Keylistener etc. **/
+
+	public void generalUpdate(OrthographicCamera camera) {
+
+		  if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
+
+		} else if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
+
+		} if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
+
+		} else if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
+
+		} else if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+
+		}
 
 	}
 
