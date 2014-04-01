@@ -19,8 +19,8 @@ public class GameScreen implements Screen {
 
 	/** Variables for Character Movements **/
 
-	public float ply_x;
-	public float ply_y;
+	public float ply_x = 250;
+	public float ply_y = 250;
 	public float f_dx = 5;
 	public float f_dy = -9;
 	public float gravity = 0.5f;
@@ -40,10 +40,10 @@ public class GameScreen implements Screen {
 	public void generalUpdate(OrthographicCamera camera) {
 
 		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
-
+			ply_x -= 5;
 		} else if (Gdx.input.isKeyPressed(Keys.D)
 				|| Gdx.input.isKeyPressed(Keys.RIGHT)) {
-
+			ply_x += 5;
 		}
 		if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
 
@@ -53,11 +53,11 @@ public class GameScreen implements Screen {
 		} else if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 
 			if (ply_y == 450) {
-				f_dx = -9;
-				
+				f_dy = -9;
 			}
-		
+
 			f_dy += gravity;
+			ply_y += f_dy;
 
 		}
 
@@ -75,7 +75,7 @@ public class GameScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		batch.draw(Assets.texture_figure, 250,250);
+		batch.draw(Assets.sprite_figure, ply_x, ply_y);
 		batch.end();
 
 	}

@@ -17,7 +17,7 @@ public class MyGdxGame extends Game {
 	/** Startup Method for the Game **/
 	
 	public void create() {
-		// Assets.load();
+		 Assets.load();
 
 		game_screen = new GameScreen(this);
 		setScreen(game_screen);
