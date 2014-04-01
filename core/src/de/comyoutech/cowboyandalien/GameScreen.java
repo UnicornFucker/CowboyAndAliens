@@ -20,9 +20,9 @@ public class GameScreen implements Screen {
 	/** Variables for Character Movements **/
 
 	public float ply_x = 250;
-	public float ply_y = 650;
-	public float f_dx = 5;
+	public float ply_y = 672;
 	public float f_dy = -9;
+	public float f_dx = 5;
 	public float gravity = 0.5f;
 	boolean inAir = false;
 
@@ -39,25 +39,30 @@ public class GameScreen implements Screen {
 	/** GeneralUpdate Methode fuer Keylistener etc. **/
 
 	public void generalUpdate(OrthographicCamera camera) {
-
+		
+		gravity();
 		/** Setzt die Größe der Welt wo der Spieler sich bewegen kann **/
-			if (getPly_x() >= 672) {
-	            ply_x = 672;
-	        }
-	        if (getPly_x() <= 0) {
-	            ply_x = 0;
-	        }
 
-	        if (getPly_y() >= 672) {
-	            ply_y = 672;
-	        }
+		if (getPly_x() >= 672) {
+			ply_x = 672;
+		}
+		if (getPly_x() <= 0) {
+			ply_x = 0;
+		}
 
-	        if (getPly_y() <= 0) {
-	            ply_y = 0;
-	        }
+		if (getPly_y() >= 672) {
+			ply_y = 672;
+		}
 
-	    /** Key Inputs **/
-	        
+		if (getPly_y() <= 0) {
+			ply_y = 0;
+		}
+		if (getF_dy() <= -9) {
+			f_dy = -9;
+		}
+
+		/** Key Inputs **/
+
 		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
 			ply_x -= 5;
 		} else if (Gdx.input.isKeyPressed(Keys.D)
@@ -65,15 +70,15 @@ public class GameScreen implements Screen {
 			ply_x += 5;
 		}
 		if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
-			ply_y +=5;
+			ply_y += 5;
 		} else if (Gdx.input.isKeyPressed(Keys.W)
 				|| Gdx.input.isKeyPressed(Keys.UP)) {
-			ply_y -=5;
+			ply_y -= 5;
 		} else if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 
 			inAir = true;
 			if (inAir == true) {
-				if (ply_y == 450) {
+				if (ply_y == 672) {
 					f_dy = -9;
 					inAir = false;
 				}
@@ -101,6 +106,10 @@ public class GameScreen implements Screen {
 		batch.draw(Assets.sprite_figure, ply_x, ply_y);
 		batch.end();
 
+	}
+	
+	public void gravity(){
+		
 	}
 
 	@Override
@@ -155,6 +164,20 @@ public class GameScreen implements Screen {
 		this.ply_y = ply_y;
 	}
 
-	
-	
+	public float getF_dx() {
+		return f_dx;
+	}
+
+	public void setF_dx(float f_dx) {
+		this.f_dx = f_dx;
+	}
+
+	public float getF_dy() {
+		return f_dy;
+	}
+
+	public void setF_dy(float f_dy) {
+		this.f_dy = f_dy;
+	}
+
 }
