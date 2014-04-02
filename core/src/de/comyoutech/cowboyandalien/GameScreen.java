@@ -40,18 +40,21 @@ public class GameScreen implements Screen {
 
 	public void generalUpdate(OrthographicCamera camera) {
 
+		/** Gravity Methode **/
+
 		gravity();
+
 		/** Setzt die Größe der Welt wo der Spieler sich bewegen kann **/
 
-		if (getPly_x() >= 672) {
-			ply_x = 672;
+		if (getPly_x() >= 1024) {
+			ply_x = 1024;
 		}
 		if (getPly_x() <= 0) {
 			ply_x = 0;
 		}
 
-		if (getPly_y() >= 672) {
-			ply_y = 672;
+		if (getPly_y() >= 768) {
+			ply_y = 768;
 		}
 
 		if (getPly_y() <= 0) {
@@ -75,20 +78,25 @@ public class GameScreen implements Screen {
 				|| Gdx.input.isKeyPressed(Keys.UP)) {
 			ply_y -= 5;
 		} else if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+			float ply_yTemp = 0;
+			ply_y = ply_yTemp;
 
-			inAir = true;
-			if (inAir == true) {
-				for (int i = 0; i < f_dy; i--) {
-					f_dy = -9;
+			{
+				inAir = true;
+				if (inAir == true) {
+					for (int i = 0; i > f_dy; i--) {
+						f_dy = -9;
+					}
+					
+						f_dy += gravity;
+						ply_y += f_dy;
+						inAir = false;
+					}
+
 				}
-				inAir = false;
 			}
-
-			f_dy += gravity;
-			ply_y += f_dy;
-
 		}
-	}
+	
 
 	/** Render Methode wird immer aufgerufen um das Spiel zu updaten **/
 

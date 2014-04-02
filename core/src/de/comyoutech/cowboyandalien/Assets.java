@@ -22,6 +22,7 @@ public class Assets {
 		
 		texture_figure = new Texture(Gdx.files.internal("mainmenu/toad.gif"));
 		sprite_figure = new Sprite(texture_figure);
+		sprite_figure.flip(false, true);
 		
 		
 		
