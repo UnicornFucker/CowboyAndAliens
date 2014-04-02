@@ -2,12 +2,15 @@ package de.comyoutech.cowboyandalien;
 
 /** Import **/
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.InputProcessor;
 
 public class GameScreen implements Screen {
 
@@ -78,22 +81,16 @@ public class GameScreen implements Screen {
 				|| Gdx.input.isKeyPressed(Keys.UP)) {
 			ply_y -= 5;
 		} else if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-			float ply_yTemp = 0;
-			ply_y = ply_yTemp;
-
-			{
+			
+						
 				inAir = true;
 				if (inAir == true) {
-					for (int i = 0; i > f_dy; i--) {
-						f_dy = -9;
-					}
-					
-						f_dy += gravity;
-						ply_y += f_dy;
-						inAir = false;
-					}
-
+				f_dy = -9;
+				f_dy += gravity;
+				ply_y += f_dy;
+				inAir = false;
 				}
+				
 			}
 		}
 	
