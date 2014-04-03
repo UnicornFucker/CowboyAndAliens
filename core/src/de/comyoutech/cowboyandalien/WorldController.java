@@ -3,6 +3,9 @@ package de.comyoutech.cowboyandalien;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+
 import de.comyoutech.cowboyandalien.Bob.State;
 
 public class WorldController {
@@ -14,7 +17,7 @@ public class WorldController {
     private static final long LONG_JUMP_PRESS = 150l;
     private static final float ACCELERATION = 20f;
     private static final float GRAVITY = -20f;
-    private static final float MAX_JUMP_SPEED = 7f;
+    private static final float MAX_JUMP_SPEED = 10f;
     private static final float DAMP = 0.90f;
     private static final float MAX_VEL = 4f;
 
@@ -24,6 +27,8 @@ public class WorldController {
     private Bob bob;
     private long jumpPressedTime;
     private boolean jumpingPressed;
+
+    private Array<Block> collidable = new Array<Block>();
 
     static Map<Keys, Boolean> keys = new HashMap<WorldController.Keys, Boolean>();
     static {
@@ -36,6 +41,7 @@ public class WorldController {
     public WorldController(World world) {
         this.world = world;
         this.bob = world.getBob();
+        System.out.println("Test");
     }
 
     // ** Key presses and touches **************** //
@@ -79,8 +85,8 @@ public class WorldController {
 
         bob.getAcceleration().y = GRAVITY;
         bob.getAcceleration().scl(delta);
-
         bob.getVelocity().add(bob.getAcceleration().x, bob.getAcceleration().y);
+
         if (bob.getAcceleration().x == 0)
             bob.getVelocity().x *= DAMP;
         if (bob.getVelocity().x > MAX_VEL) {
@@ -91,6 +97,7 @@ public class WorldController {
         }
 
         bob.update(delta);
+
         if (bob.getPosition().y < 0) {
             bob.getPosition().y = 0f;
             bob.setPosition(bob.getPosition());
@@ -155,6 +162,77 @@ public class WorldController {
 
         }
         return false;
+    }
+
+    private void checkCollisionWithBlocks(float delta) {
+        bob.getVelocity().scl(delta);
+        Rectangle bobRect = rectPool.obtain();
+        bobRect.set(bob.getBounds().x, bob.getBounds().y,
+                bob.getBounds().width, bob.getBounds().height);
+        int startX, endX;
+        int startY = (int) bob.getBounds().y;
+        int endY = (int) (bob.getBounds().y + bob.getBounds().height);
+        if (bob.getVelocity().x < 0) {
+            startX = endX = (int) Math.floor(bob.getBounds().x
+                    + bob.getVelocity().x);
+        } else {
+            startX = endX = (int) Math.floor(bob.getBounds().x
+                    + bob.getBounds().width + bob.getVelocity().x);
+        }
+        populateCollidableBlocks(startX, startY, endX, endY);
+        bobRect.x += bob.getVelocity().x;
+        world.getCollisionRects().clear();
+        for (Block block : collidable) {
+            if (block == null)
+                continue;
+            if (bobRect.overlaps(block.getBounds())) {
+                bob.getVelocity().x = 0;
+                world.getCollisionRects().add(block.getBounds());
+                break;
+            }
+        }
+        bobRect.x = bob.getPosition().x;
+        startX = (int) bob.getBounds().x;
+        endX = (int) (bob.getBounds().x + bob.getBounds().width);
+        if (bob.getVelocity().y < 0) {
+            startY = endY = (int) Math.floor(bob.getBounds().y
+                    + bob.getVelocity().y);
+        } else {
+            startY = endY = (int) Math.floor(bob.getBounds().y
+                    + bob.getBounds().height + bob.getVelocity().y);
+        }
+        populateCollidableBlocks(startX, startY, endX, endY);
+        bobRect.y += bob.getVelocity().y;
+        for (Block block : collidable) {
+            if (block == null)
+                continue;
+            if (bobRect.overlaps(block.getBounds())) {
+                if (bob.getVelocity().y < 0) {
+                    grounded = true;
+                }
+                bob.getVelocity().y = 0;
+                world.getCollisionRects().add(block.getBounds());
+                break;
+            }
+        }
+        bobRect.y = bob.getPosition().y;
+        bob.getPosition().add(bob.getVelocity());
+        bob.getBounds().x = bob.getPosition().x;
+        bob.getBounds().y = bob.getPosition().y;
+        bob.getVelocity().scl(1 / delta);
+    }
+
+    private void populateCollidableBlocks(int startX, int startY, int endX,
+            int endY) {
+        collidable.clear();
+        for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++) {
+                if (x >= 0 && x < world.getLevel().getWidth() && y >= 0
+                        && y < world.getLevel().getHeight()) {
+                    collidable.add(world.getLevel().get(x, y));
+                }
+            }
+        }
     }
 
 }

@@ -56,6 +56,6 @@ public class WorldRenderer {
         debugRenderer.setColor(new Color(0, 1, 0, 1));
         debugRenderer.rect(x1, y1, rect.width, rect.height);
         debugRenderer.end();
-
     }
+
 }

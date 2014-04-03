@@ -1,5 +1,8 @@
 package de.comyoutech.cowboyandalien;
 
+import java.util.logging.Level;
+
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -12,21 +15,32 @@ public class World {
     /** Our player controlled hero **/
     Bob bob;
 
+    Level level;
+
+    /** Collision **/
+    Array<Rectangle> collisionRects = new Array<Rectangle>();
+
     // Getters -----------
     public Array<Block> getBlocks() {
         return blocks;
+    }
+
+    public Array<Rectangle> getCollisionRects() {
+        return collisionRects;
     }
 
     public Bob getBob() {
         return bob;
     }
 
+    public Level getLevel() {
+        return level;
+    }
+
     // --------------------
 
     public World() {
-
         createDemoWorld();
-
     }
 
     private void createDemoWorld() {
