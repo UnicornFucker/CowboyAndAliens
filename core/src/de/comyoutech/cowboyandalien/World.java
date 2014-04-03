@@ -1,6 +1,6 @@
 package de.comyoutech.cowboyandalien;
 
-import java.util.logging.Level;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -37,7 +37,36 @@ public class World {
         return level;
     }
 
-    // --------------------
+    public ArrayList<Block> getDrawableBlocks(int width, int height) {
+        int x = (int) bob.getPosition().x - width;
+        int y = (int) bob.getPosition().y - height;
+        if (x < 0) {
+            x = 0;
+        }
+        if (y < 0) {
+            y = 0;
+        }
+        int x2 = x + 2 * width;
+        int y2 = y + 2 * height;
+        if (x2 > level.getWidth()) {
+            x2 = level.getWidth() - 1;
+        }
+        if (y2 > level.getHeight()) {
+            y2 = level.getHeight() - 1;
+        }
+
+        ArrayList<Block> blocks = new ArrayList<Block>();
+        Block block;
+        for (int col = x; col <= x2; col++) {
+            for (int row = y; row <= y2; row++) {
+                block = level.getBlocks()[col][row];
+                if (block != null) {
+                    blocks.add(block);
+                }
+            }
+        }
+        return blocks;
+    }
 
     public World() {
         createDemoWorld();
@@ -45,22 +74,7 @@ public class World {
 
     private void createDemoWorld() {
         bob = new Bob(new Vector2(7, 2));
-
-        for (int i = 0; i < 10; i++) {
-            blocks.add(new Block(new Vector2(i, 0)));
-            blocks.add(new Block(new Vector2(i, 6)));
-            if (i > 2) {
-                blocks.add(new Block(new Vector2(i, 1)));
-            }
-            blocks.add(new Block(new Vector2(9, 2)));
-            blocks.add(new Block(new Vector2(9, 3)));
-            blocks.add(new Block(new Vector2(9, 4)));
-            blocks.add(new Block(new Vector2(9, 5)));
-
-            blocks.add(new Block(new Vector2(6, 3)));
-            blocks.add(new Block(new Vector2(6, 4)));
-            blocks.add(new Block(new Vector2(6, 5)));
-        }
+        level = new Level();
 
     }
 }
