@@ -6,19 +6,23 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 
+import de.comyoutech.cowboyandalien.model.EntityStore;
+
 public class GameScreen implements Screen, InputProcessor {
 
-    private World world;
     private WorldRenderer renderer;
+    private EntityStore store;
     private WorldController controller;
 
-    private int width, height;
-
-    public void show() {
-        world = new World();
-        renderer = new WorldRenderer(world);
-        controller = new WorldController(world);
+    public GameScreen() {
+        store = new EntityStore();
+        controller = new WorldController(store);
+        renderer = new WorldRenderer(store);
         Gdx.input.setInputProcessor(this);
+    }
+
+    @Override
+    public void show() {
     }
 
     @Override
@@ -28,110 +32,104 @@ public class GameScreen implements Screen, InputProcessor {
 
         controller.update(delta);
         renderer.render();
-
     }
 
     @Override
-    public void resize(int width, int height) {
-        renderer.setSize(width, height);
-
+    public boolean touchUp(int x, int y, int pointer, int button) {
+//        if ((x < (width / 2)) && (y > (height / 2))) {
+//            controller.leftReleased();
+//        }
+//        if ((x > (width / 2)) && (y > (height / 2))) {
+//            controller.rightReleased();
+//        }
+        return true;
     }
-
-    @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
-
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void dispose() {
-        Gdx.input.setInputProcessor(null);
-
-    }
-
-    // * InputProcessor methods ***************************//
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Keys.LEFT)
+        if (keycode == Keys.LEFT) {
             controller.leftPressed();
-        if (keycode == Keys.RIGHT)
+        }
+        if (keycode == Keys.RIGHT) {
             controller.rightPressed();
-        if (keycode == Keys.SPACE)
+        }
+        if (keycode == Keys.SPACE) {
             controller.jumpPressed();
-        if (keycode == Keys.X)
+        }
+        if (keycode == Keys.X) {
             controller.firePressed();
+        }
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Keys.LEFT)
+        if (keycode == Keys.LEFT) {
             controller.leftReleased();
-        if (keycode == Keys.RIGHT)
+        }
+        if (keycode == Keys.RIGHT) {
             controller.rightReleased();
-        if (keycode == Keys.SPACE)
+        }
+        if (keycode == Keys.SPACE) {
             controller.jumpReleased();
-        if (keycode == Keys.X)
+        }
+        if (keycode == Keys.X) {
             controller.fireReleased();
+        }
         return true;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        // TODO Auto-generated method stub
-        return false;
     }
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        if (x < width / 2 && y > height / 2) {
-            controller.leftPressed();
-        }
-        if (x > width / 2 && y > height / 2) {
-            controller.rightPressed();
-        }
+//        if ((x < (width / 2)) && (y > (height / 2))) {
+//            controller.leftPressed();
+//        }
+//        if ((x > (width / 2)) && (y > (height / 2))) {
+//            controller.rightPressed();
+//        }
         return true;
     }
 
     @Override
-    public boolean touchUp(int x, int y, int pointer, int button) {
-        if (x < width / 2 && y > height / 2) {
-            controller.leftReleased();
-        }
-        if (x > width / 2 && y > height / 2) {
-            controller.rightReleased();
-        }
-        return true;
+    public void resize(int width, int height) {
+        renderer.setSize(width, height);
+    }
+
+    @Override
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void dispose() {
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean mouseMoved(int x, int y) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean scrolled(int amount) {
-        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
         return false;
     }
 }

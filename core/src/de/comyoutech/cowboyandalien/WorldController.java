@@ -3,7 +3,13 @@ package de.comyoutech.cowboyandalien;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.comyoutech.cowboyandalien.Bob.State;
+import sun.org.mozilla.javascript.internal.ast.Block;
+
+import com.badlogic.gdx.utils.Array;
+
+import de.comyoutech.cowboyandalien.entities.PlayerEntity;
+import de.comyoutech.cowboyandalien.entities.PlayerEntity.State;
+import de.comyoutech.cowboyandalien.model.EntityStore;
 
 public class WorldController {
 
@@ -20,13 +26,14 @@ public class WorldController {
 
     private static final float WIDTH = 10f;
 
-    private World world;
-    private Bob bob;
+    private PlayerEntity player;
     private long jumpPressedTime;
     private boolean jumpingPressed;
-    private boolean grounded;
+
+    private Array<Block> collidable = new Array<Block>();
 
     static Map<Keys, Boolean> keys = new HashMap<WorldController.Keys, Boolean>();
+
     static {
         keys.put(Keys.LEFT, false);
         keys.put(Keys.RIGHT, false);
@@ -34,12 +41,9 @@ public class WorldController {
         keys.put(Keys.FIRE, false);
     };
 
-    public WorldController(World world) {
-        this.world = world;
-        this.bob = world.getBob();
+    public WorldController(EntityStore store) {
+        player = store.getPlayer();
     }
-
-    // ** Key presses and touches **************** //
 
     public void leftPressed() {
         keys.get(keys.put(Keys.LEFT, true));
@@ -78,43 +82,42 @@ public class WorldController {
     public void update(float delta) {
         processInput();
 
-        if (grounded && bob.getState().equals(State.JUMPING)) {
-            bob.setState(State.IDLE);
+        player.getAcceleration().y = GRAVITY;
+        player.getAcceleration().scl(delta);
+        player.getVelocity().add(player.getAcceleration().x,
+                player.getAcceleration().y);
+
+        if (player.getAcceleration().x == 0) {
+            player.getVelocity().x *= DAMP;
+        }
+        if (player.getVelocity().x > MAX_VEL) {
+            player.getVelocity().x = MAX_VEL;
+        }
+        if (player.getVelocity().x < -MAX_VEL) {
+            player.getVelocity().x = -MAX_VEL;
         }
 
-        bob.getAcceleration().y = GRAVITY;
-        bob.getAcceleration().scl(delta);
-        bob.getVelocity().add(bob.getAcceleration().x, bob.getAcceleration().y);
-        if (bob.getAcceleration().x == 0)
-            bob.getVelocity().x *= DAMP;
-        if (bob.getVelocity().x > MAX_VEL) {
-            bob.getVelocity().x = MAX_VEL;
-        }
-        if (bob.getVelocity().x < -MAX_VEL) {
-            bob.getVelocity().x = -MAX_VEL;
-        }
+        player.update(delta);
 
-        bob.update(delta);
-
-        if (bob.getPosition().y < 0) {
-            bob.getPosition().y = 0f;
-            bob.setPosition(bob.getPosition());
-            if (bob.getState().equals(State.JUMPING)) {
-                bob.setState(State.IDLE);
+        if (player.getPosition().y < 0) {
+            player.getPosition().y = 0f;
+            player.setPosition(player.getPosition());
+            if (player.getState().equals(State.JUMPING)) {
+                player.setState(State.IDLE);
             }
         }
-        if (bob.getPosition().x < 0) {
-            bob.getPosition().x = 0;
-            bob.setPosition(bob.getPosition());
-            if (!bob.getState().equals(State.JUMPING)) {
-                bob.setState(State.IDLE);
+        if (player.getPosition().x < 0) {
+            player.getPosition().x = 0;
+            player.setPosition(player.getPosition());
+            if (!player.getState().equals(State.JUMPING)) {
+                player.setState(State.IDLE);
             }
         }
-        if (bob.getPosition().x > WIDTH - bob.getBounds().width) {
-            bob.getPosition().x = WIDTH - bob.getBounds().width;
-            bob.setPosition(bob.getPosition());
-            if (!bob.getState().equals(State.JUMPING)) {
-                bob.setState(State.IDLE);
+        if (player.getPosition().x > (WIDTH - player.getBounds().width)) {
+            player.getPosition().x = WIDTH - player.getBounds().width;
+            player.setPosition(player.getPosition());
+            if (!player.getState().equals(State.JUMPING)) {
+                player.setState(State.IDLE);
             }
         }
     }
@@ -122,44 +125,123 @@ public class WorldController {
     /** Change Bob's state and parameters based on input controls **/
     private boolean processInput() {
         if (keys.get(Keys.JUMP)) {
-            if (!bob.getState().equals(State.JUMPING)) {
+            if (!player.getState().equals(State.JUMPING)) {
                 jumpingPressed = true;
                 jumpPressedTime = System.currentTimeMillis();
-                bob.setState(State.JUMPING);
-                bob.getVelocity().y = MAX_JUMP_SPEED;
-            } else {
+                player.setState(State.JUMPING);
+                player.getVelocity().y = MAX_JUMP_SPEED;
+            }
+            else {
                 if (jumpingPressed
                         && ((System.currentTimeMillis() - jumpPressedTime) >= LONG_JUMP_PRESS)) {
                     jumpingPressed = false;
-                } else {
+                }
+                else {
                     if (jumpingPressed) {
-                        bob.getVelocity().y = MAX_JUMP_SPEED;
+                        player.getVelocity().y = MAX_JUMP_SPEED;
                     }
                 }
             }
         }
         if (keys.get(Keys.LEFT)) {
             // left is pressed
-            bob.setFacingLeft(true);
-            if (!bob.getState().equals(State.JUMPING)) {
-                bob.setState(State.WALKING);
+            player.setFacingLeft(true);
+            if (!player.getState().equals(State.JUMPING)) {
+                player.setState(State.WALKING);
             }
-            bob.getAcceleration().x = -ACCELERATION;
-        } else if (keys.get(Keys.RIGHT)) {
+            player.getAcceleration().x = -ACCELERATION;
+        }
+        else if (keys.get(Keys.RIGHT)) {
             // left is pressed
-            bob.setFacingLeft(false);
-            if (!bob.getState().equals(State.JUMPING)) {
-                bob.setState(State.WALKING);
+            player.setFacingLeft(false);
+            if (!player.getState().equals(State.JUMPING)) {
+                player.setState(State.WALKING);
             }
-            bob.getAcceleration().x = ACCELERATION;
-        } else {
-            if (!bob.getState().equals(State.JUMPING)) {
-                bob.setState(State.IDLE);
+            player.getAcceleration().x = ACCELERATION;
+        }
+        else {
+            if (!player.getState().equals(State.JUMPING)) {
+                player.setState(State.IDLE);
             }
-            bob.getAcceleration().x = 0;
+            player.getAcceleration().x = 0;
 
         }
         return false;
     }
+
+//    private void checkCollisionWithBlocks(float delta) {
+//        bob.getVelocity().scl(delta);
+//        Rectangle bobRect = rectPool.obtain();
+//        bobRect.set(bob.getBounds().x, bob.getBounds().y,
+//                bob.getBounds().width, bob.getBounds().height);
+//        int startX, endX;
+//        int startY = (int) bob.getBounds().y;
+//        int endY = (int) (bob.getBounds().y + bob.getBounds().height);
+//        if (bob.getVelocity().x < 0) {
+//            startX = endX = (int) Math.floor(bob.getBounds().x
+//                    + bob.getVelocity().x);
+//        }
+//        else {
+//            startX = endX = (int) Math.floor(bob.getBounds().x
+//                    + bob.getBounds().width + bob.getVelocity().x);
+//        }
+//        populateCollidableBlocks(startX, startY, endX, endY);
+//        bobRect.x += bob.getVelocity().x;
+//        world.getCollisionRects().clear();
+//        for (Block block : collidable) {
+//            if (block == null) {
+//                continue;
+//            }
+//            if (bobRect.overlaps(block.getBounds())) {
+//                bob.getVelocity().x = 0;
+//                world.getCollisionRects().add(block.getBounds());
+//                break;
+//            }
+//        }
+//        bobRect.x = bob.getPosition().x;
+//        startX = (int) bob.getBounds().x;
+//        endX = (int) (bob.getBounds().x + bob.getBounds().width);
+//        if (bob.getVelocity().y < 0) {
+//            startY = endY = (int) Math.floor(bob.getBounds().y
+//                    + bob.getVelocity().y);
+//        }
+//        else {
+//            startY = endY = (int) Math.floor(bob.getBounds().y
+//                    + bob.getBounds().height + bob.getVelocity().y);
+//        }
+//        populateCollidableBlocks(startX, startY, endX, endY);
+//        bobRect.y += bob.getVelocity().y;
+//        for (Block block : collidable) {
+//            if (block == null) {
+//                continue;
+//            }
+//            if (bobRect.overlaps(block.getBounds())) {
+//                if (bob.getVelocity().y < 0) {
+//                    grounded = true;
+//                }
+//                bob.getVelocity().y = 0;
+//                world.getCollisionRects().add(block.getBounds());
+//                break;
+//            }
+//        }
+//        bobRect.y = bob.getPosition().y;
+//        bob.getPosition().add(bob.getVelocity());
+//        bob.getBounds().x = bob.getPosition().x;
+//        bob.getBounds().y = bob.getPosition().y;
+//        bob.getVelocity().scl(1 / delta);
+//    }
+
+//    private void populateCollidableBlocks(int startX, int startY, int endX,
+//            int endY) {
+//        collidable.clear();
+//        for (int x = startX; x <= endX; x++) {
+//            for (int y = startY; y <= endY; y++) {
+//                if ((x >= 0) && (x < world.getLevel().getWidth()) && (y >= 0)
+//                        && (y < world.getLevel().getHeight())) {
+//                    collidable.add(world.getLevel().get(x, y));
+//                }
+//            }
+//        }
+//    }
 
 }

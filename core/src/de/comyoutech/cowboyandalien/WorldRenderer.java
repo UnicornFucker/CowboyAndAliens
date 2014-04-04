@@ -6,12 +6,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 
+import de.comyoutech.cowboyandalien.entities.BlockEntity;
+import de.comyoutech.cowboyandalien.entities.PlayerEntity;
+import de.comyoutech.cowboyandalien.model.EntityStore;
+
 public class WorldRenderer {
 
     private static final float CAMERA_WIDTH = 10f;
     private static final float CAMERA_HEIGHT = 7f;
 
-    private World world;
+    private EntityStore store;
     private OrthographicCamera cam;
 
     private int width;
@@ -21,39 +25,38 @@ public class WorldRenderer {
     private float ppuY;
 
     public void setSize(int w, int h) {
-        this.width = w;
-        this.height = h;
-        ppuX = (float) width / CAMERA_WIDTH;
-        ppuY = (float) height / CAMERA_HEIGHT;
+        width = w;
+        height = h;
+        ppuX = width / CAMERA_WIDTH;
+        ppuY = height / CAMERA_HEIGHT;
     }
 
     /** for debug rendering **/
-    ShapeRenderer debugRenderer = new ShapeRenderer();
+    private ShapeRenderer debugRenderer = new ShapeRenderer();
 
-    public WorldRenderer(World world) {
-        this.world = world;
-        this.cam = new OrthographicCamera(10, 7);
-        this.cam.position.set(5, 3.5f, 0);
-        this.cam.update();
+    public WorldRenderer(EntityStore store) {
+        this.store = store;
+        cam = new OrthographicCamera(10, 7);
+        cam.position.set(5, 3.5f, 0);
+        cam.update();
     }
 
     public void render() {
-        // render blocks
         debugRenderer.setProjectionMatrix(cam.combined);
         debugRenderer.begin(ShapeType.Line);
-        for (Block block : world.getDrawableBlocks((int) CAMERA_WIDTH,
-                (int) CAMERA_HEIGHT)) {
+        for (BlockEntity block : store.getBlockList()) {
             Rectangle rect = block.getBounds();
             float x1 = block.getPosition().x + rect.x;
             float y1 = block.getPosition().y + rect.y;
             debugRenderer.setColor(new Color(1, 0, 0, 1));
             debugRenderer.rect(x1, y1, rect.width, rect.height);
         }
+
         // render Bob
-        Bob bob = world.getBob();
-        Rectangle rect = bob.getBounds();
-        float x1 = bob.getPosition().x + rect.x;
-        float y1 = bob.getPosition().y + rect.y;
+        PlayerEntity player = store.getPlayer();
+        Rectangle rect = player.getBounds();
+        float x1 = player.getPosition().x + rect.x;
+        float y1 = player.getPosition().y + rect.y;
         debugRenderer.setColor(new Color(0, 1, 0, 1));
         debugRenderer.rect(x1, y1, rect.width, rect.height);
         debugRenderer.end();
