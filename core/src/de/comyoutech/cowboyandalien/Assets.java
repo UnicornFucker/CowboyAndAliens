@@ -11,15 +11,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Assets {
 
 	public static Sound jump_sound;
-	public static Sound jump_sound;
-	public static Sound jump_sound;
+	public static Sound getCoin_sound;
+	public static Sound shot_sound;
 	public static Sound explosion;
 
 	public Assets() {
 	}
 
 	public static void load() {
-		coolsound = Gdx.audio.newSound(Gdx.files.internal("jump.wav"));
+		jump_sound = Gdx.audio.newSound(Gdx.files.internal("jump.wav"));
+//		getCoin_sound = Gdx.audio.newSound(Gdx.files.internal("coin2.wav"));
+//		explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.wav"));
+//		shot_sound = Gdx.audio.newSound(Gdx.files.internal("shito1.wav"));
 
 	}
 }
