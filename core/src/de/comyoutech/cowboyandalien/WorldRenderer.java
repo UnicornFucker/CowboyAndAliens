@@ -36,12 +36,15 @@ public class WorldRenderer {
 
     public WorldRenderer(EntityStore store) {
         this.store = store;
-        cam = new OrthographicCamera(10, 7);
-        cam.position.set(5, 3.5f, 0);
+        cam = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
+        cam.setToOrtho(false, CAMERA_WIDTH, CAMERA_HEIGHT);
+        cam.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
         cam.update();
     }
 
     public void render() {
+        PlayerEntity player = store.getPlayer();
+        moveCamera(player.getPosition().x, CAMERA_HEIGHT / 2);
         debugRenderer.setProjectionMatrix(cam.combined);
         debugRenderer.begin(ShapeType.Line);
         for (BlockEntity block : store.getBlockList()) {
@@ -53,13 +56,22 @@ public class WorldRenderer {
         }
 
         // render Bob
-        PlayerEntity player = store.getPlayer();
+
         Rectangle rect = player.getBounds();
         float x1 = player.getPosition().x + rect.x;
         float y1 = player.getPosition().y + rect.y;
         debugRenderer.setColor(new Color(0, 1, 0, 1));
         debugRenderer.rect(x1, y1, rect.width, rect.height);
         debugRenderer.end();
+    }
+
+    public void moveCamera(float x, float y) {
+        PlayerEntity player = store.getPlayer();
+        if ((player.getPosition().x > CAMERA_WIDTH / 2)) {
+            cam.position.set(x, y, 0);
+            cam.update();
+        }
+
     }
 
 }

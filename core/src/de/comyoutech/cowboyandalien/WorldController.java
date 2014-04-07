@@ -24,7 +24,7 @@ public class WorldController {
     private static final float DAMP = 0.90f;
     private static final float MAX_VEL = 4f;
 
-    private static final float WIDTH = 10f;
+    private static final float WIDTH = 100f;
 
     private PlayerEntity player;
     private long jumpPressedTime;
@@ -130,13 +130,11 @@ public class WorldController {
                 jumpPressedTime = System.currentTimeMillis();
                 player.setState(State.JUMPING);
                 player.getVelocity().y = MAX_JUMP_SPEED;
-            }
-            else {
+            } else {
                 if (jumpingPressed
                         && ((System.currentTimeMillis() - jumpPressedTime) >= LONG_JUMP_PRESS)) {
                     jumpingPressed = false;
-                }
-                else {
+                } else {
                     if (jumpingPressed) {
                         player.getVelocity().y = MAX_JUMP_SPEED;
                     }
@@ -150,16 +148,14 @@ public class WorldController {
                 player.setState(State.WALKING);
             }
             player.getAcceleration().x = -ACCELERATION;
-        }
-        else if (keys.get(Keys.RIGHT)) {
+        } else if (keys.get(Keys.RIGHT)) {
             // left is pressed
             player.setFacingLeft(false);
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.WALKING);
             }
             player.getAcceleration().x = ACCELERATION;
-        }
-        else {
+        } else {
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.IDLE);
             }
@@ -169,79 +165,79 @@ public class WorldController {
         return false;
     }
 
-//    private void checkCollisionWithBlocks(float delta) {
-//        bob.getVelocity().scl(delta);
-//        Rectangle bobRect = rectPool.obtain();
-//        bobRect.set(bob.getBounds().x, bob.getBounds().y,
-//                bob.getBounds().width, bob.getBounds().height);
-//        int startX, endX;
-//        int startY = (int) bob.getBounds().y;
-//        int endY = (int) (bob.getBounds().y + bob.getBounds().height);
-//        if (bob.getVelocity().x < 0) {
-//            startX = endX = (int) Math.floor(bob.getBounds().x
-//                    + bob.getVelocity().x);
-//        }
-//        else {
-//            startX = endX = (int) Math.floor(bob.getBounds().x
-//                    + bob.getBounds().width + bob.getVelocity().x);
-//        }
-//        populateCollidableBlocks(startX, startY, endX, endY);
-//        bobRect.x += bob.getVelocity().x;
-//        world.getCollisionRects().clear();
-//        for (Block block : collidable) {
-//            if (block == null) {
-//                continue;
-//            }
-//            if (bobRect.overlaps(block.getBounds())) {
-//                bob.getVelocity().x = 0;
-//                world.getCollisionRects().add(block.getBounds());
-//                break;
-//            }
-//        }
-//        bobRect.x = bob.getPosition().x;
-//        startX = (int) bob.getBounds().x;
-//        endX = (int) (bob.getBounds().x + bob.getBounds().width);
-//        if (bob.getVelocity().y < 0) {
-//            startY = endY = (int) Math.floor(bob.getBounds().y
-//                    + bob.getVelocity().y);
-//        }
-//        else {
-//            startY = endY = (int) Math.floor(bob.getBounds().y
-//                    + bob.getBounds().height + bob.getVelocity().y);
-//        }
-//        populateCollidableBlocks(startX, startY, endX, endY);
-//        bobRect.y += bob.getVelocity().y;
-//        for (Block block : collidable) {
-//            if (block == null) {
-//                continue;
-//            }
-//            if (bobRect.overlaps(block.getBounds())) {
-//                if (bob.getVelocity().y < 0) {
-//                    grounded = true;
-//                }
-//                bob.getVelocity().y = 0;
-//                world.getCollisionRects().add(block.getBounds());
-//                break;
-//            }
-//        }
-//        bobRect.y = bob.getPosition().y;
-//        bob.getPosition().add(bob.getVelocity());
-//        bob.getBounds().x = bob.getPosition().x;
-//        bob.getBounds().y = bob.getPosition().y;
-//        bob.getVelocity().scl(1 / delta);
-//    }
+    // private void checkCollisionWithBlocks(float delta) {
+    // bob.getVelocity().scl(delta);
+    // Rectangle bobRect = rectPool.obtain();
+    // bobRect.set(bob.getBounds().x, bob.getBounds().y,
+    // bob.getBounds().width, bob.getBounds().height);
+    // int startX, endX;
+    // int startY = (int) bob.getBounds().y;
+    // int endY = (int) (bob.getBounds().y + bob.getBounds().height);
+    // if (bob.getVelocity().x < 0) {
+    // startX = endX = (int) Math.floor(bob.getBounds().x
+    // + bob.getVelocity().x);
+    // }
+    // else {
+    // startX = endX = (int) Math.floor(bob.getBounds().x
+    // + bob.getBounds().width + bob.getVelocity().x);
+    // }
+    // populateCollidableBlocks(startX, startY, endX, endY);
+    // bobRect.x += bob.getVelocity().x;
+    // world.getCollisionRects().clear();
+    // for (Block block : collidable) {
+    // if (block == null) {
+    // continue;
+    // }
+    // if (bobRect.overlaps(block.getBounds())) {
+    // bob.getVelocity().x = 0;
+    // world.getCollisionRects().add(block.getBounds());
+    // break;
+    // }
+    // }
+    // bobRect.x = bob.getPosition().x;
+    // startX = (int) bob.getBounds().x;
+    // endX = (int) (bob.getBounds().x + bob.getBounds().width);
+    // if (bob.getVelocity().y < 0) {
+    // startY = endY = (int) Math.floor(bob.getBounds().y
+    // + bob.getVelocity().y);
+    // }
+    // else {
+    // startY = endY = (int) Math.floor(bob.getBounds().y
+    // + bob.getBounds().height + bob.getVelocity().y);
+    // }
+    // populateCollidableBlocks(startX, startY, endX, endY);
+    // bobRect.y += bob.getVelocity().y;
+    // for (Block block : collidable) {
+    // if (block == null) {
+    // continue;
+    // }
+    // if (bobRect.overlaps(block.getBounds())) {
+    // if (bob.getVelocity().y < 0) {
+    // grounded = true;
+    // }
+    // bob.getVelocity().y = 0;
+    // world.getCollisionRects().add(block.getBounds());
+    // break;
+    // }
+    // }
+    // bobRect.y = bob.getPosition().y;
+    // bob.getPosition().add(bob.getVelocity());
+    // bob.getBounds().x = bob.getPosition().x;
+    // bob.getBounds().y = bob.getPosition().y;
+    // bob.getVelocity().scl(1 / delta);
+    // }
 
-//    private void populateCollidableBlocks(int startX, int startY, int endX,
-//            int endY) {
-//        collidable.clear();
-//        for (int x = startX; x <= endX; x++) {
-//            for (int y = startY; y <= endY; y++) {
-//                if ((x >= 0) && (x < world.getLevel().getWidth()) && (y >= 0)
-//                        && (y < world.getLevel().getHeight())) {
-//                    collidable.add(world.getLevel().get(x, y));
-//                }
-//            }
-//        }
-//    }
+    // private void populateCollidableBlocks(int startX, int startY, int endX,
+    // int endY) {
+    // collidable.clear();
+    // for (int x = startX; x <= endX; x++) {
+    // for (int y = startY; y <= endY; y++) {
+    // if ((x >= 0) && (x < world.getLevel().getWidth()) && (y >= 0)
+    // && (y < world.getLevel().getHeight())) {
+    // collidable.add(world.getLevel().get(x, y));
+    // }
+    // }
+    // }
+    // }
 
 }

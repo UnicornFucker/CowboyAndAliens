@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class Entity {
     protected Vector2 position = new Vector2();
 
-    static float SIZE; // größe
+    static float SIZE;
     private Rectangle bounds = new Rectangle();
 
     public Entity(int x, int y) {
