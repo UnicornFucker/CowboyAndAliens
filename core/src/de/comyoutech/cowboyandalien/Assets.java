@@ -17,12 +17,13 @@ public class Assets {
 
 	public Assets() {
 	}
+	
 
 	public static void load() {
-		jump_sound = Gdx.audio.newSound(Gdx.files.internal("jump.wav"));
-//		getCoin_sound = Gdx.audio.newSound(Gdx.files.internal("coin2.wav"));
-//		explosion = Gdx.audio.newSound(Gdx.files.internal("explosion.wav"));
-//		shot_sound = Gdx.audio.newSound(Gdx.files.internal("shito1.wav"));
+		jump_sound = Gdx.audio.newSound(Gdx.files.internal("sounds/jump.wav"));
+		getCoin_sound = Gdx.audio.newSound(Gdx.files.internal("sounds/coin2.wav"));
+		explosion = Gdx.audio.newSound(Gdx.files.internal("sounds/explosion.wav"));
+		shot_sound = Gdx.audio.newSound(Gdx.files.internal("sounds/shito1.wav"));
 
 	}
 }

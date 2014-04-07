@@ -127,6 +127,7 @@ public class WorldController {
         if (keys.get(Keys.JUMP)) {
             if (!player.getState().equals(State.JUMPING)) {
                 jumpingPressed = true;
+                Assets.jump_sound.play();
                 jumpPressedTime = System.currentTimeMillis();
                 player.setState(State.JUMPING);
                 player.getVelocity().y = MAX_JUMP_SPEED;
