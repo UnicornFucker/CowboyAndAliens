@@ -24,6 +24,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void show() {
     	Assets.jump_sound.play();
+    	
     }
 
     @Override
