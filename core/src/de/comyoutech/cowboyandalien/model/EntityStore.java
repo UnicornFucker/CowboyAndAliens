@@ -3,33 +3,32 @@ package de.comyoutech.cowboyandalien.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.comyoutech.cowboyandalien.entities.BlockEntity;
-import de.comyoutech.cowboyandalien.entities.PlayerEntity;
+import de.comyoutech.cowboyandalien.entities.Entity;
 
 public class EntityStore {
-    private List<BlockEntity> blockList;
-    private PlayerEntity player;
+
+    private List<Entity> entityList;
+
+    public List<Entity> getEntityList() {
+        return entityList;
+    }
+
+    public void setEntityList(List<Entity> entityList) {
+        this.entityList = entityList;
+    }
 
     public EntityStore() {
-        blockList = new ArrayList<BlockEntity>();
+        entityList = new ArrayList<Entity>();
         generateSomeContent();
     }
 
     private void generateSomeContent() {
-        setPlayer(EntityGenerator.generatePlayer());
-        EntityGenerator.generateLevelIn(blockList);
+        entityList.add(EntityGenerator.generatePlayer());
+        EntityGenerator.generateLevelIn(entityList);
     }
 
-    public PlayerEntity getPlayer() {
-        return player;
-    }
-
-    private void setPlayer(PlayerEntity player) {
-        this.player = player;
-    }
-
-    public List<BlockEntity> getBlockList() {
-        return blockList;
+    public void remove(Entity e) {
+        entityList.remove(e);
     }
 
 }

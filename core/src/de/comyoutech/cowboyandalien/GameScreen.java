@@ -25,8 +25,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-    	
-    	Assets.background_sound.loop();
+
+//        Assets.background_sound.loop();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         controller.update(delta);
         renderer.render();
-        
+
     }
 
     @Override

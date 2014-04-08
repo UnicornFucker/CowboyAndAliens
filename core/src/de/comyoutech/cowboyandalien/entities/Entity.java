@@ -10,7 +10,7 @@ public abstract class Entity {
     private Rectangle bounds = new Rectangle();
 
     public Entity(int x, int y) {
-        SIZE = 1F;
+        setSize();
         position.x = x;
         position.y = y;
         bounds.width = SIZE;

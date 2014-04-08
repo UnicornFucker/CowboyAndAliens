@@ -5,10 +5,12 @@ import java.util.Map;
 
 import sun.org.mozilla.javascript.internal.ast.Block;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity.State;
+import de.comyoutech.cowboyandalien.entities.ShotEntity;
 import de.comyoutech.cowboyandalien.model.EntityStore;
 
 public class WorldController {
@@ -30,6 +32,8 @@ public class WorldController {
     private long jumpPressedTime;
     private boolean jumpingPressed;
 
+    private EntityStore store;
+
     private Array<Block> collidable = new Array<Block>();
 
     static Map<Keys, Boolean> keys = new HashMap<WorldController.Keys, Boolean>();
@@ -42,7 +46,8 @@ public class WorldController {
     };
 
     public WorldController(EntityStore store) {
-        player = store.getPlayer();
+        player = (PlayerEntity) store.getEntityList().get(0);
+        this.store = store;
     }
 
     public void leftPressed() {
@@ -58,7 +63,7 @@ public class WorldController {
     }
 
     public void firePressed() {
-        keys.get(keys.put(Keys.FIRE, false));
+        keys.get(keys.put(Keys.FIRE, true));
     }
 
     public void leftReleased() {
@@ -122,8 +127,6 @@ public class WorldController {
         }
     }
 
-//Test
-    /** Change Bob's state and parameters based on input controls **/
     private boolean processInput() {
         if (keys.get(Keys.JUMP)) {
             if (!player.getState().equals(State.JUMPING)) {
@@ -145,8 +148,16 @@ public class WorldController {
                 }
             }
         }
+        if (keys.get(Keys.FIRE)) {
+            Vector2 positionPlayer = player.getPosition();
+
+            ShotEntity e = new ShotEntity((int) positionPlayer.x,
+                    (int) positionPlayer.y);
+            store.getEntityList().add(e);
+
+            fireReleased();
+        }
         if (keys.get(Keys.LEFT)) {
-            // left is pressed
             player.setFacingLeft(true);
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.WALKING);
@@ -154,7 +165,6 @@ public class WorldController {
             player.getAcceleration().x = -ACCELERATION;
         }
         else if (keys.get(Keys.RIGHT)) {
-            // left is pressed
             player.setFacingLeft(false);
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.WALKING);
@@ -166,11 +176,9 @@ public class WorldController {
                 player.setState(State.IDLE);
             }
             player.getAcceleration().x = 0;
-
         }
         return false;
     }
-
     // private void checkCollisionWithBlocks(float delta) {
     // bob.getVelocity().scl(delta);
     // Rectangle bobRect = rectPool.obtain();

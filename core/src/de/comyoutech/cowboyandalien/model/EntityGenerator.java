@@ -3,11 +3,12 @@ package de.comyoutech.cowboyandalien.model;
 import java.util.List;
 
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
+import de.comyoutech.cowboyandalien.entities.Entity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 
 public class EntityGenerator {
 
-    public static void generateLevelIn(List<BlockEntity> blockList) {
+    public static void generateLevelIn(List<Entity> blockList) {
         for (int i = 0; i < 10; i++) {
             blockList.add(new BlockEntity(i, 0));
             blockList.add(new BlockEntity(i, 6));
