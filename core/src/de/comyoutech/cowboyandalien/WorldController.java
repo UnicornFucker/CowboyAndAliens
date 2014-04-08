@@ -151,10 +151,11 @@ public class WorldController {
         if (keys.get(Keys.FIRE)) {
             Vector2 positionPlayer = player.getPosition();
 
-            ShotEntity e = new ShotEntity((int) positionPlayer.x,
-                    (int) positionPlayer.y);
+            ShotEntity e = new ShotEntity(
+                    (int) (positionPlayer.x + player.getBounds().width),
+                    (int) (positionPlayer.y + ((player.getBounds().height / 2) + 0)));
             store.getEntityList().add(e);
-
+//            TODO SchussSound
             fireReleased();
         }
         if (keys.get(Keys.LEFT)) {

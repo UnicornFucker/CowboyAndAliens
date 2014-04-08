@@ -10,7 +10,7 @@ public class ShotEntity extends Entity {
 
     @Override
     public Vector2 getPosition() {
-        super.getPosition().x += 0.1;
+        super.getPosition().x += 0.2;
         return super.getPosition();
     }
 
