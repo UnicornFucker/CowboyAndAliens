@@ -122,6 +122,7 @@ public class WorldController {
         }
     }
 
+//Test
     /** Change Bob's state and parameters based on input controls **/
     private boolean processInput() {
         if (keys.get(Keys.JUMP)) {
@@ -131,11 +132,13 @@ public class WorldController {
                 jumpPressedTime = System.currentTimeMillis();
                 player.setState(State.JUMPING);
                 player.getVelocity().y = MAX_JUMP_SPEED;
-            } else {
+            }
+            else {
                 if (jumpingPressed
                         && ((System.currentTimeMillis() - jumpPressedTime) >= LONG_JUMP_PRESS)) {
                     jumpingPressed = false;
-                } else {
+                }
+                else {
                     if (jumpingPressed) {
                         player.getVelocity().y = MAX_JUMP_SPEED;
                     }
@@ -149,14 +152,16 @@ public class WorldController {
                 player.setState(State.WALKING);
             }
             player.getAcceleration().x = -ACCELERATION;
-        } else if (keys.get(Keys.RIGHT)) {
+        }
+        else if (keys.get(Keys.RIGHT)) {
             // left is pressed
             player.setFacingLeft(false);
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.WALKING);
             }
             player.getAcceleration().x = ACCELERATION;
-        } else {
+        }
+        else {
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.IDLE);
             }
