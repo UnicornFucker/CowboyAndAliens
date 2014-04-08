@@ -3,10 +3,7 @@ package de.comyoutech.cowboyandalien;
 import java.util.HashMap;
 import java.util.Map;
 
-import sun.org.mozilla.javascript.internal.ast.Block;
-
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity.State;
@@ -28,13 +25,11 @@ public class WorldController {
 
     private static final float WIDTH = 100f;
 
-    private PlayerEntity player;
+    private final PlayerEntity player;
     private long jumpPressedTime;
     private boolean jumpingPressed;
 
-    private EntityStore store;
-
-    private Array<Block> collidable = new Array<Block>();
+    private final EntityStore store;
 
     static Map<Keys, Boolean> keys = new HashMap<WorldController.Keys, Boolean>();
 
@@ -135,13 +130,11 @@ public class WorldController {
                 jumpPressedTime = System.currentTimeMillis();
                 player.setState(State.JUMPING);
                 player.getVelocity().y = MAX_JUMP_SPEED;
-            }
-            else {
+            } else {
                 if (jumpingPressed
                         && ((System.currentTimeMillis() - jumpPressedTime) >= LONG_JUMP_PRESS)) {
                     jumpingPressed = false;
-                }
-                else {
+                } else {
                     if (jumpingPressed) {
                         player.getVelocity().y = MAX_JUMP_SPEED;
                     }
@@ -155,7 +148,7 @@ public class WorldController {
                     (int) (positionPlayer.x + player.getBounds().width),
                     (int) (positionPlayer.y + ((player.getBounds().height / 2) + 0)));
             store.getEntityList().add(e);
-//            TODO SchussSound
+            // TODO SchussSound
             fireReleased();
         }
         if (keys.get(Keys.LEFT)) {
@@ -164,15 +157,13 @@ public class WorldController {
                 player.setState(State.WALKING);
             }
             player.getAcceleration().x = -ACCELERATION;
-        }
-        else if (keys.get(Keys.RIGHT)) {
+        } else if (keys.get(Keys.RIGHT)) {
             player.setFacingLeft(false);
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.WALKING);
             }
             player.getAcceleration().x = ACCELERATION;
-        }
-        else {
+        } else {
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.IDLE);
             }
