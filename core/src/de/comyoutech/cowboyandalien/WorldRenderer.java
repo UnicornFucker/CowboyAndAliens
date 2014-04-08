@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
@@ -14,6 +15,8 @@ public class WorldRenderer {
 
     private static final float CAMERA_WIDTH = 10f;
     private static final float CAMERA_HEIGHT = 7f;
+    
+    private SpriteBatch batch;
 
     private EntityStore store;
     private OrthographicCamera cam;
@@ -54,7 +57,6 @@ public class WorldRenderer {
             debugRenderer.setColor(new Color(1, 0, 0, 1));
             debugRenderer.rect(x1, y1, rect.width, rect.height);
         }
-
         // render Bob
 
         Rectangle rect = player.getBounds();

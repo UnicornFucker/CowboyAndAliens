@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.comyoutech.cowboyandalien.model.EntityStore;
 
@@ -13,6 +14,7 @@ public class GameScreen implements Screen, InputProcessor {
     private WorldRenderer renderer;
     private EntityStore store;
     private WorldController controller;
+    private SpriteBatch batch;
 
     public GameScreen() {
         store = new EntityStore();
@@ -24,7 +26,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void show() {
     	
-    	
+    	Assets.background_sound.loop();
     }
 
     @Override
@@ -34,6 +36,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         controller.update(delta);
         renderer.render();
+        
     }
 
     @Override
