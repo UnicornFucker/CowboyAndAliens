@@ -21,8 +21,8 @@ public class WorldRenderer {
 
     private SpriteBatch batch;
 
-    private EntityStore store;
-    private OrthographicCamera cam;
+    private final EntityStore store;
+    private final OrthographicCamera cam;
 
     private int width;
     private int height;
@@ -38,7 +38,7 @@ public class WorldRenderer {
     }
 
     /** for debug rendering **/
-    private ShapeRenderer debugRenderer = new ShapeRenderer();
+    private final ShapeRenderer debugRenderer = new ShapeRenderer();
 
     public WorldRenderer(EntityStore store) {
         this.store = store;
@@ -66,8 +66,7 @@ public class WorldRenderer {
                 debugRenderer.rect(x1, y1, rect.width, rect.height);
 
                 moveCamera(player);
-            }
-            else if (e instanceof BlockEntity) {
+            } else if (e instanceof BlockEntity) {
 
                 BlockEntity block = (BlockEntity) e;
                 Rectangle rect = block.getBounds();
@@ -78,9 +77,7 @@ public class WorldRenderer {
                 debugRenderer.setColor(new Color(Color.YELLOW));
                 debugRenderer.rect(x1, y1, rect.width, rect.height);
 
-            }
-            else if (e instanceof ShotEntity) {
-                System.out.println("aaa");
+            } else if (e instanceof ShotEntity) {
                 ShotEntity shot = (ShotEntity) e;
                 Rectangle rect = shot.getBounds();
                 Vector2 position = shot.getPosition();
