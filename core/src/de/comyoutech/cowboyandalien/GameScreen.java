@@ -11,9 +11,9 @@ import de.comyoutech.cowboyandalien.model.EntityStore;
 
 public class GameScreen implements Screen, InputProcessor {
 
-    private WorldRenderer renderer;
-    private EntityStore store;
-    private WorldController controller;
+    private final WorldRenderer renderer;
+    private final EntityStore store;
+    private final WorldController controller;
     private SpriteBatch batch;
 
     public GameScreen() {
@@ -26,7 +26,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void show() {
 
-//        Assets.background_sound.loop();
+        Assets.background_sound.loop();
     }
 
     @Override
@@ -41,12 +41,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int x, int y, int pointer, int button) {
-//        if ((x < (width / 2)) && (y > (height / 2))) {
-//            controller.leftReleased();
-//        }
-//        if ((x > (width / 2)) && (y > (height / 2))) {
-//            controller.rightReleased();
-//        }
+        // if ((x < (width / 2)) && (y > (height / 2))) {
+        // controller.leftReleased();
+        // }
+        // if ((x > (width / 2)) && (y > (height / 2))) {
+        // controller.rightReleased();
+        // }
         return true;
     }
 
@@ -86,12 +86,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-//        if ((x < (width / 2)) && (y > (height / 2))) {
-//            controller.leftPressed();
-//        }
-//        if ((x > (width / 2)) && (y > (height / 2))) {
-//            controller.rightPressed();
-//        }
+        // if ((x < (width / 2)) && (y > (height / 2))) {
+        // controller.leftPressed();
+        // }
+        // if ((x > (width / 2)) && (y > (height / 2))) {
+        // controller.rightPressed();
+        // }
         return true;
     }
 

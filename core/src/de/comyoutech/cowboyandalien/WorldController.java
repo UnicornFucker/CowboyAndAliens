@@ -148,7 +148,7 @@ public class WorldController {
                     (int) (positionPlayer.x + player.getBounds().width),
                     (int) (positionPlayer.y + ((player.getBounds().height / 2) + 0)));
             store.getEntityList().add(e);
-            // TODO SchussSound
+            Assets.shot_sound.play();
             fireReleased();
         }
         if (keys.get(Keys.LEFT)) {

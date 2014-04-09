@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
+import de.comyoutech.cowboyandalien.entities.GegnerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 
 public class EntityGenerator {
@@ -29,6 +30,10 @@ public class EntityGenerator {
 
     public static PlayerEntity generatePlayer() {
         return new PlayerEntity(7, 5);
+    }
+
+    public static GegnerEntity generateGegner() {
+        return new GegnerEntity(9, 1);
     }
 
 }

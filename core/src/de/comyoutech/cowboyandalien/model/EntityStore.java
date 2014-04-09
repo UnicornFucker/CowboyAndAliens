@@ -25,6 +25,8 @@ public class EntityStore {
     private void generateSomeContent() {
         entityList.add(EntityGenerator.generatePlayer());
         EntityGenerator.generateLevelIn(entityList);
+        entityList.add(EntityGenerator.generateGegner());
+        EntityGenerator.generateLevelIn(entityList);
     }
 
     public void remove(Entity e) {

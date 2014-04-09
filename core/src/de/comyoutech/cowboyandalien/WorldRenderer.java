@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
+import de.comyoutech.cowboyandalien.entities.GegnerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 import de.comyoutech.cowboyandalien.entities.ShotEntity;
 import de.comyoutech.cowboyandalien.model.EntityStore;
@@ -86,6 +87,16 @@ public class WorldRenderer {
                 float y1 = position.y + rect.y;
 
                 debugRenderer.setColor(Color.GREEN);
+                debugRenderer.rect(x1, y1, rect.width, rect.height);
+            } else if (e instanceof GegnerEntity) {
+                GegnerEntity gegner = (GegnerEntity) e;
+                Rectangle rect = gegner.getBounds();
+                Vector2 position = gegner.getPosition();
+
+                float x1 = position.x + rect.x;
+                float y1 = position.y + rect.y;
+
+                debugRenderer.setColor(Color.PINK);
                 debugRenderer.rect(x1, y1, rect.width, rect.height);
             }
         }
