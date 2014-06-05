@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-import com.sun.tools.internal.ws.processor.model.Block;
 
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity.State;
@@ -32,8 +30,6 @@ public class WorldController {
     private boolean jumpingPressed;
 
     private EntityStore store;
-
-    private Array<Block> collidable = new Array<Block>();
 
     static Map<Keys, Boolean> keys = new HashMap<WorldController.Keys, Boolean>();
 
@@ -134,11 +130,13 @@ public class WorldController {
                 jumpPressedTime = System.currentTimeMillis();
                 player.setState(State.JUMPING);
                 player.getVelocity().y = MAX_JUMP_SPEED;
-            } else {
+            }
+            else {
                 if (jumpingPressed
                         && ((System.currentTimeMillis() - jumpPressedTime) >= LONG_JUMP_PRESS)) {
                     jumpingPressed = false;
-                } else {
+                }
+                else {
                     if (jumpingPressed) {
                         player.getVelocity().y = MAX_JUMP_SPEED;
                     }
@@ -161,13 +159,15 @@ public class WorldController {
                 player.setState(State.WALKING);
             }
             player.getAcceleration().x = -ACCELERATION;
-        } else if (keys.get(Keys.RIGHT)) {
+        }
+        else if (keys.get(Keys.RIGHT)) {
             player.setFacingLeft(false);
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.WALKING);
             }
             player.getAcceleration().x = ACCELERATION;
-        } else {
+        }
+        else {
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.IDLE);
             }
