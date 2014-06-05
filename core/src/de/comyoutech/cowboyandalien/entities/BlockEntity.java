@@ -1,8 +1,9 @@
 package de.comyoutech.cowboyandalien.entities;
 
+
 public class BlockEntity extends Entity {
 
-    public BlockEntity(int x, int y) {
+    public BlockEntity(float x, float y) {
         super(x, y);
     }
 

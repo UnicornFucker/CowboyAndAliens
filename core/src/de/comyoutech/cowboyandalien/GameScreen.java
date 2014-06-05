@@ -1,32 +1,28 @@
 package de.comyoutech.cowboyandalien;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.comyoutech.cowboyandalien.model.EntityStore;
 
 public class GameScreen implements Screen, InputProcessor {
 
     private WorldRenderer renderer;
-    private EntityStore store;
     private WorldController controller;
-    private SpriteBatch batch;
 
-    public GameScreen() {
-        store = new EntityStore();
-        controller = new WorldController(store);
-        renderer = new WorldRenderer(store);
-        Gdx.input.setInputProcessor(this);
-    }
+    private int width, height;
 
     @Override
     public void show() {
-
-//        Assets.background_sound.loop();
+        Assets.load();
+        EntityStore.setUp();
+        renderer = new WorldRenderer(false);
+        controller = new WorldController();
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -36,18 +32,6 @@ public class GameScreen implements Screen, InputProcessor {
 
         controller.update(delta);
         renderer.render();
-
-    }
-
-    @Override
-    public boolean touchUp(int x, int y, int pointer, int button) {
-//        if ((x < (width / 2)) && (y > (height / 2))) {
-//            controller.leftReleased();
-//        }
-//        if ((x > (width / 2)) && (y > (height / 2))) {
-//            controller.rightReleased();
-//        }
-        return true;
     }
 
     @Override
@@ -81,23 +65,48 @@ public class GameScreen implements Screen, InputProcessor {
         if (keycode == Keys.X) {
             controller.fireReleased();
         }
+        if (keycode == Keys.D) {
+            renderer.setDebug(!renderer.isDebug());
+        }
+        if (keycode == Keys.ESCAPE) {
+            System.exit(0);
+        }
         return true;
     }
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-//        if ((x < (width / 2)) && (y > (height / 2))) {
-//            controller.leftPressed();
-//        }
-//        if ((x > (width / 2)) && (y > (height / 2))) {
-//            controller.rightPressed();
-//        }
+        if (!Gdx.app.getType().equals(ApplicationType.Android)) {
+            return false;
+        }
+        if ((x < (width / 2)) && (y > (height / 2))) {
+            controller.leftPressed();
+        }
+        if ((x > (width / 2)) && (y > (height / 2))) {
+            controller.rightPressed();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int x, int y, int pointer, int button) {
+        if (!Gdx.app.getType().equals(ApplicationType.Android)) {
+            return false;
+        }
+        if ((x < (width / 2)) && (y > (height / 2))) {
+            controller.leftReleased();
+        }
+        if ((x > (width / 2)) && (y > (height / 2))) {
+            controller.rightReleased();
+        }
         return true;
     }
 
     @Override
     public void resize(int width, int height) {
         renderer.setSize(width, height);
+        this.width = width;
+        this.height = height;
     }
 
     @Override
