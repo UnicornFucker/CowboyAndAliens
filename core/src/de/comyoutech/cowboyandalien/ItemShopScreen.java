@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -33,19 +34,23 @@ public class ItemShopScreen implements ApplicationListener {
     BitmapFont font;
     Skin skin;
     Button buyItem;
+    Button test;
+
 
     @Override
     public void create() {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-
+        batch = new SpriteBatch();
         // FileHandle exoFile = Gdx.files.local("goHome.fnt");
 
         font = new BitmapFont(); // no parameters - thus default 15-pt Arial
         font.setColor(0.0f, 0.0f, 1.0f, 1.0f); // blue font
         font.setScale(1); // font scaled
-
+        
+        
+       
     }
 
     @Override
@@ -53,6 +58,8 @@ public class ItemShopScreen implements ApplicationListener {
         // TODO Auto-generated method stub
 
     }
+    
+    
 
     @Override
     public void render() {
@@ -67,10 +74,10 @@ public class ItemShopScreen implements ApplicationListener {
         buyItem = new Button();
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-
+        
+       
         int x = 0, y = 0;
 
-        // 7Drawable drawable = skin.getDrawable("enemy");
 
         for (AbstractItem item : itemList) {
 
@@ -84,6 +91,8 @@ public class ItemShopScreen implements ApplicationListener {
             x += 120;
             nextItemPicture.setPosition(x, 460); // center the tree
             stage.addActor(nextItemPicture);
+            
+          
 
             stage.getSpriteBatch().begin();
             font.draw(stage.getSpriteBatch(), nextItemName, x, 440);
@@ -93,25 +102,11 @@ public class ItemShopScreen implements ApplicationListener {
             font.draw(stage.getSpriteBatch(), wurst, x, 370);
 
             final TextButton buttonBuy = new TextButton("Kaufen", skin);
+            batch.begin();
+            buttonBuy.draw(batch, 3.5F);
             buttonBuy.setPosition(x, 200);
-
-            buttonBuy.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    buttonBuy.addAction(Actions.fadeOut(4.7f));
-
-                }
-            });
-
-            Table table = new Table(skin);
-            table.setFillParent(true);
-
-            TextField nameText = new TextField(nextItemName, skin);
-
-            table.add("Name : ").width(100);
-            table.add(nameText).width(100).padRight(500 + x + 100);
-
-            stage.addActor(table);
+            batch.end();
+           
 
             Gdx.input.setInputProcessor(stage);
             stage.getSpriteBatch().end();
