@@ -19,9 +19,18 @@ public class Assets {
     private static final float RUNNING_FRAME_DURATION = 0.06f;
 
     public static Texture explosion_texture;
-    public static Texture texturePlayer;
-    public static Sprite explosion_sprite;
     public static TextureRegion playerLeft;
+
+    /* Background Textures */
+
+    public static Texture textureBackground_level1;
+    public static Sprite background_sprite_level1;
+    public static Texture textureBackground_level1_2;
+    public static Sprite background_sprite_level1_2;
+    public static Texture textureBackground_level2;
+    public static Sprite background_sprite_level2;
+    public static Texture textureBackground_level3;
+    public static Sprite background_sprite_level3;
 
     public static TextureRegion idleLeft;
     public static TextureRegion idleRight;
@@ -52,9 +61,10 @@ public class Assets {
     }
 
     public static void load() {
-//        loadSounds();
+        // loadSounds();
 
         loadPlayerTextures();
+        loadBackgrounds();
 
     }
 
@@ -62,9 +72,9 @@ public class Assets {
         TextureAtlas atlas = new TextureAtlas(
                 Gdx.files.internal("images/textures/textures.pack"));
         idleLeft = atlas.findRegion("bob-01");
+        blockTexture = atlas.findRegion("block");
         idleRight = new TextureRegion(idleLeft);
         idleRight.flip(true, false);
-        blockTexture = atlas.findRegion("block");
         TextureRegion[] walkLeftFrames = new TextureRegion[5];
         for (int i = 0; i < 5; i++) {
             walkLeftFrames[i] = atlas.findRegion("bob-0" + (i + 2));
@@ -95,6 +105,34 @@ public class Assets {
         background_sound = getSound("sounds/background_music.mp3");
     }
 
+    private static void loadBackgrounds() {
+        textureBackground_level1 = new Texture(
+                Gdx.files.internal("backgrounds/background.png"));
+
+        background_sprite_level1 = new Sprite(textureBackground_level1);
+        textureBackground_level1_2 = new Texture(
+                Gdx.files.internal("backgrounds/background.png"));
+
+        background_sprite_level1_2 = new Sprite(textureBackground_level1);
+        background_sprite_level1.flip(true, false);
+        background_sprite_level1_2.flip(true, false);
+
+        /*
+         * 
+         * 
+         * 
+         * textureBackground_level1.setFilter(TextureFilter.Linear,
+         * TextureFilter.Linear);
+         * 
+         * 
+         * textureBackground_level2 = new TextureRegion(new Texture(
+         * Gdx.files.internal("enemy/Monster.png"))); textureBackground_level3 =
+         * new TextureRegion(new Texture(
+         * Gdx.files.internal("enemy/Monster.png")));
+         */
+
+    }
+
     public static TextureRegion getPlayerTextureRight() {
 
         explosion_texture = null;
@@ -105,4 +143,5 @@ public class Assets {
     private static Sound getSound(String path) {
         return Gdx.audio.newSound(Gdx.files.internal(path));
     }
+
 }

@@ -25,7 +25,7 @@ public class EntityGenerator {
         // blockList.add(new BlockEntity(6, 4));
         // blockList.add(new BlockEntity(6, 5));
         // }
-        generateTestLvl1(blockList);
+        generateTestLvl2(blockList);
     }
 
     private static void generateTestLvl2(List<Entity> blockList) {

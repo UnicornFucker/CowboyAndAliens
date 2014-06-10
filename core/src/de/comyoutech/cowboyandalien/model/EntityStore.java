@@ -13,8 +13,10 @@ import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 public class EntityStore {
 
     public static PlayerEntity player;
+
     public static float levelWidth = 10F;
     public static float levelHeight = 7F;
+
     public static List<Entity> entityList;
     public static Array<Rectangle> collisionRects = new Array<Rectangle>();
 

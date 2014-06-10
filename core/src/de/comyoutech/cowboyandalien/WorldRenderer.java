@@ -24,9 +24,9 @@ public class WorldRenderer {
 
     private static final float RUNNING_FRAME_DURATION = 0.06f;
 
-    private ShapeRenderer debugRenderer = new ShapeRenderer();
+    private final ShapeRenderer debugRenderer = new ShapeRenderer();
 
-    private OrthographicCamera cam;
+    private final OrthographicCamera cam;
 
     private TextureRegion idleLeft;
     private TextureRegion idleRight;
@@ -40,15 +40,16 @@ public class WorldRenderer {
 
     private TextureRegion textureEnemy;
 
-    private List<ShotEntity> shots;
+    private final List<ShotEntity> shots;
 
     private final float CAMERA_WIDTH;
     private final float CAMERA_HEIGHT;
+    private final int level = 1;
 
     private Animation walkLeftAnimation;
     private Animation walkRightAnimation;
 
-    private SpriteBatch spriteBatch;
+    private final SpriteBatch spriteBatch;
     private boolean debug = false;
     private int width;
     private int height;
@@ -101,6 +102,33 @@ public class WorldRenderer {
         debugRenderer.setProjectionMatrix(cam.combined);
         debugRenderer.begin(ShapeType.Line);
 
+        /* Background */
+
+        switch (level) {
+        case 1:
+
+            // spriteBatch.draw(Assets.background_sprite_level1, 0, 0,
+            // CAMERA_WIDTH, CAMERA_HEIGHT);
+
+            float x = 0;
+            float y = 0;
+
+            for (int i = 0; i < 5; i++) {
+                spriteBatch.draw(Assets.background_sprite_level1_2, x, y,
+                        CAMERA_WIDTH, CAMERA_HEIGHT);
+
+                x += CAMERA_WIDTH;
+
+            }
+
+        case 2:
+
+        case 3:
+
+        default:
+            break;
+        }
+
         PlayerEntity player = EntityStore.player;
 
         frame = player.isFacingLeft() ? idleLeft : idleRight;
@@ -108,12 +136,10 @@ public class WorldRenderer {
             frame = player.isFacingLeft() ? walkLeftAnimation.getKeyFrame(
                     player.getStateTime(), true) : walkRightAnimation
                     .getKeyFrame(player.getStateTime(), true);
-        }
-        else if (player.getState().equals(State.JUMPING)) {
+        } else if (player.getState().equals(State.JUMPING)) {
             if (player.getVelocity().y > 0) {
                 frame = player.isFacingLeft() ? jumpLeft : jumpRight;
-            }
-            else {
+            } else {
                 frame = player.isFacingLeft() ? fallLeft : fallRight;
             }
         }
@@ -139,8 +165,7 @@ public class WorldRenderer {
                 h = rect.height;
                 spriteBatch.draw(blockTexture, x, y, w, h);
 
-            }
-            else if (e instanceof ShotEntity) {
+            } else if (e instanceof ShotEntity) {
                 ShotEntity shot = (ShotEntity) e;
                 float x, y, w, h;
                 Rectangle rect = shot.getBounds();
@@ -158,8 +183,7 @@ public class WorldRenderer {
                 h = rect.height;
                 spriteBatch.draw(textureShot, x, y, w, h);
 
-            }
-            else if (e instanceof EnemyEntity) {
+            } else if (e instanceof EnemyEntity) {
                 EnemyEntity enemy = (EnemyEntity) e;
                 float x, y, w, h;
                 Rectangle rect = enemy.getBounds();
