@@ -1,6 +1,8 @@
 package de.comyoutech.cowboyandalien.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
@@ -38,14 +40,30 @@ public class EntityGenerator {
     }
 
     private static void generateTestLvl1(List<Entity> blockList) {
-        blockList.add(new BlockEntity(7, 0));
-        blockList.add(new BlockEntity(10, 0));
-        blockList.add(new BlockEntity(11, 0));
+
+        List<Integer> holes = new ArrayList<Integer>();
+        Random random = new Random();
+
+        int width = 100;
+
+        for (int i = 0; i < 30; i++) {
+            int x = random.nextInt(width);
+            int y = random.nextInt(3);
+            for (int o = x; o < y; o++) {
+                holes.add(o);
+            }
+            holes.add(x);
+        }
+        for (int i = 0; i < width; i++) {
+            if (!holes.contains(i)) {
+                blockList.add(new BlockEntity(i, 0));
+            } else {
+                // TODO HoleEntity
+            }
+        }
+
         blockList.add(new BlockEntity(11, 1));
-        blockList.add(new BlockEntity(14, 0));
-        blockList.add(new BlockEntity(15, 0));
         blockList.add(new BlockEntity(15, 1));
-        blockList.add(new BlockEntity(16, 0));
         blockList.add(new BlockEntity(16, 1));
         blockList.add(new BlockEntity(16, 2));
         blockList.add(new BlockEntity(17, 2));

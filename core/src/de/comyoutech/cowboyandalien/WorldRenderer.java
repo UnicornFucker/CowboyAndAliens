@@ -30,7 +30,8 @@ public class WorldRenderer {
 
     private TextureRegion idleLeft;
     private TextureRegion idleRight;
-    private TextureRegion blockTexture;
+    private TextureRegion blockTextureGround;
+    private TextureRegion blockTexturePlatform;
     private TextureRegion frame;
     private TextureRegion jumpLeft;
     private TextureRegion fallLeft;
@@ -79,7 +80,8 @@ public class WorldRenderer {
     private void initializeTextures() {
         idleLeft = Assets.idleLeft;
         idleRight = Assets.idleRight;
-        blockTexture = Assets.blockTexture;
+        blockTextureGround = Assets.blockTextureGround;
+        blockTexturePlatform = Assets.blockTexturePlatform;
         walkLeftAnimation = Assets.leftAnimation;
         walkRightAnimation = Assets.rightAnimation;
         jumpLeft = Assets.jumpLeft;
@@ -108,12 +110,10 @@ public class WorldRenderer {
             frame = player.isFacingLeft() ? walkLeftAnimation.getKeyFrame(
                     player.getStateTime(), true) : walkRightAnimation
                     .getKeyFrame(player.getStateTime(), true);
-        }
-        else if (player.getState().equals(State.JUMPING)) {
+        } else if (player.getState().equals(State.JUMPING)) {
             if (player.getVelocity().y > 0) {
                 frame = player.isFacingLeft() ? jumpLeft : jumpRight;
-            }
-            else {
+            } else {
                 frame = player.isFacingLeft() ? fallLeft : fallRight;
             }
         }
@@ -137,10 +137,14 @@ public class WorldRenderer {
                 y = rect.y;
                 w = rect.width;
                 h = rect.height;
-                spriteBatch.draw(blockTexture, x, y, w, h);
 
-            }
-            else if (e instanceof ShotEntity) {
+                if (y > 0) {
+                    spriteBatch.draw(blockTexturePlatform, x, y, w, h);
+                } else {
+                    spriteBatch.draw(blockTextureGround, x, y, w, h);
+                }
+
+            } else if (e instanceof ShotEntity) {
                 ShotEntity shot = (ShotEntity) e;
                 float x, y, w, h;
                 Rectangle rect = shot.getBounds();
@@ -158,8 +162,7 @@ public class WorldRenderer {
                 h = rect.height;
                 spriteBatch.draw(textureShot, x, y, w, h);
 
-            }
-            else if (e instanceof EnemyEntity) {
+            } else if (e instanceof EnemyEntity) {
                 EnemyEntity enemy = (EnemyEntity) e;
                 float x, y, w, h;
                 Rectangle rect = enemy.getBounds();

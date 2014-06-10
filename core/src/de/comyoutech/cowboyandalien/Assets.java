@@ -25,7 +25,9 @@ public class Assets {
 
     public static TextureRegion idleLeft;
     public static TextureRegion idleRight;
-    public static TextureRegion blockTexture;
+    public static TextureRegion blockTextureGround;
+    public static TextureRegion blockTexturePlatform;
+
     public static Animation leftAnimation;
     public static Animation rightAnimation;
     public static TextureRegion jumpLeft;
@@ -52,7 +54,7 @@ public class Assets {
     }
 
     public static void load() {
-//        loadSounds();
+        // loadSounds();
 
         loadPlayerTextures();
 
@@ -64,7 +66,11 @@ public class Assets {
         idleLeft = atlas.findRegion("bob-01");
         idleRight = new TextureRegion(idleLeft);
         idleRight.flip(true, false);
-        blockTexture = atlas.findRegion("block");
+        blockTextureGround = new TextureRegion(new Texture(
+                Gdx.files.internal("images/block_neu3.png")));
+        blockTexturePlatform = new TextureRegion(new Texture(
+                Gdx.files.internal("images/block_neu2.png")));
+
         TextureRegion[] walkLeftFrames = new TextureRegion[5];
         for (int i = 0; i < 5; i++) {
             walkLeftFrames[i] = atlas.findRegion("bob-0" + (i + 2));
