@@ -38,6 +38,8 @@ public class WorldRenderer {
     private TextureRegion jumpRight;
     private TextureRegion fallRight;
     private TextureRegion textureShot;
+    private MyGdxGame game;
+    private DeadScreen deadScreen;
 
     private TextureRegion textureEnemy;
 
@@ -67,7 +69,7 @@ public class WorldRenderer {
         this.debug = debug;
     }
 
-    public WorldRenderer(boolean debug) {
+    public WorldRenderer(boolean debug, MyGdxGame game) {
         CAMERA_HEIGHT = EntityStore.levelHeight;
         CAMERA_WIDTH = EntityStore.levelWidth;
         spriteBatch = new SpriteBatch();
@@ -75,6 +77,8 @@ public class WorldRenderer {
         cam = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
         cam.position.set(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, 0);
         shots = new ArrayList<ShotEntity>();
+        this.game = game;
+
     }
 
     private void initializeTextures() {
@@ -102,84 +106,89 @@ public class WorldRenderer {
 
         debugRenderer.setProjectionMatrix(cam.combined);
         debugRenderer.begin(ShapeType.Line);
+        if (EntityStore.playerIsDead) {
+            game.setScreen(game.deadScreen);
+        } else {
 
-        PlayerEntity player = EntityStore.player;
+            PlayerEntity player = EntityStore.player;
 
-        frame = player.isFacingLeft() ? idleLeft : idleRight;
-        if (player.getState().equals(State.WALKING)) {
-            frame = player.isFacingLeft() ? walkLeftAnimation.getKeyFrame(
-                    player.getStateTime(), true) : walkRightAnimation
-                    .getKeyFrame(player.getStateTime(), true);
-        } else if (player.getState().equals(State.JUMPING)) {
-            if (player.getVelocity().y > 0) {
-                frame = player.isFacingLeft() ? jumpLeft : jumpRight;
-            } else {
-                frame = player.isFacingLeft() ? fallLeft : fallRight;
-            }
-        }
-        float xP, yP, wP, hP;
-        Rectangle rectP = player.getBounds();
-
-        xP = rectP.x;
-        yP = rectP.y;
-        wP = rectP.width;
-        hP = rectP.height;
-
-        spriteBatch.draw(frame, xP, yP, wP, hP);
-
-        moveCamera(player.getPosition().x, CAMERA_HEIGHT / 2);
-        for (Entity e : EntityStore.entityList) {
-            if (e instanceof BlockEntity) {
-                BlockEntity block = (BlockEntity) e;
-                float x, y, w, h;
-                Rectangle rect = block.getBounds();
-                x = rect.x;
-                y = rect.y;
-                w = rect.width;
-                h = rect.height;
-
-                if (y > 0) {
-                    spriteBatch.draw(blockTexturePlatform, x, y, w, h);
+            frame = player.isFacingLeft() ? idleLeft : idleRight;
+            if (player.getState().equals(State.WALKING)) {
+                frame = player.isFacingLeft() ? walkLeftAnimation.getKeyFrame(
+                        player.getStateTime(), true) : walkRightAnimation
+                        .getKeyFrame(player.getStateTime(), true);
+            } else if (player.getState().equals(State.JUMPING)) {
+                if (player.getVelocity().y > 0) {
+                    frame = player.isFacingLeft() ? jumpLeft : jumpRight;
                 } else {
-                    spriteBatch.draw(blockTextureGround, x, y, w, h);
+                    frame = player.isFacingLeft() ? fallLeft : fallRight;
                 }
-
-            } else if (e instanceof ShotEntity) {
-                ShotEntity shot = (ShotEntity) e;
-                float x, y, w, h;
-                Rectangle rect = shot.getBounds();
-                x = rect.x;
-                if (x > (cam.position.x + (CAMERA_WIDTH / 2))) {
-                    shots.add(shot);
-                    continue;
-                }
-                if (x < (cam.position.x - (CAMERA_WIDTH / 2))) {
-                    shots.add(shot);
-                    continue;
-                }
-                y = rect.y;
-                w = rect.width;
-                h = rect.height;
-                spriteBatch.draw(textureShot, x, y, w, h);
-
-            } else if (e instanceof EnemyEntity) {
-                EnemyEntity enemy = (EnemyEntity) e;
-                float x, y, w, h;
-                Rectangle rect = enemy.getBounds();
-                x = rect.x;
-                y = rect.y;
-                w = rect.width;
-                h = rect.height;
-                spriteBatch.draw(textureEnemy, x, y, w, h);
             }
+            float xP, yP, wP, hP;
+            Rectangle rectP = player.getBounds();
+
+            xP = rectP.x;
+            yP = rectP.y;
+            wP = rectP.width;
+            hP = rectP.height;
+
+            spriteBatch.draw(frame, xP, yP, wP, hP);
+
+            moveCamera(player.getPosition().x, CAMERA_HEIGHT / 2);
+            for (Entity e : EntityStore.entityList) {
+                if (e instanceof BlockEntity) {
+                    BlockEntity block = (BlockEntity) e;
+                    float x, y, w, h;
+                    Rectangle rect = block.getBounds();
+                    x = rect.x;
+                    y = rect.y;
+                    w = rect.width;
+                    h = rect.height;
+
+                    if (y > 0) {
+                        spriteBatch.draw(blockTexturePlatform, x, y, w, h);
+                    } else {
+                        spriteBatch.draw(blockTextureGround, x, y, w, h);
+                    }
+
+                } else if (e instanceof ShotEntity) {
+                    ShotEntity shot = (ShotEntity) e;
+                    float x, y, w, h;
+                    Rectangle rect = shot.getBounds();
+                    x = rect.x;
+                    if (x > (cam.position.x + (CAMERA_WIDTH / 2))) {
+                        shots.add(shot);
+                        continue;
+                    }
+                    if (x < (cam.position.x - (CAMERA_WIDTH / 2))) {
+                        shots.add(shot);
+                        continue;
+                    }
+                    y = rect.y;
+                    w = rect.width;
+                    h = rect.height;
+                    spriteBatch.draw(textureShot, x, y, w, h);
+
+                } else if (e instanceof EnemyEntity) {
+                    EnemyEntity enemy = (EnemyEntity) e;
+                    float x, y, w, h;
+                    Rectangle rect = enemy.getBounds();
+                    x = rect.x;
+                    y = rect.y;
+                    w = rect.width;
+                    h = rect.height;
+                    spriteBatch.draw(textureEnemy, x, y, w, h);
+                }
+            }
+            EntityStore.entityList.removeAll(shots);
         }
-        EntityStore.entityList.removeAll(shots);
         debugRenderer.end();
 
         spriteBatch.end();
         if (debug) {
             drawDebug();
         }
+
     }
 
     private void drawDebug() {

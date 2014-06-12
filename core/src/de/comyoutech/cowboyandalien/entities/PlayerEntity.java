@@ -3,6 +3,8 @@ package de.comyoutech.cowboyandalien.entities;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 
+import de.comyoutech.cowboyandalien.GameScreen;
+
 public class PlayerEntity extends Entity {
     public enum State {
         IDLE, WALKING, JUMPING, DYING
@@ -17,6 +19,7 @@ public class PlayerEntity extends Entity {
     private Animation animation;
     State state = State.IDLE;
     boolean longJump = false;
+    private GameScreen GC;
 
     public PlayerEntity(float x, float y) {
         super(x, y);

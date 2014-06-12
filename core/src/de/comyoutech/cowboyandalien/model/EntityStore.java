@@ -17,11 +17,13 @@ public class EntityStore {
     public static float levelHeight = 7F;
     public static List<Entity> entityList;
     public static Array<Rectangle> collisionRects = new Array<Rectangle>();
+    public static boolean playerIsDead;
 
     public static void setUp() {
         entityList = new ArrayList<Entity>();
         player = EntityGenerator.generatePlayer();
         generateSomeContent();
+        playerIsDead = false;
     }
 
     private static void generateSomeContent() {

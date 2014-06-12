@@ -63,7 +63,7 @@ public class Assets {
         // loadSounds();
 
         loadPlayerTextures();
-        loadBackgrounds();
+        // loadBackgrounds();
 
     }
 

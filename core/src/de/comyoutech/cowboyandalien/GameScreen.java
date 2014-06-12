@@ -16,11 +16,17 @@ public class GameScreen implements Screen, InputProcessor {
 
     private int width, height;
 
+    private MyGdxGame game;
+
+    public GameScreen(MyGdxGame game) {
+        this.game = game;
+    }
+
     @Override
     public void show() {
         Assets.load();
         EntityStore.setUp();
-        renderer = new WorldRenderer(false);
+        renderer = new WorldRenderer(false, game);
         controller = new WorldController();
         Gdx.input.setInputProcessor(this);
     }

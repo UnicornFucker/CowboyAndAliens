@@ -92,13 +92,11 @@ public class WorldController {
                         }
                     }
                 }
-            }
-            else if (e instanceof EnemyEntity) {
+            } else if (e instanceof EnemyEntity) {
                 EnemyEntity enemy = (EnemyEntity) e;
                 if (enemy.facingLeft) {
                     enemy.getAcceleration().x = -enemy.getSpeed();
-                }
-                else {
+                } else {
                     enemy.getAcceleration().x = enemy.getSpeed();
                 }
                 enemy.getAcceleration().scl(delta);
@@ -152,6 +150,10 @@ public class WorldController {
             }
         }
 
+        if (player.getPosition().y == 0) {
+            EntityStore.playerIsDead = true;
+        }
+
     }
 
     /** Change Bob's state and parameters based on input controls **/
@@ -163,13 +165,11 @@ public class WorldController {
                 jumpPressedTime = System.currentTimeMillis();
                 player.getVelocity().y = MAX_JUMP_SPEED;
                 grounded = false;
-            }
-            else {
+            } else {
                 if (jumpingPressed
                         && ((System.currentTimeMillis() - jumpPressedTime) >= LONG_JUMP_PRESS)) {
                     jumpingPressed = false;
-                }
-                else {
+                } else {
                     if (jumpingPressed) {
                         player.getVelocity().y = MAX_JUMP_SPEED;
                     }
@@ -183,16 +183,14 @@ public class WorldController {
 
             }
             player.getAcceleration().x = -ACCELERATION;
-        }
-        else if (keys.get(Keys.RIGHT)) {
+        } else if (keys.get(Keys.RIGHT)) {
 
             player.setFacingLeft(false);
             if (!player.getState().equals(State.JUMPING)) {
 
             }
             player.getAcceleration().x = ACCELERATION;
-        }
-        else {
+        } else {
             player.getAcceleration().x = 0;
 
         }
@@ -204,8 +202,7 @@ public class WorldController {
                 if (player.isFacingLeft()) {
                     x = player.getPosition().x;
                     speed = -SHOTSPEED;
-                }
-                else {
+                } else {
                     x = player.getPosition().x + player.getBounds().width;
                     speed = SHOTSPEED;
                 }
@@ -235,8 +232,7 @@ public class WorldController {
         if (player.getVelocity().x < 0) {
             startX = endX = (int) Math.floor(player.getPosition().x
                     + player.getVelocity().x);
-        }
-        else {
+        } else {
             startX = endX = (int) Math.floor(player.getPosition().x
                     + player.getBounds().width + player.getVelocity().x);
         }
@@ -268,8 +264,7 @@ public class WorldController {
             if (startY < 0) {
                 startY = 0;
             }
-        }
-        else {
+        } else {
             startY = endY = (int) Math.floor(player.getPosition().y
                     + player.getBounds().height + player.getVelocity().y);
         }

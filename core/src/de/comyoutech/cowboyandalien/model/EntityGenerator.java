@@ -48,19 +48,26 @@ public class EntityGenerator {
 
         for (int i = 0; i < 30; i++) {
             int x = random.nextInt(width);
-            int y = random.nextInt(3);
+            int y = random.nextInt(2);
             for (int o = x; o < y; o++) {
                 holes.add(o);
             }
             holes.add(x);
         }
-        for (int i = 0; i < width; i++) {
+        for (int i = 5; i < width; i++) {
             if (!holes.contains(i)) {
                 blockList.add(new BlockEntity(i, 0));
             } else {
                 // TODO HoleEntity
             }
         }
+
+        blockList.add(new BlockEntity(0, 0));
+        blockList.add(new BlockEntity(1, 0));
+        blockList.add(new BlockEntity(2, 0));
+        blockList.add(new BlockEntity(3, 0));
+        blockList.add(new BlockEntity(4, 0));
+        blockList.add(new BlockEntity(5, 0));
 
         blockList.add(new BlockEntity(11, 1));
         blockList.add(new BlockEntity(15, 1));
@@ -76,6 +83,6 @@ public class EntityGenerator {
     }
 
     public static PlayerEntity generatePlayer() {
-        return new PlayerEntity(7, 4);
+        return new PlayerEntity(6, 3);
     }
 }
