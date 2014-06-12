@@ -105,15 +105,10 @@ public class WorldController {
                     newShots.add(enemy);
                 }
 
-                if (enemy.facingLeft) {
-                    enemy.getAcceleration().x = -enemy.getSpeed();
-                }
-                else {
-                    enemy.getAcceleration().x = enemy.getSpeed();
-                }
-//                enemy.getAcceleration().scl(delta);
-                enemy.getVelocity().add(enemy.getAcceleration());
-                enemy.getPosition().add(enemy.getVelocity());
+                System.out.println("hier1: " + enemy.facingLeft + " "
+                        + enemy.getAcceleration().x + " "
+                        + enemy.getPosition().x);
+
                 for (Entity en : EntityStore.entityList) {
                     if (en instanceof BlockEntity) {
                         if (en.getBounds().overlaps(enemy.getBounds())) {
@@ -121,6 +116,29 @@ public class WorldController {
                         }
                     }
                 }
+
+                System.out.println("hier2: " + enemy.facingLeft + " "
+                        + enemy.getAcceleration().x + " "
+                        + enemy.getPosition().x);
+
+                if (enemy.facingLeft) {
+                    enemy.getAcceleration().x = -enemy.getSpeed();
+                }
+                else {
+                    enemy.getAcceleration().x = enemy.getSpeed();
+                }
+                System.out.println("hier3: " + enemy.facingLeft + " "
+                        + enemy.getAcceleration().x + " "
+                        + enemy.getPosition().x);
+
+                enemy.getAcceleration().scl(delta);
+                enemy.getVelocity().add(enemy.getAcceleration());
+                enemy.getPosition().add(enemy.getVelocity());
+
+                System.out.println("hier4: " + enemy.facingLeft + " "
+                        + enemy.getAcceleration().x + " "
+                        + enemy.getPosition().x);
+
             }
         }
 

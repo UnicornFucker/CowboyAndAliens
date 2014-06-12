@@ -129,6 +129,43 @@ public class WorldRenderer {
             break;
         }
 
+        /* Background */
+
+        switch (level) {
+
+        case 1:
+            float x = 0;
+            float y = 0;
+
+            for (int i = 0; i < 5; i++) {
+                spriteBatch.draw(Assets.background_sprite_level1, x, y,
+                        CAMERA_WIDTH, CAMERA_HEIGHT);
+                x += CAMERA_WIDTH;
+            }
+            break;
+
+        case 2:
+            x = 0;
+            y = 0;
+            for (int i = 0; i < 5; i++) {
+                spriteBatch.draw(Assets.background_sprite_level2, x, y,
+                        CAMERA_WIDTH, CAMERA_HEIGHT);
+                x += CAMERA_WIDTH;
+            }
+            break;
+        case 3:
+            x = 0;
+            y = 0;
+            for (int i = 0; i < 5; i++) {
+                spriteBatch.draw(Assets.background_sprite_level1, x, y,
+                        CAMERA_WIDTH, CAMERA_HEIGHT);
+                x += CAMERA_WIDTH;
+            }
+            break;
+        default:
+            break;
+        }
+
         PlayerEntity player = EntityStore.player;
 
         frame = player.isFacingLeft() ? idleLeft : idleRight;

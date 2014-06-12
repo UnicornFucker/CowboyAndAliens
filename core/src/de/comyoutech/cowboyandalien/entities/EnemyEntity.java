@@ -4,13 +4,13 @@ import com.badlogic.gdx.math.Vector2;
 
 public class EnemyEntity extends Entity {
 
-    final float SPEED = 0.0001f;
+    final float SPEED = 0.001f;
     final float JUMP_VELOCITY = 2f;
 
     private Vector2 acceleration = new Vector2();
     private Vector2 velocity = new Vector2();
 
-    public boolean facingLeft = false;
+    public boolean facingLeft = true;
 
     private float timeSinceLastShot;
 
