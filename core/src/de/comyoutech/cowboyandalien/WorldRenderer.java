@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
+import de.comyoutech.cowboyandalien.entities.CoinEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
@@ -24,9 +26,9 @@ public class WorldRenderer {
 
     private static final float RUNNING_FRAME_DURATION = 0.06f;
 
-    private ShapeRenderer debugRenderer = new ShapeRenderer();
+    private final ShapeRenderer debugRenderer = new ShapeRenderer();
 
-    private OrthographicCamera cam;
+    private final OrthographicCamera cam;
 
     private TextureRegion idleLeft;
     private TextureRegion idleRight;
@@ -40,18 +42,21 @@ public class WorldRenderer {
     private TextureRegion textureShot;
     private MyGdxGame game;
     private DeadScreen deadScreen;
-
     private TextureRegion textureEnemy;
-
-    private List<ShotEntity> shots;
+    private TextureRegion background1;
+    private TextureRegion background2;
+    private TextureRegion coins;
+    private final List<ShotEntity> shots;
 
     private final float CAMERA_WIDTH;
     private final float CAMERA_HEIGHT;
-
+    private final int level = 2;
+    private WorldController controller;
     private Animation walkLeftAnimation;
     private Animation walkRightAnimation;
 
-    private SpriteBatch spriteBatch;
+    private final SpriteBatch spriteBatch;
+    private final BitmapFont font;
     private boolean debug = false;
     private int width;
     private int height;
@@ -73,6 +78,7 @@ public class WorldRenderer {
         CAMERA_HEIGHT = EntityStore.levelHeight;
         CAMERA_WIDTH = EntityStore.levelWidth;
         spriteBatch = new SpriteBatch();
+        font = new BitmapFont();
         initializeTextures();
         cam = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
         cam.position.set(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, 0);
@@ -95,8 +101,10 @@ public class WorldRenderer {
         fallRight = new TextureRegion(fallLeft);
         fallRight.flip(true, false);
         textureShot = Assets.textureShot;
-
+        background1 = Assets.background_sprite_level1;
+        background2 = Assets.background_sprite_level2;
         textureEnemy = Assets.textureEnemy;
+        coins = Assets.spriteCoin;
     }
 
     public void render() {
@@ -109,6 +117,43 @@ public class WorldRenderer {
         if (EntityStore.playerIsDead) {
             game.setScreen(game.deadScreen);
         } else {
+
+            /* Background */
+
+            switch (level) {
+
+            case 1:
+                float x = 0;
+                float y = 0;
+
+                for (int i = 0; i < 5; i++) {
+                    spriteBatch.draw(background1, x, y, CAMERA_WIDTH,
+                            CAMERA_HEIGHT);
+                    x += CAMERA_WIDTH;
+                }
+                break;
+
+            case 2:
+                x = 0;
+                y = 0;
+                for (int i = 0; i < 5; i++) {
+                    spriteBatch.draw(background2, x, y, CAMERA_WIDTH,
+                            CAMERA_HEIGHT);
+                    x += CAMERA_WIDTH;
+                }
+                break;
+            case 3:
+                x = 0;
+                y = 0;
+                for (int i = 0; i < 5; i++) {
+                    spriteBatch.draw(background1, x, y, CAMERA_WIDTH,
+                            CAMERA_HEIGHT);
+                    x += CAMERA_WIDTH;
+                }
+                break;
+            default:
+                break;
+            }
 
             PlayerEntity player = EntityStore.player;
 
@@ -179,11 +224,25 @@ public class WorldRenderer {
                     h = rect.height;
                     spriteBatch.draw(textureEnemy, x, y, w, h);
                 }
+                if (e instanceof CoinEntity) {
+                    CoinEntity coin = (CoinEntity) e;
+                    float x, y, w, h;
+                    Rectangle rect = coin.getBounds();
+                    x = rect.x;
+                    y = rect.y;
+                    w = rect.width;
+                    h = rect.height;
+                    spriteBatch.draw(coins, x, y, w, h);
+
+                }
             }
             EntityStore.entityList.removeAll(shots);
-        }
-        debugRenderer.end();
 
+        }
+        // font.setScale(.04F);
+        // Draw Score
+        // font.draw(spriteBatch, "Score", 2F, 2F);
+        debugRenderer.end();
         spriteBatch.end();
         if (debug) {
             drawDebug();
@@ -217,4 +276,7 @@ public class WorldRenderer {
 
     }
 
+    public int getLevel() {
+        return level;
+    }
 }

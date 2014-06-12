@@ -20,6 +20,9 @@ public class Assets {
 
     public static Texture explosion_texture;
     public static TextureRegion playerLeft;
+    /* Coin Textures */
+    public static Texture textureCoin;
+    public static Sprite spriteCoin;
 
     /* Background Textures */
 
@@ -63,7 +66,8 @@ public class Assets {
         // loadSounds();
 
         loadPlayerTextures();
-        // loadBackgrounds();
+        loadBackgrounds();
+        loadCoins();
 
     }
 
@@ -110,18 +114,22 @@ public class Assets {
     private static void loadBackgrounds() {
         textureBackground_level1 = new Texture(
                 Gdx.files.internal("backgrounds/background.png"));
-
         background_sprite_level1 = new Sprite(textureBackground_level1);
-
         background_sprite_level1.flip(true, false);
+
         textureBackground_level2 = new Texture(
                 Gdx.files.internal("backgrounds/background2.jpg"));
-
         background_sprite_level2 = new Sprite(textureBackground_level2);
-
         background_sprite_level2.flip(true, false);
 
     }
+
+    private static void loadCoins() {
+        textureCoin = new Texture(Gdx.files.internal("textures/coin.gif"));
+        spriteCoin = new Sprite(textureCoin);
+        spriteCoin.flip(true, false);
+    }
+
 
     public static TextureRegion getPlayerTextureRight() {
 

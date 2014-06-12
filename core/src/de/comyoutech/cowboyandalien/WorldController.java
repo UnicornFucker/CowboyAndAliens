@@ -8,6 +8,7 @@ import java.util.Map;
 import com.badlogic.gdx.math.Rectangle;
 
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
+import de.comyoutech.cowboyandalien.entities.CoinEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
@@ -29,7 +30,7 @@ public class WorldController {
     private final float DAMP = 0.90f;
     private final float MAX_VEL = 4f;
 
-    private PlayerEntity player;
+    private final PlayerEntity player;
 
     private final float shotPressedTimeMax = 2F;
     private float shotPressedTime = 0;
@@ -42,8 +43,11 @@ public class WorldController {
 
     private final float SHOTSPEED = 20F;
     private boolean shooting;
-
-    private List<BlockEntity> collidable = new ArrayList<BlockEntity>();
+    private int score = 0;
+    private int lives = 3;
+    private int extraLiveScore = 10000;
+    private int scoreUp;
+    private final List<BlockEntity> collidable = new ArrayList<BlockEntity>();
 
     static {
         keys.put(Keys.LEFT, false);
@@ -113,9 +117,9 @@ public class WorldController {
                 }
             }
         }
-
         EntityStore.entityList.removeAll(removeList);
         checkCollisionWithBlocks(delta);
+        checkCollisionScore(score);
         player.getVelocity().x *= DAMP;
 
         if (player.getVelocity().x > MAX_VEL) {
@@ -311,6 +315,76 @@ public class WorldController {
         }
     }
 
+    /*
+     * private void checkExtraLive() {
+     * 
+     * if (score >= extraLiveScore) { lives++; extraLiveScore += 10000; }
+     * 
+     * }
+     * 
+     * private void loseLife() { lives--; }
+     */
+
+    private void incrementScore(int scoreUp) {
+        switch (scoreUp) {
+        case 1:
+            score += 50;
+            break;
+        case 2:
+            score += 100;
+            break;
+        case 3:
+            score += 500;
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    private void checkCollisionScore(int setScoreUp) {
+
+        Rectangle myRectForScore = new Rectangle();
+
+        myRectForScore.set(player.getBounds().x, player.getBounds().y,
+                player.getBounds().width, player.getBounds().height);
+
+        List<CoinEntity> collidedCoins = new ArrayList();
+
+        for (Entity entity : EntityStore.entityList) {
+            if (entity instanceof CoinEntity) {
+                CoinEntity coin = (CoinEntity) entity;
+
+                // Kollision mit irgendwas fuer Score + 50
+                if (myRectForScore.overlaps(coin.getBounds())) {
+                    setScoreUp(1);
+                    incrementScore(scoreUp);
+                    System.out.println(score);
+                    collidedCoins.add(coin);
+                }/*
+                  * // Kollision mit irgendwas fuer Score + 100 if
+                  * (myRectForScore.overlaps(coin.getBounds())) { setScoreUp(2);
+                  * incrementScore(scoreUp); }// Kollision mit irgendwas fuer
+                  * Score + 500 if (myRectForScore.overlaps(block.getBounds()))
+                  * { setScoreUp(3); incrementScore(scoreUp); }
+                  */
+            }
+        }
+        EntityStore.entityList.removeAll(collidedCoins);
+
+    }
+
+    void loadLevelTime() {
+
+        for (int i = 10000; i <= 0; i--) {
+            System.out.println(i);
+            if (i == 0) {
+                // player Dead
+            }
+            System.out.println(i);
+        }
+    }
+
     public void leftPressed() {
         keys.get(keys.put(Keys.LEFT, true));
     }
@@ -343,6 +417,30 @@ public class WorldController {
 
     public void fireReleased() {
         keys.get(keys.put(Keys.FIRE, false));
+    }
+
+    public long getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    public int getScoreUp() {
+        return scoreUp;
+    }
+
+    public void setScoreUp(int scoreUp) {
+        this.scoreUp = scoreUp;
     }
 
 }

@@ -6,11 +6,14 @@ import java.util.List;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
+import de.comyoutech.cowboyandalien.WorldRenderer;
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 
 public class EntityStore {
+
+    static WorldRenderer render = new WorldRenderer(false, null);
 
     public static PlayerEntity player;
     public static float levelWidth = 10F;
@@ -27,7 +30,7 @@ public class EntityStore {
     }
 
     private static void generateSomeContent() {
-        EntityGenerator.generateLevelIn(entityList);
+        EntityGenerator.generateLevelIn(entityList, render.getLevel());
     }
 
     public static void remove(Entity e) {
