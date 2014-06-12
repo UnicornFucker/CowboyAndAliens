@@ -2,38 +2,16 @@ package de.comyoutech.cowboyandalien;
 
 import com.badlogic.gdx.Game;
 
-/** Import **/
-
 public class MyGdxGame extends Game {
+
+    public GameScreen gameScreen;
+    public DeadScreen deadScreen;
 
     @Override
     public void create() {
-        setScreen(new GameScreen());
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void render() {
-        super.render();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-
+        gameScreen = new GameScreen(this);
+        deadScreen = new DeadScreen(this);
+        setScreen(gameScreen);
     }
 
 }

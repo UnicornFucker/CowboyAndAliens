@@ -4,15 +4,32 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
+
+    public static float SIZE;
+    protected Rectangle bounds = new Rectangle();
     protected Vector2 position = new Vector2();
+    float stateTime = 0;
 
-    static float SIZE;
-    private Rectangle bounds = new Rectangle();
+    public float getStateTime() {
+        return stateTime;
+    }
 
-    public Entity(int x, int y) {
-        SIZE = 1F;
+    protected void setStateTime(float stateTime) {
+        this.stateTime = stateTime;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+        bounds.setX(position.x);
+        bounds.setY(position.y);
+    }
+
+    public Entity(float x, float y) {
+        setSize();
         position.x = x;
         position.y = y;
+        bounds.x = position.x;
+        bounds.y = position.y;
         bounds.width = SIZE;
         bounds.height = SIZE;
     }
@@ -23,11 +40,9 @@ public abstract class Entity {
         return position;
     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
-
     public Rectangle getBounds() {
+        bounds.x = position.x;
+        bounds.y = position.y;
         return bounds;
     }
 
