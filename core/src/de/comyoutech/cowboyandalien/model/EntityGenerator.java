@@ -5,6 +5,7 @@ import java.util.List;
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
+import de.comyoutech.cowboyandalien.entities.MovableBlockEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 
 public class EntityGenerator {
@@ -31,9 +32,17 @@ public class EntityGenerator {
     private static void generateTestLvl2(List<Entity> blockList) {
         blockList.add(new EnemyEntity(5, 0));
 
-        blockList.add(new BlockEntity(3, 0));
+        blockList.add(new BlockEntity(2, 0));
 
-        blockList.add(new BlockEntity(7, 0));
+        blockList.add(new BlockEntity(9, 0));
+
+        blockList.add(new MovableBlockEntity(5, 2, false));
+        blockList.add(new MovableBlockEntity(0, 2, false));
+        blockList.add(new MovableBlockEntity(4, 1, true));
+        blockList.add(new MovableBlockEntity(5, 2, true));
+        blockList.add(new MovableBlockEntity(3, 2, false));
+        blockList.add(new MovableBlockEntity(5, 2, true));
+        blockList.add(new MovableBlockEntity(8, 6, false));
 
     }
 

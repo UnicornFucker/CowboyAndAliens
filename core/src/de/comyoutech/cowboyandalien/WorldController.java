@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
+import de.comyoutech.cowboyandalien.entities.MovableBlockEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity.State;
 import de.comyoutech.cowboyandalien.entities.ShotEntity;
@@ -32,7 +33,7 @@ public class WorldController {
     private PlayerEntity player;
 
     private final float shotPressedTimeMax = 2F;
-    private final float shotTimeMaxEnemy = 2F;
+    private final float shotTimeMaxEnemy = 1F;
     private float shotPressedTime = 0;
 
     private long jumpPressedTime;
@@ -60,8 +61,6 @@ public class WorldController {
     /** The main update method **/
     public void update(float delta) {
 
-        shotPressedTime += delta;
-
         processInput();
 
         player.getAcceleration().y = GRAVITY;
@@ -76,6 +75,7 @@ public class WorldController {
             if (shotPressedTime > shotPressedTimeMax) {
                 shotPressedTime = 0;
                 shooting = false;
+
             }
         }
         List<Entity> removeList = new ArrayList<Entity>();
@@ -84,9 +84,12 @@ public class WorldController {
         for (Entity e : EntityStore.entityList) {
             if (e instanceof ShotEntity) {
                 ShotEntity shot = (ShotEntity) e;
-                shot.getAcceleration().scl(delta);
-                shot.getVelocity().add(shot.getAcceleration());
-                shot.getPosition().add(shot.getVelocity());
+                if (shot.isFacingLeft()) {
+                    shot.getPosition().x -= shot.getSPEED() * delta;
+                }
+                else {
+                    shot.getPosition().x += shot.getSPEED() * delta;
+                }
                 for (Entity en : EntityStore.entityList) {
                     if (en instanceof BlockEntity) {
                         if (en.getBounds().overlaps(shot.getBounds())) {
@@ -105,10 +108,6 @@ public class WorldController {
                     newShots.add(enemy);
                 }
 
-                System.out.println("hier1: " + enemy.facingLeft + " "
-                        + enemy.getAcceleration().x + " "
-                        + enemy.getPosition().x);
-
                 for (Entity en : EntityStore.entityList) {
                     if (en instanceof BlockEntity) {
                         if (en.getBounds().overlaps(enemy.getBounds())) {
@@ -117,27 +116,36 @@ public class WorldController {
                     }
                 }
 
-                System.out.println("hier2: " + enemy.facingLeft + " "
-                        + enemy.getAcceleration().x + " "
-                        + enemy.getPosition().x);
-
                 if (enemy.facingLeft) {
-                    enemy.getAcceleration().x = -enemy.getSpeed();
+                    enemy.getPosition().x -= enemy.getSpeed() * delta;
                 }
                 else {
-                    enemy.getAcceleration().x = enemy.getSpeed();
+                    enemy.getPosition().x += enemy.getSpeed() * delta;
                 }
-                System.out.println("hier3: " + enemy.facingLeft + " "
-                        + enemy.getAcceleration().x + " "
-                        + enemy.getPosition().x);
 
-                enemy.getAcceleration().scl(delta);
-                enemy.getVelocity().add(enemy.getAcceleration());
-                enemy.getPosition().add(enemy.getVelocity());
+            }
+            else if (e instanceof MovableBlockEntity) {
+                MovableBlockEntity block = (MovableBlockEntity) e;
 
-                System.out.println("hier4: " + enemy.facingLeft + " "
-                        + enemy.getAcceleration().x + " "
-                        + enemy.getPosition().x);
+                if (block.vertical) {
+                    if (block.moveForward) {
+                        block.getPosition().y += block.SPEED * delta;
+                    }
+                    else {
+                        block.getPosition().y -= block.SPEED * delta;
+                    }
+
+                }
+                else {
+                    if (block.moveForward) {
+                        block.getPosition().x += block.SPEED * delta;
+                    }
+                    else {
+                        block.getPosition().x -= block.SPEED * delta;
+                    }
+                }
+
+                block.checkRange();
 
             }
         }
@@ -223,12 +231,11 @@ public class WorldController {
         }
         else {
             player.getAcceleration().x = 0;
-
         }
         if (keys.get(Keys.FIRE)) {
             if (!shooting) {
-                shooting = true;
                 createShot(player);
+                shooting = true;
             }
         }
         return false;
@@ -236,17 +243,19 @@ public class WorldController {
 
     private void createShot(Entity entity) {
 
-        float x = 0, y = 0, speed = 0;
+        float x = 0, y = 0;
+
+        boolean left = false;
 
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             if (player.isFacingLeft()) {
                 x = player.getPosition().x;
-                speed = -SHOTSPEED;
+                left = true;
             }
             else {
                 x = player.getPosition().x + player.getBounds().width;
-                speed = SHOTSPEED;
+                left = false;
             }
             y = player.getPosition().y + (player.getBounds().height / 2);
         }
@@ -255,18 +264,18 @@ public class WorldController {
             EnemyEntity enemy = (EnemyEntity) entity;
             if (enemy.isFacingLeft()) {
                 x = enemy.getPosition().x;
-                speed = -SHOTSPEED;
+                left = true;
             }
             else {
                 x = enemy.getPosition().x + enemy.getBounds().width;
-                speed = SHOTSPEED;
+                left = false;
             }
             y = enemy.getPosition().y + (enemy.getBounds().height / 2);
 
         }
 
         ShotEntity shot = new ShotEntity(x, y);
-        shot.getAcceleration().x = speed;
+        shot.setFacingLeft(left);
         EntityStore.entityList.add(shot);
 
     }

@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Rectangle;
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
+import de.comyoutech.cowboyandalien.entities.MovableBlockEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity.State;
 import de.comyoutech.cowboyandalien.entities.ShotEntity;
@@ -106,10 +107,6 @@ public class WorldRenderer {
 
         switch (level) {
         case 1:
-
-            // spriteBatch.draw(Assets.background_sprite_level1, 0, 0,
-            // CAMERA_WIDTH, CAMERA_HEIGHT);
-
             float x = 0;
             float y = 0;
 
@@ -120,7 +117,7 @@ public class WorldRenderer {
                 x += CAMERA_WIDTH;
 
             }
-
+            break;
         case 2:
 
         case 3:
@@ -173,10 +170,12 @@ public class WorldRenderer {
             frame = player.isFacingLeft() ? walkLeftAnimation.getKeyFrame(
                     player.getStateTime(), true) : walkRightAnimation
                     .getKeyFrame(player.getStateTime(), true);
-        } else if (player.getState().equals(State.JUMPING)) {
+        }
+        else if (player.getState().equals(State.JUMPING)) {
             if (player.getVelocity().y > 0) {
                 frame = player.isFacingLeft() ? jumpLeft : jumpRight;
-            } else {
+            }
+            else {
                 frame = player.isFacingLeft() ? fallLeft : fallRight;
             }
         }
@@ -202,8 +201,10 @@ public class WorldRenderer {
                 h = rect.height;
                 spriteBatch.draw(blockTexture, x, y, w, h);
 
-            } else if (e instanceof ShotEntity) {
+            }
+            else if (e instanceof ShotEntity) {
                 ShotEntity shot = (ShotEntity) e;
+
                 float x, y, w, h;
                 Rectangle rect = shot.getBounds();
                 x = rect.x;
@@ -216,11 +217,22 @@ public class WorldRenderer {
                     continue;
                 }
                 y = rect.y;
+
                 w = rect.width;
                 h = rect.height;
+
+                if (shot.isFacingLeft()) {
+                    textureShot.flip(true, false);
+                }
+
                 spriteBatch.draw(textureShot, x, y, w, h);
 
-            } else if (e instanceof EnemyEntity) {
+                if (shot.isFacingLeft()) {
+                    textureShot.flip(true, false);
+                }
+
+            }
+            else if (e instanceof EnemyEntity) {
                 EnemyEntity enemy = (EnemyEntity) e;
                 float x, y, w, h;
                 Rectangle rect = enemy.getBounds();
@@ -229,6 +241,17 @@ public class WorldRenderer {
                 w = rect.width;
                 h = rect.height;
                 spriteBatch.draw(textureEnemy, x, y, w, h);
+            }
+            else if (e instanceof MovableBlockEntity) {
+                MovableBlockEntity block = (MovableBlockEntity) e;
+                float x, y, w, h;
+                Rectangle rect = block.getBounds();
+                x = rect.x;
+                y = rect.y;
+                w = rect.width;
+                h = rect.height;
+                spriteBatch.draw(blockTexture, x, y, w, h);
+
             }
         }
         EntityStore.entityList.removeAll(shots);

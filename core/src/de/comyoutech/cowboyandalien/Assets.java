@@ -87,6 +87,7 @@ public class Assets {
             walkRightFrames[i] = new TextureRegion(walkLeftFrames[i]);
             walkRightFrames[i].flip(true, false);
         }
+
         animationRight = new Animation(RUNNING_FRAME_DURATION, walkRightFrames);
         jumpLeft = atlas.findRegion("bob-up");
         fallLeft = atlas.findRegion("bob-down");

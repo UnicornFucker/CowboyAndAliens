@@ -4,34 +4,35 @@ import com.badlogic.gdx.math.Vector2;
 
 public class ShotEntity extends Entity {
 
-    private Vector2 acceleration = new Vector2();
-    private Vector2 velocity = new Vector2();
+    private final float SPEED = 10f;
 
     public boolean left;
 
-    public Vector2 getAcceleration() {
-        return acceleration;
+    private boolean facingLeft;
+
+    public boolean isFacingLeft() {
+        return facingLeft;
     }
 
-    public void setAcceleration(Vector2 acceleration) {
-        this.acceleration = acceleration;
+    public void setFacingLeft(boolean facingLeft) {
+        this.facingLeft = facingLeft;
     }
 
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
+    public float getSPEED() {
+        return SPEED;
     }
 
     public ShotEntity(float x, float y) {
         super(x, y);
     }
 
+    public ShotEntity(float x, float y, float size) {
+        super(x, y);
+        SIZE = size;
+    }
+
     @Override
     public Vector2 getPosition() {
-        super.getPosition().x += 0.2;
         return super.getPosition();
     }
 
