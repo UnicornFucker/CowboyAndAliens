@@ -1,16 +1,31 @@
 package de.comyoutech.cowboyandalien.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
+import de.comyoutech.cowboyandalien.entities.CoinEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
-import de.comyoutech.cowboyandalien.entities.MovableBlockEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 
 public class EntityGenerator {
 
-    public static void generateLevelIn(List<Entity> blockList) {
+    /** This Method decides which level should be loaded by input **/
+
+    public static void generateLevelIn(List<Entity> blockList, int level) {
+
+        if (level == 1) {
+            generateTestLvl1(blockList);
+        }
+        if (level == 2) {
+            generateTestLvl2(blockList);
+        }
+        if (level == 3) {
+            generateTestLvl2(blockList);
+        }
+
         // for (int i = 0; i < 10; i++) {
         // blockList.add(new BlockEntity(i, 0));
         // blockList.add(new BlockEntity(i, 6));
@@ -26,27 +41,14 @@ public class EntityGenerator {
         // blockList.add(new BlockEntity(6, 4));
         // blockList.add(new BlockEntity(6, 5));
         // }
-        generateTestLvl2(blockList);
+        // generateTestLvl1(blockList);
     }
+
+    /** List for Level 2 **/
 
     private static void generateTestLvl2(List<Entity> blockList) {
         blockList.add(new EnemyEntity(5, 0));
-
-        blockList.add(new BlockEntity(2, 0));
-
-        blockList.add(new BlockEntity(9, 0));
-
-        blockList.add(new MovableBlockEntity(5, 2, false));
-        blockList.add(new MovableBlockEntity(0, 2, false));
-        blockList.add(new MovableBlockEntity(4, 1, true));
-        blockList.add(new MovableBlockEntity(5, 2, true));
-        blockList.add(new MovableBlockEntity(3, 2, false));
-        blockList.add(new MovableBlockEntity(5, 2, true));
-        blockList.add(new MovableBlockEntity(8, 6, false));
-
-    }
-
-    private static void generateTestLvl1(List<Entity> blockList) {
+        blockList.add(new BlockEntity(3, 0));
         blockList.add(new BlockEntity(7, 0));
         blockList.add(new BlockEntity(10, 0));
         blockList.add(new BlockEntity(11, 0));
@@ -64,9 +66,84 @@ public class EntityGenerator {
         blockList.add(new BlockEntity(20, 3));
         blockList.add(new BlockEntity(21, 4));
         blockList.add(new BlockEntity(21, 2));
+        blockList.add(new BlockEntity(11, 1));
+        blockList.add(new BlockEntity(14, 0));
+        blockList.add(new BlockEntity(15, 0));
+        blockList.add(new BlockEntity(15, 1));
+        blockList.add(new BlockEntity(16, 0));
+        blockList.add(new BlockEntity(16, 1));
+        blockList.add(new BlockEntity(26, 2));
+        blockList.add(new BlockEntity(27, 2));
+        blockList.add(new BlockEntity(28, 2));
+        blockList.add(new BlockEntity(29, 2));
+        blockList.add(new BlockEntity(30, 2));
+        blockList.add(new BlockEntity(30, 3));
+        blockList.add(new BlockEntity(31, 4));
+        blockList.add(new BlockEntity(31, 2));
+
+        blockList.add(new CoinEntity(21, 5));
+        blockList.add(new CoinEntity(13, 2));
+        blockList.add(new CoinEntity(16, 0));
+        blockList.add(new CoinEntity(12, 0));
     }
 
+    /** generate a Random List for Level 1 **/
+
+    private static void generateTestLvl1(List<Entity> blockList) {
+        blockList.add(new BlockEntity(2, 0));
+        blockList.add(new BlockEntity(1, 0));
+        blockList.add(new BlockEntity(8, 0));
+        blockList.add(new BlockEntity(3, 0));
+        blockList.add(new BlockEntity(7, 0));
+        List<Integer> holes = new ArrayList<Integer>();
+        Random random = new Random();
+
+        int width = 1000;
+
+        for (int i = 0; i < 300; i++) {
+            int x = random.nextInt(width);
+            int y = random.nextInt(2);
+            for (int o = x; o < y; o++) {
+                holes.add(o);
+            }
+            holes.add(x);
+        }
+        for (int i = 5; i < width; i++) {
+            if (!holes.contains(i)) {
+                blockList.add(new BlockEntity(i, 0));
+                blockList.add(new CoinEntity(i - 5, 1));
+            }
+            else {
+                // TODO HoleEntity
+            }
+        }
+
+        List<Integer> coins = new ArrayList<Integer>();
+        Random randomCoins = new Random();
+
+        int widthCoins = 100;
+
+        for (int i = 0; i < 30; i++) {
+            int x = random.nextInt(width);
+            int y = random.nextInt(2);
+            for (int o = x; o < y; o++) {
+                coins.add(o);
+            }
+            coins.add(x);
+        }
+        for (int i = 5; i < width; i++) {
+            if (!holes.contains(i)) {
+                blockList.add(new BlockEntity(i, 0));
+            }
+            else {
+                // TODO HoleEntity
+            }
+        }
+    }
+
+    /** generate a new Entity of Player **/
+
     public static PlayerEntity generatePlayer() {
-        return new PlayerEntity(7, 4);
+        return new PlayerEntity(6, 3);
     }
 }

@@ -12,6 +12,7 @@ public class EnemyEntity extends Entity {
         return timeSinceLastShot;
     }
 
+    // TODO Verschiedene Bilder
     public void setTimeSinceLastShot(float timeSinceLastShot) {
         this.timeSinceLastShot = timeSinceLastShot;
     }

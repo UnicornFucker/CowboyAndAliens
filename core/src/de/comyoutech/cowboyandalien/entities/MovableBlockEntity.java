@@ -1,9 +1,11 @@
 package de.comyoutech.cowboyandalien.entities;
 
+import java.util.Random;
+
 public class MovableBlockEntity extends Entity {
 
     public final float SPEED = 3F;
-    public final float RANGE = 1f;
+    public final float RANGE;
 
     private final float maxRange1;
     private final float maxRange2;
@@ -15,6 +17,12 @@ public class MovableBlockEntity extends Entity {
     public MovableBlockEntity(float x, float y, boolean vertical) {
         super(x, y);
         this.vertical = vertical;
+
+        Random random = new Random();
+
+        float range = random.nextInt(4);
+        RANGE = range;
+
         if (vertical) {
             maxRange1 = y - (RANGE / 2);
             maxRange2 = y + (RANGE + 2);

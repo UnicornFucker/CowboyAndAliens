@@ -6,28 +6,32 @@ import java.util.List;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
+import de.comyoutech.cowboyandalien.WorldRenderer;
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.Entity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 
 public class EntityStore {
 
-    public static PlayerEntity player;
+    static WorldRenderer render = new WorldRenderer(false, null);
 
+    public static PlayerEntity player;
     public static float levelWidth = 10F;
     public static float levelHeight = 7F;
 
     public static List<Entity> entityList;
     public static Array<Rectangle> collisionRects = new Array<Rectangle>();
+    public static boolean playerIsDead;
 
     public static void setUp() {
         entityList = new ArrayList<Entity>();
         player = EntityGenerator.generatePlayer();
         generateSomeContent();
+        playerIsDead = false;
     }
 
     private static void generateSomeContent() {
-        EntityGenerator.generateLevelIn(entityList);
+        EntityGenerator.generateLevelIn(entityList, render.getLevel());
     }
 
     public static void remove(Entity e) {

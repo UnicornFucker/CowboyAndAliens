@@ -13,14 +13,19 @@ public class GameScreen implements Screen, InputProcessor {
 
     private WorldRenderer renderer;
     private WorldController controller;
+    private MyGdxGame game;
 
     private int width, height;
+
+    public GameScreen(MyGdxGame game) {
+        this.game = game;
+    }
 
     @Override
     public void show() {
         Assets.load();
         EntityStore.setUp();
-        renderer = new WorldRenderer(false);
+        renderer = new WorldRenderer(false, game);
         controller = new WorldController();
         Gdx.input.setInputProcessor(this);
     }
@@ -104,7 +109,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-        renderer.setSize(width, height);
         this.width = width;
         this.height = height;
     }

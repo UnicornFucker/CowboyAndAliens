@@ -50,7 +50,6 @@ public class ItemShopScreen implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -68,7 +67,7 @@ public class ItemShopScreen implements ApplicationListener {
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
-        int x = 0, y = 0;
+        int x = 0;
 
         // 7Drawable drawable = skin.getDrawable("enemy");
 
@@ -77,7 +76,6 @@ public class ItemShopScreen implements ApplicationListener {
             Image nextItemPicture = new Image(item.getPicture());
             String nextItemName = item.getName();
             String nextItemDescription = item.getDescription();
-            int nextItemPower = item.getPower();
             int nextItemPrice = item.getPrice();
             nextItemPicture.setSize(50, 50); // scale the tree to the right size
 

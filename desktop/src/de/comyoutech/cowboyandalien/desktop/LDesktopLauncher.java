@@ -5,7 +5,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import de.comyoutech.cowboyandalien.MyGdxGame;
 
-public class DesktopLauncher {
+public class LDesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         new LwjglApplication(new MyGdxGame(), config);
