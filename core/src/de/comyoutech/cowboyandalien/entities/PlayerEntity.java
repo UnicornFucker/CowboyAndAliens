@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.entities;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 
-public class PlayerEntity extends Entity {
+public class PlayerEntity extends AbstractEntity {
     public enum State {
         IDLE, WALKING, JUMPING, DYING
     }

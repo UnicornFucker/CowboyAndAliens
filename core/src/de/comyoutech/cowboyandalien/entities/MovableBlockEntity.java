@@ -2,7 +2,7 @@ package de.comyoutech.cowboyandalien.entities;
 
 import java.util.Random;
 
-public class MovableBlockEntity extends Entity {
+public class MovableBlockEntity extends AbstractEntity {
 
     public final float SPEED = 3F;
     public final float RANGE;

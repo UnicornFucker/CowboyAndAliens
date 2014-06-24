@@ -1,9 +1,11 @@
 package de.comyoutech.cowboyandalien.entities;
 
-public class HoleEntity extends Entity {
+public class SpikeEntity extends AbstractEntity {
 
-    public HoleEntity(float x, float y) {
+    public SpikeEntity(float x, float y) {
         super(x, y);
+        bounds.width = 1F;
+        bounds.height = 0.8F;
     }
 
     @Override

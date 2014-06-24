@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-import de.comyoutech.cowboyandalien.MyGdxGame;
+import de.comyoutech.cowboyandalien.controller.MyGdxGame;
 
 public class LDesktopLauncher {
     public static void main(String[] arg) {

@@ -1,6 +1,6 @@
 package de.comyoutech.cowboyandalien.entities;
 
-public class EnemyEntity extends Entity {
+public class EnemyEntity extends AbstractEntity {
 
     final float SPEED = 2f;
 

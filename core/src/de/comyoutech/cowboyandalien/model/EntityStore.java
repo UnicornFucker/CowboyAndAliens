@@ -6,35 +6,35 @@ import java.util.List;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-import de.comyoutech.cowboyandalien.WorldRenderer;
+import de.comyoutech.cowboyandalien.entities.AbstractEntity;
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
-import de.comyoutech.cowboyandalien.entities.Entity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
+import de.comyoutech.cowboyandalien.view.WorldRenderer;
 
 public class EntityStore {
 
-    static WorldRenderer render = new WorldRenderer(false, null);
+    static WorldRenderer render = new WorldRenderer();
 
     public static PlayerEntity player;
     public static float levelWidth = 10F;
     public static float levelHeight = 7F;
 
-    public static List<Entity> entityList;
+    public static List<AbstractEntity> entityList;
     public static Array<Rectangle> collisionRects = new Array<Rectangle>();
     public static boolean playerIsDead;
 
     public static void setUp() {
-        entityList = new ArrayList<Entity>();
+        entityList = new ArrayList<AbstractEntity>();
         player = EntityGenerator.generatePlayer();
         generateSomeContent();
         playerIsDead = false;
     }
 
     private static void generateSomeContent() {
-        EntityGenerator.generateLevelIn(entityList, render.getLevel());
+        EntityGenerator.generateLevelIn(entityList);
     }
 
-    public static void remove(Entity e) {
+    public static void remove(AbstractEntity e) {
         entityList.remove(e);
     }
 
@@ -70,7 +70,7 @@ public class EntityStore {
     }
 
     public static BlockEntity get(int x, int y) {
-        for (Entity e : entityList) {
+        for (AbstractEntity e : entityList) {
             if (e instanceof BlockEntity) {
                 if ((e.getPosition().x == x) && (e.getPosition().y == y)) {
                     return (BlockEntity) e;

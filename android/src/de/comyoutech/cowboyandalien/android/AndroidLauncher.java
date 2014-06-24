@@ -4,7 +4,8 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import de.comyoutech.cowboyandalien.MyGdxGame;
+
+import de.comyoutech.cowboyandalien.controller.MyGdxGame;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override

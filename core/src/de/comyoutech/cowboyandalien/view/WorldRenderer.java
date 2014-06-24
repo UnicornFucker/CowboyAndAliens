@@ -1,9 +1,10 @@
-package de.comyoutech.cowboyandalien;
+package de.comyoutech.cowboyandalien.view;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,15 +14,17 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 
+import de.comyoutech.cowboyandalien.entities.AbstractEntity;
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
+import de.comyoutech.cowboyandalien.entities.CactusEntity;
 import de.comyoutech.cowboyandalien.entities.CoinEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
-import de.comyoutech.cowboyandalien.entities.Entity;
-import de.comyoutech.cowboyandalien.entities.HoleEntity;
 import de.comyoutech.cowboyandalien.entities.MovableBlockEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity.State;
 import de.comyoutech.cowboyandalien.entities.ShotEntity;
+import de.comyoutech.cowboyandalien.entities.SpikeEntity;
+import de.comyoutech.cowboyandalien.model.Assets;
 import de.comyoutech.cowboyandalien.model.EntityStore;
 
 public class WorldRenderer {
@@ -29,6 +32,9 @@ public class WorldRenderer {
     private final ShapeRenderer debugRenderer = new ShapeRenderer();
 
     private final OrthographicCamera cam;
+
+    private BitmapFont font;
+    private CharSequence str = "YOU ARE DEAD";
 
     private TextureRegion idleLeft;
     private TextureRegion idleRight;
@@ -44,10 +50,11 @@ public class WorldRenderer {
 
     private TextureRegion textureEnemy;
     private TextureRegion textureBlockObstacle;
+    private TextureRegion textureSpike;
 
     private TextureRegion textureCoins;
 
-    private final List<ShotEntity> shots;
+    private List<ShotEntity> shots;
 
     private final float CAMERA_WIDTH;
     private final float CAMERA_HEIGHT;
@@ -57,29 +64,23 @@ public class WorldRenderer {
     private Animation walkRightAnimation;
 
     private final SpriteBatch spriteBatch;
-    private final BitmapFont font;
-    private boolean debug = false;
 
     private TextureRegion background;
 
-    public boolean isDebug() {
-        return debug;
-    }
+    public WorldRenderer() {
 
-    public void setDebug(boolean debug) {
-        this.debug = debug;
-    }
-
-    public WorldRenderer(boolean debug, MyGdxGame game) {
         CAMERA_HEIGHT = EntityStore.levelHeight;
         CAMERA_WIDTH = EntityStore.levelWidth;
         spriteBatch = new SpriteBatch();
-        font = new BitmapFont();
-        initializeTextures();
         cam = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
-        cam.position.set(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, 0);
-        shots = new ArrayList<ShotEntity>();
+        initialize();
 
+    }
+
+    private void initialize() {
+        initializeTextures();
+        shots = new ArrayList<ShotEntity>();
+        cam.position.set(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, 0);
     }
 
     private void initializeTextures() {
@@ -102,30 +103,18 @@ public class WorldRenderer {
 
         textureShot = Assets.textureShot;
 
+        textureSpike = Assets.textureSpike;
+
         switch (level) {
 
         case 1:
-            float x = 0;
-            float y = 0;
 
             background = Assets.backgroundSpriteLevel1;
-
             break;
 
         case 2:
-            x = 0;
-            y = 0;
             background = Assets.backgroundSpriteLevel2;
             break;
-//        case 3:
-//            x = 0;
-//            y = 0;
-//            for (int i = 0; i < 5; i++) {
-//                spriteBatch
-//                        .draw(background1, x, y, CAMERA_WIDTH, CAMERA_HEIGHT);
-//                x += CAMERA_WIDTH;
-//            }
-//            break;
         default:
             break;
         }
@@ -139,9 +128,12 @@ public class WorldRenderer {
     }
 
     public void render() {
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (!EntityStore.playerIsDead) {
             spriteBatch.begin();
+
             float xx = 0;
             float yy = 0;
             for (int i = 0; i < 5; i++) {
@@ -184,7 +176,7 @@ public class WorldRenderer {
             spriteBatch.draw(frame, xP, yP, wP, hP);
 
             moveCamera(player.getPosition().x, CAMERA_HEIGHT / 2);
-            for (Entity e : EntityStore.entityList) {
+            for (AbstractEntity e : EntityStore.entityList) {
                 if (e instanceof BlockEntity) {
                     BlockEntity block = (BlockEntity) e;
 
@@ -221,9 +213,7 @@ public class WorldRenderer {
                     if (shot.isFacingLeft()) {
                         textureShot.flip(true, false);
                     }
-
                     spriteBatch.draw(textureShot, x, y, w, h);
-
                     if (shot.isFacingLeft()) {
                         textureShot.flip(true, false);
                     }
@@ -231,49 +221,35 @@ public class WorldRenderer {
                 }
                 else if (e instanceof EnemyEntity) {
                     EnemyEntity enemy = (EnemyEntity) e;
-
                     drawEntity(spriteBatch, enemy.getBounds(), textureEnemy);
-
                 }
                 else if (e instanceof MovableBlockEntity) {
                     MovableBlockEntity block = (MovableBlockEntity) e;
-
                     drawEntity(spriteBatch, block.getBounds(), textureUfoEnemy);
-
                 }
-                else if (e instanceof HoleEntity) {
-                    HoleEntity theHole = (HoleEntity) e;
-
+                else if (e instanceof CactusEntity) {
+                    CactusEntity theHole = (CactusEntity) e;
                     drawEntity(spriteBatch, theHole.getBounds(),
                             textureBlockObstacle);
-
                 }
                 else if (e instanceof CoinEntity) {
                     CoinEntity coin = (CoinEntity) e;
-                    float x, y, w, h;
-                    Rectangle rect = coin.getBounds();
-                    x = rect.x;
-                    y = rect.y;
-                    w = rect.width;
-                    h = rect.height;
-                    spriteBatch.draw(textureCoins, x, y, w, h);
-
                     drawEntity(spriteBatch, coin.getBounds(), textureCoins);
-
+                }
+                else if (e instanceof SpikeEntity) {
+                    SpikeEntity spike = (SpikeEntity) e;
+                    drawEntity(spriteBatch, spike.getBounds(), textureSpike);
                 }
             }
+        }
 
-        }
-        else {
-//            TODO Deadscreen
-        }
+        font = new BitmapFont();
+        font.draw(spriteBatch, str, 100, 100);
+
         EntityStore.entityList.removeAll(shots);
         debugRenderer.end();
 
         spriteBatch.end();
-        if (debug) {
-            drawDebug();
-        }
     }
 
     private void drawEntity(SpriteBatch batch, Rectangle rect,
@@ -287,23 +263,6 @@ public class WorldRenderer {
 
         batch.draw(region, x, y, w, h);
 
-    }
-
-    private void drawDebug() {
-
-        debugRenderer.begin(ShapeType.Line);
-        debugRenderer.setProjectionMatrix(cam.combined);
-        for (BlockEntity block : EntityStore.getDrawableBlocks(
-                (int) CAMERA_WIDTH, (int) CAMERA_HEIGHT)) {
-            Rectangle rect = block.getBounds();
-            debugRenderer.setColor(new Color(1, 0, 0, 1));
-            debugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        }
-        PlayerEntity player = EntityStore.player;
-        Rectangle rect = player.getBounds();
-        debugRenderer.setColor(new Color(0, 1, 0, 1));
-        debugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-        debugRenderer.end();
     }
 
     public void moveCamera(float x, float y) {

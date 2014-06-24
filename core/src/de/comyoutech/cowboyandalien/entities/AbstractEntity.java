@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.entities;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class Entity {
+public abstract class AbstractEntity {
 
     public static float SIZE;
     protected Rectangle bounds = new Rectangle();
@@ -24,7 +24,7 @@ public abstract class Entity {
         bounds.setY(position.y);
     }
 
-    public Entity(float x, float y) {
+    public AbstractEntity(float x, float y) {
         setSize();
         position.x = x;
         position.y = y;
@@ -32,6 +32,15 @@ public abstract class Entity {
         bounds.y = position.y;
         bounds.width = SIZE;
         bounds.height = SIZE;
+    }
+
+    public AbstractEntity(float x, float y, float size) {
+        position.x = x;
+        position.y = y;
+        bounds.x = position.x;
+        bounds.y = position.y;
+        bounds.width = size;
+        bounds.height = size;
     }
 
     protected abstract void setSize();

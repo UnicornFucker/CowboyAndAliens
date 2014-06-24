@@ -1,21 +1,25 @@
-package de.comyoutech.cowboyandalien;
+package de.comyoutech.cowboyandalien.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import com.badlogic.gdx.math.Rectangle;
 
+import de.comyoutech.cowboyandalien.entities.AbstractEntity;
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
+import de.comyoutech.cowboyandalien.entities.CactusEntity;
 import de.comyoutech.cowboyandalien.entities.CoinEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
-import de.comyoutech.cowboyandalien.entities.Entity;
-import de.comyoutech.cowboyandalien.entities.HoleEntity;
 import de.comyoutech.cowboyandalien.entities.MovableBlockEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity.State;
 import de.comyoutech.cowboyandalien.entities.ShotEntity;
+import de.comyoutech.cowboyandalien.entities.SpikeEntity;
+import de.comyoutech.cowboyandalien.model.Assets;
+import de.comyoutech.cowboyandalien.model.DataCollector;
 import de.comyoutech.cowboyandalien.model.EntityStore;
 
 public class WorldController {
@@ -24,17 +28,20 @@ public class WorldController {
         LEFT, RIGHT, JUMP, FIRE
     }
 
-    static Map<Keys, Boolean> keys = new HashMap<WorldController.Keys, Boolean>();
-    private final long LONG_JUMP_PRESS = 150l;
-    private final float ACCELERATION = 20f;
-    private final float GRAVITY = -20f;
+    static Map<Keys, Boolean> keysPressed = new HashMap<WorldController.Keys, Boolean>();
+    private final long JUMPTIMEGAP = 150l;
+    private final float PLAYER_ACCELERATION = 20f;
+    private final float GRAVITY = -17f;
     private final float MAX_JUMP_SPEED = 7f;
-    private final float DAMP = 0.90f;
-    private final float MAX_VEL = 4f;
+    private final float SLIDINGRANGE = 0.90f;
+    private final float SPEEDLIMIT = 4f;
+
+    private MyGdxGame game;
 
     private PlayerEntity player;
+    private DataCollector collector;
 
-    private final float shotPressedTimeMax = 2F;
+    private final float shotPressedTimeMax = 1F;
     private final float shotTimeMaxEnemy = 1F;
     private float shotPressedTime = 0;
 
@@ -45,26 +52,25 @@ public class WorldController {
     private static final float WIDTH = 1000f;
 
     private boolean shooting;
-    private int score = 0;
     private int lives = 3;
-    private int scoreUp;
     private final List<BlockEntity> collidable = new ArrayList<BlockEntity>();
 
-    static {
-        keys.put(Keys.LEFT, false);
-        keys.put(Keys.RIGHT, false);
-        keys.put(Keys.JUMP, false);
-        keys.put(Keys.FIRE, false);
-    };
-
-    public WorldController() {
+    public WorldController(MyGdxGame game) {
         player = EntityStore.player;
+        keysPressed.put(Keys.LEFT, false);
+        keysPressed.put(Keys.RIGHT, false);
+        keysPressed.put(Keys.JUMP, false);
+        keysPressed.put(Keys.FIRE, false);
+        this.game = game;
+        collector = DataCollector.getInstance();
     }
 
     /** The main update method **/
     public void update(float delta) {
 
         processInput();
+
+        Random rndm = new Random();
 
         player.getAcceleration().y = GRAVITY;
 
@@ -81,24 +87,46 @@ public class WorldController {
 
             }
         }
-        List<Entity> removeList = new ArrayList<Entity>();
-        List<Entity> newShots = new ArrayList<Entity>();
 
-        for (Entity e : EntityStore.entityList) {
+        List<AbstractEntity> removeList = new ArrayList<AbstractEntity>();
+        List<AbstractEntity> newShots = new ArrayList<AbstractEntity>();
+
+        for (AbstractEntity e : EntityStore.entityList) {
             if (e instanceof ShotEntity) {
                 ShotEntity shot = (ShotEntity) e;
+
+                if (shot.getBounds().overlaps(player.getBounds())
+                        && shot.killsPlayer) {
+                    playerDied();
+                }
+
                 if (shot.isFacingLeft()) {
                     shot.getPosition().x -= shot.getSPEED() * delta;
                 }
                 else {
                     shot.getPosition().x += shot.getSPEED() * delta;
                 }
-                for (Entity en : EntityStore.entityList) {
+                for (AbstractEntity en : EntityStore.entityList) {
                     if (en instanceof BlockEntity) {
                         if (en.getBounds().overlaps(shot.getBounds())) {
                             removeList.add(shot);
                         }
                     }
+                    else if (en instanceof EnemyEntity) {
+                        if (en.getBounds().overlaps(shot.getBounds())) {
+                            if (!shot.killsPlayer) {
+                                removeList.add(shot);
+                                removeList.add(en);
+                            }
+                        }
+                    }
+                    else if (en instanceof MovableBlockEntity) {
+                        if (en.getBounds().overlaps(shot.getBounds())) {
+                            removeList.add(en);
+                            removeList.add(shot);
+                        }
+                    }
+
                 }
             }
             else if (e instanceof EnemyEntity) {
@@ -106,17 +134,22 @@ public class WorldController {
 
                 enemy.setTimeSinceLastShot(enemy.getTimeSinceLastShot() + delta);
 
-                if (enemy.getTimeSinceLastShot() > shotTimeMaxEnemy) {
+                if (enemy.getTimeSinceLastShot() > (shotTimeMaxEnemy + rndm
+                        .nextFloat())) {
                     enemy.setTimeSinceLastShot(0);
                     newShots.add(enemy);
                 }
 
-                for (Entity en : EntityStore.entityList) {
+                for (AbstractEntity en : EntityStore.entityList) {
                     if (en instanceof BlockEntity) {
                         if (en.getBounds().overlaps(enemy.getBounds())) {
                             enemy.switchDirection();
                         }
                     }
+                }
+
+                if (enemy.getBounds().overlaps(player.getBounds())) {
+                    playerDied();
                 }
 
                 if (enemy.facingLeft) {
@@ -129,6 +162,10 @@ public class WorldController {
             }
             else if (e instanceof MovableBlockEntity) {
                 MovableBlockEntity block = (MovableBlockEntity) e;
+
+                if (block.getBounds().overlaps(player.getBounds())) {
+                    playerDied();
+                }
 
                 if (block.vertical) {
                     if (block.moveForward) {
@@ -150,28 +187,52 @@ public class WorldController {
                 }
                 block.checkRange();
             }
-            else if (e instanceof HoleEntity) {
-                HoleEntity hole = (HoleEntity) e;
+            else if (e instanceof CactusEntity) {
+                CactusEntity hole = (CactusEntity) e;
                 if (hole.getBounds().overlaps(player.getBounds())) {
-//                    TODO STERBEN!!
+                    playerDied();
+                }
+            }
+            else if (e instanceof CoinEntity) {
+                CoinEntity coin = (CoinEntity) e;
+                if (player.getBounds().overlaps(coin.getBounds())) {
+                    Assets.soundGetCoin.play();
+                    int score;
+                    if (coin.iAmSuper) {
+                        score = 5;
+                    }
+                    else {
+                        score = 1;
+                    }
+                    collector.addTempCoins(score);
+                    removeList.add(coin);
+                }
+            }
+            else if (e instanceof SpikeEntity) {
+                if (player.getBounds().overlaps(e.getBounds())) {
+                    playerDied();
+                }
+            }
+            else if (e instanceof CactusEntity) {
+                if (e.getBounds().overlaps(player.getBounds())) {
+                    playerDied();
                 }
             }
         }
 
-        for (Entity e : newShots) {
-            createShot(e);
+        for (AbstractEntity e : newShots) {
+            createShot(e, true);
         }
 
         EntityStore.entityList.removeAll(removeList);
         checkCollisionWithBlocks(delta);
-        checkCollisionScore(score);
-        player.getVelocity().x *= DAMP;
+        player.getVelocity().x *= SLIDINGRANGE;
 
-        if (player.getVelocity().x > MAX_VEL) {
-            player.getVelocity().x = MAX_VEL;
+        if (player.getVelocity().x > SPEEDLIMIT) {
+            player.getVelocity().x = SPEEDLIMIT;
         }
-        if (player.getVelocity().x < -MAX_VEL) {
-            player.getVelocity().x = -MAX_VEL;
+        if (player.getVelocity().x < -SPEEDLIMIT) {
+            player.getVelocity().x = -SPEEDLIMIT;
         }
 
         player.update(delta);
@@ -179,6 +240,7 @@ public class WorldController {
         if (player.getPosition().y < 0) {
             player.getPosition().y = 0f;
             player.setPosition(player.getPosition());
+            grounded = true;
             if (player.getState().equals(State.JUMPING)) {
                 player.setState(State.IDLE);
             }
@@ -202,7 +264,7 @@ public class WorldController {
     }
 
     private boolean processInput() {
-        if (keys.get(Keys.JUMP)) {
+        if (keysPressed.get(Keys.JUMP)) {
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.JUMPING);
                 jumpingPressed = true;
@@ -213,7 +275,7 @@ public class WorldController {
             }
             else {
                 if (jumpingPressed
-                        && ((System.currentTimeMillis() - jumpPressedTime) >= LONG_JUMP_PRESS)) {
+                        && ((System.currentTimeMillis() - jumpPressedTime) >= JUMPTIMEGAP)) {
                     jumpingPressed = false;
                 }
                 else {
@@ -223,36 +285,39 @@ public class WorldController {
                 }
             }
         }
-        if (keys.get(Keys.LEFT)) {
+        if (keysPressed.get(Keys.LEFT)) {
 
+            player.setFacingLeft(true);
             if (!player.getState().equals(State.JUMPING)) {
-                player.setFacingLeft(true);
                 player.setState(State.WALKING);
             }
-            player.getAcceleration().x = -ACCELERATION;
+            player.getAcceleration().x = -PLAYER_ACCELERATION;
         }
-        else if (keys.get(Keys.RIGHT)) {
-
+        else if (keysPressed.get(Keys.RIGHT)) {
+            player.setFacingLeft(false);
             if (!player.getState().equals(State.JUMPING)) {
-                player.setFacingLeft(false);
                 player.setState(State.WALKING);
             }
-            player.getAcceleration().x = ACCELERATION;
+            player.getAcceleration().x = PLAYER_ACCELERATION;
         }
         else {
             player.getAcceleration().x = 0;
 
         }
-        if (keys.get(Keys.FIRE)) {
+        if (keysPressed.get(Keys.FIRE)) {
             if (!shooting) {
-                createShot(player);
+                createShot(player, false);
                 shooting = true;
             }
         }
         return false;
     }
 
-    private void createShot(Entity entity) {
+    private void playerDied() {
+        game.setDeadScreen();
+    }
+
+    private void createShot(AbstractEntity entity, boolean killsPlayer) {
 
         float x = 0, y = 0;
 
@@ -285,7 +350,7 @@ public class WorldController {
 
         }
 
-        ShotEntity shot = new ShotEntity(x, y);
+        ShotEntity shot = new ShotEntity(x, y, killsPlayer);
         shot.setFacingLeft(left);
         EntityStore.entityList.add(shot);
 
@@ -401,138 +466,67 @@ public class WorldController {
      * private void loseLife() { lives--; }
      */
 
-    /** Increment the High-Score based on input **/
-    private void incrementScore(int scoreUp) {
-        switch (scoreUp) {
-        case 1:
-            score += 50;
-            break;
-        case 2:
-            score += 100;
-            break;
-        case 3:
-            score += 500;
-            break;
-
-        default:
-            break;
-        }
-    }
-
     /** Checks the Collision for incrementScore **/
 
-    private void checkCollisionScore(int setScoreUp) {
-
-        Rectangle myRectForScore = new Rectangle();
-
-        myRectForScore.set(player.getBounds().x, player.getBounds().y,
-                player.getBounds().width, player.getBounds().height);
-
-        List<CoinEntity> collidedCoins = new ArrayList<CoinEntity>();
-
-        for (Entity entity : EntityStore.entityList) {
-            if (entity instanceof CoinEntity) {
-                CoinEntity coin = (CoinEntity) entity;
-
-                // Kollision mit irgendwas fuer Score + 50
-                if (myRectForScore.overlaps(coin.getBounds())) {
-                    setScoreUp(1);
-                    Assets.soundGetCoin.play();
-                    incrementScore(scoreUp);
-                    collidedCoins.add(coin);
-                }/*
-                  * // Kollision mit irgendwas fuer Score + 100 if
-                  * (myRectForScore.overlaps(coin.getBounds())) { setScoreUp(2);
-                  * incrementScore(scoreUp); }// Kollision mit irgendwas fuer
-                  * Score + 500 if (myRectForScore.overlaps(block.getBounds()))
-                  * { setScoreUp(3); incrementScore(scoreUp); }
-                  */
-            }
-        }
-
-        EntityStore.entityList.removeAll(collidedCoins);
-
-    }
+//    private void checkCollisionScore(int setScoreUp) {
+//
+//        Rectangle myRectForScore = new Rectangle();
+//
+//        myRectForScore.set(player.getBounds().x, player.getBounds().y,
+//                player.getBounds().width, player.getBounds().height);
+//
+//
+//
+//    }
 
     /** returns true of LEFT is pressed **/
 
     public void leftPressed() {
-        keys.get(keys.put(Keys.LEFT, true));
+        keysPressed.get(keysPressed.put(Keys.LEFT, true));
     }
 
     public void rightPressed() {
-        keys.get(keys.put(Keys.RIGHT, true));
+        keysPressed.get(keysPressed.put(Keys.RIGHT, true));
     }
 
     public void jumpPressed() {
         jumpingPressed = true;
-        keys.get(keys.put(Keys.JUMP, true));
+        keysPressed.get(keysPressed.put(Keys.JUMP, true));
     }
 
     public void firePressed() {
-        keys.get(keys.put(Keys.FIRE, true));
+        keysPressed.get(keysPressed.put(Keys.FIRE, true));
     }
 
     public void leftReleased() {
-        keys.get(keys.put(Keys.LEFT, false));
+        keysPressed.get(keysPressed.put(Keys.LEFT, false));
         if (grounded) {
             player.setState(State.IDLE);
         }
     }
 
     public void rightReleased() {
-        keys.get(keys.put(Keys.RIGHT, false));
+        keysPressed.get(keysPressed.put(Keys.RIGHT, false));
         if (grounded) {
             player.setState(State.IDLE);
         }
-
     }
 
     public void jumpReleased() {
-        keys.get(keys.put(Keys.JUMP, false));
+        keysPressed.get(keysPressed.put(Keys.JUMP, false));
         jumpingPressed = false;
     }
 
     public void fireReleased() {
-        keys.get(keys.put(Keys.FIRE, false));
+        keysPressed.get(keysPressed.put(Keys.FIRE, false));
     }
-
-    /** Returns the High-Score **/
-
-    public long getScore() {
-        return score;
-    }
-
-    /** Sets the High-Score **/
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    /** return lives **/
 
     public int getLives() {
         return lives;
     }
 
-    /** set lives **/
-
     public void setLives(int lives) {
         this.lives = lives;
-    }
-
-    /**
-     * returns scoreUp, this value decides which kind of score you get (50, 100
-     * or 500)
-     **/
-    public int getScoreUp() {
-        return scoreUp;
-    }
-
-    /** Set scoreUp **/
-
-    public void setScoreUp(int scoreUp) {
-        this.scoreUp = scoreUp;
     }
 
 }

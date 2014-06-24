@@ -1,4 +1,4 @@
-package de.comyoutech.cowboyandalien;
+package de.comyoutech.cowboyandalien.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -8,14 +8,28 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * Zuständig für das Laden aller Bilder/Sounds/Animationen etc.
+ * 
+ * @author All
+ * 
+ */
 public class Assets {
 
+    /**
+     * Sound-Objekte die verschiedene Sounds repräsentieren.
+     * Static für einfachen Zugriff.
+     */
     public static Sound soundJump;
     public static Sound soundGetCoin;
     public static Sound soundShot;
     public static Sound soundExplosion;
     public static Sound soundBackground;
 
+    /**
+     * Die zeitliche Länge in der ein einzelnes Bild in der Laufanimation
+     * angezeigt wird
+     */
     private static final float RUNANNIMATIONDURRATION = 0.06f;
 
     public static Texture textureExplosion;
@@ -33,6 +47,8 @@ public class Assets {
     public static Sprite backgroundSpriteLevel2;
     public static Texture textureBackgroundLevel3;
     public static Sprite backgroundSpriteLevel3;
+
+    public static TextureRegion textureSpike;
 
     public static TextureRegion texturePlayerIdleLeft;
     public static TextureRegion textureplayerIdleRight;
@@ -52,10 +68,10 @@ public class Assets {
 
     public static TextureRegion textureShot;
 
-    public Assets() {
-        load();
-    }
-
+    /**
+     * Startet das Laden aller Elemente.
+     * Danach ist jede Klassenvariable initialisiert und ansprechbar.
+     */
     public static void load() {
         loadSounds();
 
@@ -64,10 +80,11 @@ public class Assets {
         loadCertainTextures();
 
         loadBackgroundTextures();
-
-        loadCoins();
     }
 
+    /**
+     * Läd alle Sounds
+     */
     private static void loadSounds() {
         soundJump = getSound("sounds/jump.wav");
         soundGetCoin = getSound("sounds/coin2.wav");
@@ -76,6 +93,9 @@ public class Assets {
         soundBackground = getSound("sounds/background_music.mp3");
     }
 
+    /**
+     * Läd Texturen für den Spieler.
+     */
     private static void loadPlayerTextures() {
 
         TextureAtlas atlas = new TextureAtlas(
@@ -109,6 +129,9 @@ public class Assets {
 
     }
 
+    /**
+     * Läd verschiedene Bilder für z.Bsp. Gegner/Schuss/Hindernis
+     */
     private static void loadCertainTextures() {
 
         textureShot = new TextureRegion(new Texture(
@@ -121,8 +144,23 @@ public class Assets {
         textureObstacle = new TextureRegion(new Texture(
                 Gdx.files.internal("textures/Kacktus.png")));
 
+        textureCoin = new Texture(Gdx.files.internal("textures/coin.gif"));
+        spriteCoin = new Sprite(textureCoin);
+        spriteCoin.flip(true, false);
+
+        textureSpike = new TextureRegion(new Texture(
+                Gdx.files.internal("textures/spike.png")));
+
+        textureBlockGround = new TextureRegion(new Texture(
+                Gdx.files.internal("images/block_neu3.png")));
+
+        textureBlockPlatform = new TextureRegion(new Texture(
+                Gdx.files.internal("images/block_neu2.png")));
     }
 
+    /**
+     * Läd Bilder die als Hintergrund angezeigt werden.
+     */
     private static void loadBackgroundTextures() {
         textureBackgroundLevel1 = new Texture(
                 Gdx.files.internal("backgrounds/background.png"));
@@ -135,18 +173,14 @@ public class Assets {
         backgroundSpriteLevel2 = new Sprite(textureBackgroundLevel2);
         backgroundSpriteLevel2.flip(true, false);
 
-        textureBlockGround = new TextureRegion(new Texture(
-                Gdx.files.internal("images/block_neu3.png")));
-        textureBlockPlatform = new TextureRegion(new Texture(
-                Gdx.files.internal("images/block_neu2.png")));
     }
 
-    private static void loadCoins() {
-        textureCoin = new Texture(Gdx.files.internal("textures/coin.gif"));
-        spriteCoin = new Sprite(textureCoin);
-        spriteCoin.flip(true, false);
-    }
-
+    /**
+     * Läd einen Sound aus einem angegebenen Pfad.
+     * 
+     * @param path Pfad unter dem der Sound zu finden ist.
+     * @return Den Sound.
+     */
     private static Sound getSound(String path) {
         return Gdx.audio.newSound(Gdx.files.internal(path));
     }

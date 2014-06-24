@@ -2,11 +2,13 @@ package de.comyoutech.cowboyandalien.entities;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class ShotEntity extends Entity {
+public class ShotEntity extends AbstractEntity {
 
-    private final float SPEED = 10f;
+    private final float SPEED = 5f;
 
     public boolean left;
+
+    public boolean killsPlayer;
 
     private boolean facingLeft;
 
@@ -22,8 +24,9 @@ public class ShotEntity extends Entity {
         return SPEED;
     }
 
-    public ShotEntity(float x, float y) {
+    public ShotEntity(float x, float y, boolean killsPlayer) {
         super(x, y);
+        this.killsPlayer = killsPlayer;
     }
 
     public ShotEntity(float x, float y, float size) {

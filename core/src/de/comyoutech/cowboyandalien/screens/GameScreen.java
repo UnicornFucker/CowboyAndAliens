@@ -1,18 +1,28 @@
-package de.comyoutech.cowboyandalien;
+package de.comyoutech.cowboyandalien.screens;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 
+import de.comyoutech.cowboyandalien.controller.MyGdxGame;
+import de.comyoutech.cowboyandalien.controller.WorldController;
 import de.comyoutech.cowboyandalien.model.EntityStore;
+import de.comyoutech.cowboyandalien.view.WorldRenderer;
 
+/**
+ * Der Screen der das Spiel repräsentiert.
+ * 
+ * @author BrookZ
+ * 
+ */
 public class GameScreen implements Screen, InputProcessor {
 
     private WorldRenderer renderer;
+
     private WorldController controller;
+
     private MyGdxGame game;
 
     private int width, height;
@@ -23,18 +33,14 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void show() {
-        Assets.load();
         EntityStore.setUp();
-        renderer = new WorldRenderer(false, game);
-        controller = new WorldController();
+        renderer = new WorldRenderer();
+        controller = new WorldController(game);
         Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         controller.update(delta);
         renderer.render();
     }
@@ -69,9 +75,6 @@ public class GameScreen implements Screen, InputProcessor {
         }
         if (keycode == Keys.X) {
             controller.fireReleased();
-        }
-        if (keycode == Keys.D) {
-            renderer.setDebug(!renderer.isDebug());
         }
         if (keycode == Keys.ESCAPE) {
             System.exit(0);

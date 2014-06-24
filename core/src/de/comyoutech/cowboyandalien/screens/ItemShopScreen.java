@@ -1,4 +1,4 @@
-package de.comyoutech.cowboyandalien;
+package de.comyoutech.cowboyandalien.screens;
 
 import java.util.ArrayList;
 
