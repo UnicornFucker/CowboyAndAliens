@@ -1,33 +1,26 @@
 package de.comyoutech.cowboyandalien.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import de.comyoutech.cowboyandalien.items.AbstractItem;
-
+/**
+ * Collects several datas.
+ * 
+ * @author BrookZ
+ * 
+ */
 public class DataCollector {
 
+    /**
+     * Singleton-object.
+     */
     private static DataCollector collector;
 
-    private List<AbstractItem> items;
+    /**
+     * The coins the player has earned.
+     */
     private int coins = 0;
+    /**
+     * The coins the player has collected in one lifecycle.
+     */
     private int tempCoins = 0;
-
-    private DataCollector() {
-        items = new ArrayList<AbstractItem>();
-    }
-
-    public List<AbstractItem> getItems() {
-        return items;
-    }
-
-    public void addItems(List<AbstractItem> itemList) {
-        items.addAll(itemList);
-    }
-
-    public void addItem(AbstractItem item) {
-        items.add(item);
-    }
 
     public int getCoins() {
         return coins;

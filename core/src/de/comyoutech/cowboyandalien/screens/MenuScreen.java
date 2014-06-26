@@ -1,35 +1,41 @@
 package de.comyoutech.cowboyandalien.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.comyoutech.cowboyandalien.controller.MyGdxGame;
 
-public class MenuScreen implements Screen, InputProcessor {
+/**
+ * The main menu screen.
+ * 
+ * @author BrookZ
+ * 
+ */
+public class MenuScreen extends AbstractScreen {
 
-    private SpriteBatch spriteBatch;
+    /**
+     * The font that is drawn on the screen.
+     */
     private BitmapFont font;
+    /**
+     * The String that tells you what to do to start the game.
+     */
     private CharSequence str = "Klick to start";
-    private MyGdxGame game;
 
     public MenuScreen(MyGdxGame game) {
-        this.game = game;
+        super(game);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        spriteBatch = new SpriteBatch();
         font = new BitmapFont();
 
-        spriteBatch.begin();
-        font.draw(spriteBatch, str, 500, 500);
-        spriteBatch.end();
+        batch.begin();
+        font.draw(batch, str, 500, 500);
+        batch.end();
     }
 
     @Override

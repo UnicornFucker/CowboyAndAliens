@@ -1,7 +1,16 @@
 package de.comyoutech.cowboyandalien.entities;
 
+/**
+ * Represents a coin.
+ * 
+ * @author BrookZ
+ * 
+ */
 public class CoinEntity extends AbstractEntity {
 
+    /**
+     * If the Coin is a Super coin.
+     */
     public boolean iAmSuper;
 
     public CoinEntity(float x, float y) {

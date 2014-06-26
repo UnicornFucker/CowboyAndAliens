@@ -1,22 +1,50 @@
 package de.comyoutech.cowboyandalien.entities;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Represents the player.
+ * 
+ * @author BrookZ
+ * 
+ */
 public class PlayerEntity extends AbstractEntity {
+
+    /**
+     * Enum for several player states.
+     * 
+     * @author BrookZ
+     * 
+     */
     public enum State {
         IDLE, WALKING, JUMPING, DYING
     }
 
+    /**
+     * The speed of the player.
+     */
     static final float SPEED = 4f;
-    static final float JUMP_VELOCITY = 2f; // Sprunghöhe
+    /**
+     * The jump velocity.
+     */
+    static final float JUMP_VELOCITY = 2f;
+    /**
+     * The acceleration of the player.
+     */
     private Vector2 acceleration = new Vector2();
+    /**
+     * The velocity of the player.
+     */
     private Vector2 velocity = new Vector2();
+    /**
+     * If the player is facing left.
+     */
     boolean facingLeft = true;
 
-    private Animation animation;
+    /**
+     * The state of the player.
+     */
     State state = State.IDLE;
-    boolean longJump = false;
 
     public PlayerEntity(float x, float y) {
         super(x, y);
@@ -24,22 +52,6 @@ public class PlayerEntity extends AbstractEntity {
 
     public boolean isFacingLeft() {
         return facingLeft;
-    }
-
-    public Animation getAnimation() {
-        return animation;
-    }
-
-    public void setAnimation(Animation animation) {
-        this.animation = animation;
-    }
-
-    public boolean isLongJump() {
-        return longJump;
-    }
-
-    public void setLongJump(boolean longJump) {
-        this.longJump = longJump;
     }
 
     public void setFacingLeft(boolean facingLeft) {

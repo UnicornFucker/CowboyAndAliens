@@ -13,6 +13,7 @@ import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.CactusEntity;
 import de.comyoutech.cowboyandalien.entities.CoinEntity;
 import de.comyoutech.cowboyandalien.entities.EnemyEntity;
+import de.comyoutech.cowboyandalien.entities.GateEntity;
 import de.comyoutech.cowboyandalien.entities.MovableBlockEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity.State;
@@ -24,37 +25,119 @@ import de.comyoutech.cowboyandalien.model.EntityStore;
 
 public class WorldController {
 
+    /**
+     * Enum for all pressable keys.
+     * 
+     * @author BrookZ
+     * 
+     */
     enum Keys {
         LEFT, RIGHT, JUMP, FIRE
     }
 
+    /**
+     * List of actual pressed keys.
+     */
     static Map<Keys, Boolean> keysPressed = new HashMap<WorldController.Keys, Boolean>();
+
+    /**
+     * 
+     */
     private final long JUMPTIMEGAP = 150l;
+    /**
+     * Acceleration of the player.
+     */
     private final float PLAYER_ACCELERATION = 20f;
+    /**
+     * Gravity of the world.
+     */
     private final float GRAVITY = -17f;
+    /**
+     * Maximum jump Speed.
+     */
     private final float MAX_JUMP_SPEED = 7f;
-    private final float SLIDINGRANGE = 0.90f;
+    /**
+     * Sliding range of the player if the ground is stone.
+     */
+    private final float SLIDINGRANGEBLOCK = 0.90f;
+    /**
+     * Sliding range of the player if the ground is ice.
+     */
+    private final float SLIDINGRANGEICE = 0.98f;
+
+    /**
+     * Limit of the player speed.
+     */
     private final float SPEEDLIMIT = 4f;
 
+    /**
+     * If the player is currently slidung.
+     */
+    private boolean sliding = false;
+
+    /**
+     * Game Object for switching screens.
+     */
     private MyGdxGame game;
 
+    /**
+     * Player object.
+     */
     private PlayerEntity player;
+
+    /**
+     * Collects data like coins.
+     */
     private DataCollector collector;
 
+    /**
+     * Time between 2 Shots.
+     */
     private final float shotPressedTimeMax = 1F;
+
+    /**
+     * Time between 2 shots of an enemy.
+     */
     private final float shotTimeMaxEnemy = 1F;
+
+    /**
+     * Time when the last shot was fired.
+     */
     private float shotPressedTime = 0;
 
+    /**
+     * Time since the last jump.
+     */
     private long jumpPressedTime;
+    /**
+     * If the player is jumping.
+     */
     private boolean jumpingPressed;
+    /**
+     * If the player is standing on the ground.
+     */
     private boolean grounded = false;
 
+    /**
+     * The width of the level.
+     */
     private static final float WIDTH = 1000f;
 
+    /**
+     * If the player is shooting.
+     */
     private boolean shooting;
-    private int lives = 3;
+
+    /**
+     * List of all blocks the player can collide with.
+     */
     private final List<BlockEntity> collidable = new ArrayList<BlockEntity>();
 
+    /**
+     * Constructor.
+     * 
+     * @param game
+     */
     public WorldController(MyGdxGame game) {
         player = EntityStore.player;
         keysPressed.put(Keys.LEFT, false);
@@ -65,7 +148,9 @@ public class WorldController {
         collector = DataCollector.getInstance();
     }
 
-    /** The main update method **/
+    /**
+     * The main update method
+     * */
     public void update(float delta) {
 
         processInput();
@@ -97,7 +182,7 @@ public class WorldController {
 
                 if (shot.getBounds().overlaps(player.getBounds())
                         && shot.killsPlayer) {
-                    playerDied();
+                    performPlayerDied();
                 }
 
                 if (shot.isFacingLeft()) {
@@ -116,14 +201,24 @@ public class WorldController {
                         if (en.getBounds().overlaps(shot.getBounds())) {
                             if (!shot.killsPlayer) {
                                 removeList.add(shot);
-                                removeList.add(en);
+
+                                EnemyEntity enemy = (EnemyEntity) en;
+                                enemy.wasShooten();
+
+                                if (enemy.getLives() < 1) {
+
+                                    removeList.add(en);
+                                }
                             }
                         }
                     }
                     else if (en instanceof MovableBlockEntity) {
                         if (en.getBounds().overlaps(shot.getBounds())) {
-                            removeList.add(en);
-                            removeList.add(shot);
+                            if (!shot.killsPlayer) {
+
+                                removeList.add(en);
+                                removeList.add(shot);
+                            }
                         }
                     }
 
@@ -140,23 +235,45 @@ public class WorldController {
                     newShots.add(enemy);
                 }
 
+                BlockEntity collidedBlock = null;
+
                 for (AbstractEntity en : EntityStore.entityList) {
                     if (en instanceof BlockEntity) {
+                        if (en.getBounds().overlaps(enemy.getBounds())) {
+                            collidedBlock = (BlockEntity) en;
+                            enemy.switchDirection();
+                        }
+                    }
+                    if (en instanceof SpikeEntity) {
                         if (en.getBounds().overlaps(enemy.getBounds())) {
                             enemy.switchDirection();
                         }
                     }
                 }
-
                 if (enemy.getBounds().overlaps(player.getBounds())) {
-                    playerDied();
+                    performPlayerDied();
                 }
-
                 if (enemy.facingLeft) {
-                    enemy.getPosition().x -= enemy.getSpeed() * delta;
+                    if (collidedBlock != null) {
+                        while (collidedBlock.getBounds().overlaps(
+                                enemy.getBounds())) {
+                            enemy.getPosition().x -= enemy.getSpeed() * delta;
+                        }
+                    }
+                    else {
+                        enemy.getPosition().x -= enemy.getSpeed() * delta;
+                    }
                 }
                 else {
-                    enemy.getPosition().x += enemy.getSpeed() * delta;
+                    if (collidedBlock != null) {
+                        while (collidedBlock.getBounds().overlaps(
+                                enemy.getBounds())) {
+                            enemy.getPosition().x += enemy.getSpeed() * delta;
+                        }
+                    }
+                    else {
+                        enemy.getPosition().x += enemy.getSpeed() * delta;
+                    }
                 }
 
             }
@@ -164,25 +281,25 @@ public class WorldController {
                 MovableBlockEntity block = (MovableBlockEntity) e;
 
                 if (block.getBounds().overlaps(player.getBounds())) {
-                    playerDied();
+                    performPlayerDied();
                 }
 
                 if (block.vertical) {
                     if (block.moveForward) {
-                        float difference = block.SPEED * delta;
+                        float difference = block.SPEEDFINAL * delta;
                         block.getPosition().y += difference;
                     }
                     else {
-                        float difference = block.SPEED * delta;
+                        float difference = block.SPEEDFINAL * delta;
                         block.getPosition().y -= difference;
                     }
                 }
                 else {
                     if (block.moveForward) {
-                        block.getPosition().x += block.SPEED * delta;
+                        block.getPosition().x += block.SPEEDFINAL * delta;
                     }
                     else {
-                        block.getPosition().x -= block.SPEED * delta;
+                        block.getPosition().x -= block.SPEEDFINAL * delta;
                     }
                 }
                 block.checkRange();
@@ -190,7 +307,7 @@ public class WorldController {
             else if (e instanceof CactusEntity) {
                 CactusEntity hole = (CactusEntity) e;
                 if (hole.getBounds().overlaps(player.getBounds())) {
-                    playerDied();
+                    performPlayerDied();
                 }
             }
             else if (e instanceof CoinEntity) {
@@ -210,23 +327,42 @@ public class WorldController {
             }
             else if (e instanceof SpikeEntity) {
                 if (player.getBounds().overlaps(e.getBounds())) {
-                    playerDied();
+                    performPlayerDied();
                 }
             }
             else if (e instanceof CactusEntity) {
                 if (e.getBounds().overlaps(player.getBounds())) {
-                    playerDied();
+                    performPlayerDied();
+                }
+            }
+            else if (e instanceof GateEntity) {
+                if (e.getBounds().overlaps(player.getBounds())) {
+                    performPlayerSolvedLevel();
                 }
             }
         }
 
         for (AbstractEntity e : newShots) {
-            createShot(e, true);
+            if (e instanceof EnemyEntity) {
+                if (!((EnemyEntity) e).iAmSuper) {
+                    createShot(e, true);
+                }
+            }
         }
 
         EntityStore.entityList.removeAll(removeList);
         checkCollisionWithBlocks(delta);
-        player.getVelocity().x *= SLIDINGRANGE;
+
+        float range;
+
+        if (sliding) {
+            range = SLIDINGRANGEICE;
+        }
+        else {
+            range = SLIDINGRANGEBLOCK;
+        }
+
+        player.getVelocity().x *= range;
 
         if (player.getVelocity().x > SPEEDLIMIT) {
             player.getVelocity().x = SPEEDLIMIT;
@@ -263,7 +399,10 @@ public class WorldController {
 
     }
 
-    private boolean processInput() {
+    /**
+     * Processes the User input.
+     */
+    private void processInput() {
         if (keysPressed.get(Keys.JUMP)) {
             if (!player.getState().equals(State.JUMPING)) {
                 player.setState(State.JUMPING);
@@ -310,13 +449,28 @@ public class WorldController {
                 shooting = true;
             }
         }
-        return false;
     }
 
-    private void playerDied() {
+    /**
+     * What happens if the player dies.
+     */
+    private void performPlayerDied() {
         game.setDeadScreen();
     }
 
+    /**
+     * What happes if the player solves the level.
+     */
+    private void performPlayerSolvedLevel() {
+        game.setLevelSolvedScreen();
+    }
+
+    /**
+     * Creates a shot based on the position of the entity.
+     * 
+     * @param entity
+     * @param killsPlayer
+     */
     private void createShot(AbstractEntity entity, boolean killsPlayer) {
 
         float x = 0, y = 0;
@@ -338,6 +492,7 @@ public class WorldController {
         else if (entity instanceof EnemyEntity) {
 
             EnemyEntity enemy = (EnemyEntity) entity;
+
             if (enemy.isFacingLeft()) {
                 x = enemy.getPosition().x;
                 left = true;
@@ -356,7 +511,11 @@ public class WorldController {
 
     }
 
-    /** Collision checking **/
+    /**
+     * Checks if the player collides with a block.
+     * 
+     * @param delta
+     */
     private void checkCollisionWithBlocks(float delta) {
 
         player.getVelocity().scl(delta);
@@ -422,6 +581,16 @@ public class WorldController {
             }
             if (myRect.overlaps(block.getBounds())) {
                 if (player.getVelocity().y < 0) {
+                    if (block.isIce) {
+                        if (!sliding) {
+                            sliding = true;
+                        }
+                    }
+                    else {
+                        if (sliding) {
+                            sliding = false;
+                        }
+                    }
                     if (!grounded) {
                         player.setState(State.IDLE);
                     }
@@ -443,9 +612,8 @@ public class WorldController {
     }
 
     /**
-     * populate the collidable array with the blocks found in the enclosing
-     * coordinates
-     **/
+     * Adds all collidable blocks to the list.
+     */
     private void populateCollidableBlocks(int startX, int startY, int endX,
             int endY) {
         collidable.clear();
@@ -456,48 +624,38 @@ public class WorldController {
         }
     }
 
-    /*
-     * private void checkExtraLive() {
-     * 
-     * if (score >= extraLiveScore) { lives++; extraLiveScore += 10000; }
-     * 
-     * }
-     * 
-     * private void loseLife() { lives--; }
+    /**
+     * Called if left key is pressed.
      */
-
-    /** Checks the Collision for incrementScore **/
-
-//    private void checkCollisionScore(int setScoreUp) {
-//
-//        Rectangle myRectForScore = new Rectangle();
-//
-//        myRectForScore.set(player.getBounds().x, player.getBounds().y,
-//                player.getBounds().width, player.getBounds().height);
-//
-//
-//
-//    }
-
-    /** returns true of LEFT is pressed **/
-
     public void leftPressed() {
         keysPressed.get(keysPressed.put(Keys.LEFT, true));
     }
 
+    /**
+     * Called if right key is pressed.
+     */
     public void rightPressed() {
         keysPressed.get(keysPressed.put(Keys.RIGHT, true));
     }
 
+    /**
+     * Called if jump key is pressed.
+     */
     public void jumpPressed() {
         jumpingPressed = true;
         keysPressed.get(keysPressed.put(Keys.JUMP, true));
     }
 
+    /**
+     * Called if fire key is pressed.
+     */
     public void firePressed() {
         keysPressed.get(keysPressed.put(Keys.FIRE, true));
     }
 
+    /**
+     * Called if left key is released.
+     */
     public void leftReleased() {
         keysPressed.get(keysPressed.put(Keys.LEFT, false));
         if (grounded) {
@@ -505,6 +663,9 @@ public class WorldController {
         }
     }
 
+    /**
+     * Called if right key is released.
+     */
     public void rightReleased() {
         keysPressed.get(keysPressed.put(Keys.RIGHT, false));
         if (grounded) {
@@ -512,21 +673,19 @@ public class WorldController {
         }
     }
 
+    /**
+     * Called if jump key is released.
+     */
     public void jumpReleased() {
         keysPressed.get(keysPressed.put(Keys.JUMP, false));
         jumpingPressed = false;
     }
 
+    /**
+     * Called if fire key is released.
+     */
     public void fireReleased() {
         keysPressed.get(keysPressed.put(Keys.FIRE, false));
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
     }
 
 }

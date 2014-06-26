@@ -9,66 +9,69 @@ import com.badlogic.gdx.utils.Array;
 import de.comyoutech.cowboyandalien.entities.AbstractEntity;
 import de.comyoutech.cowboyandalien.entities.BlockEntity;
 import de.comyoutech.cowboyandalien.entities.PlayerEntity;
-import de.comyoutech.cowboyandalien.view.WorldRenderer;
 
+/**
+ * Stores all entities and some general informations.
+ * 
+ * @author BrookZ
+ * 
+ */
 public class EntityStore {
 
-    static WorldRenderer render = new WorldRenderer();
-
+    /**
+     * The player object.
+     */
     public static PlayerEntity player;
+    /**
+     * The width of a level.
+     */
     public static float levelWidth = 10F;
+    /**
+     * The height of a level.
+     */
     public static float levelHeight = 7F;
 
+    /**
+     * The list that stores all entities.
+     */
     public static List<AbstractEntity> entityList;
+    /**
+     * Rectangles with which the player can collide.
+     */
     public static Array<Rectangle> collisionRects = new Array<Rectangle>();
-    public static boolean playerIsDead;
 
+    /**
+     * Sets up the store.
+     */
     public static void setUp() {
         entityList = new ArrayList<AbstractEntity>();
         player = EntityGenerator.generatePlayer();
         generateSomeContent();
-        playerIsDead = false;
     }
 
+    /**
+     * Generates content in the entityList.
+     */
     private static void generateSomeContent() {
         EntityGenerator.generateLevelIn(entityList);
     }
 
+    /**
+     * Removes an entity from the list.
+     * 
+     * @param e the Entity to remvome.
+     */
     public static void remove(AbstractEntity e) {
         entityList.remove(e);
     }
 
-    public static List<BlockEntity> getDrawableBlocks(int width, int height) {
-        int x = (int) player.getPosition().x - width;
-        int y = (int) player.getPosition().y - height;
-        if (x < 0) {
-            x = 0;
-        }
-        if (y < 0) {
-            y = 0;
-        }
-        int x2 = x + (2 * width);
-        int y2 = y + (2 * height);
-        if (x2 > levelHeight) {
-            x2 = (int) levelWidth - 1;
-        }
-        if (y2 > levelHeight) {
-            y2 = (int) levelHeight - 1;
-        }
-
-        List<BlockEntity> blocks = new ArrayList<BlockEntity>();
-        BlockEntity block;
-        for (int col = x; col <= x2; col++) {
-            for (int row = y; row <= y2; row++) {
-                block = get(col, row);
-                if (block != null) {
-                    blocks.add(block);
-                }
-            }
-        }
-        return blocks;
-    }
-
+    /**
+     * Returns the Block on the specified position.
+     * 
+     * @param x The x-position.
+     * @param y The y-position.
+     * @return
+     */
     public static BlockEntity get(int x, int y) {
         for (AbstractEntity e : entityList) {
             if (e instanceof BlockEntity) {

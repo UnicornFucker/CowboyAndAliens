@@ -1,18 +1,31 @@
 package de.comyoutech.cowboyandalien.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.Game;
 
-import de.comyoutech.cowboyandalien.items.AbstractItem;
 import de.comyoutech.cowboyandalien.model.Assets;
 import de.comyoutech.cowboyandalien.model.DataCollector;
+import de.comyoutech.cowboyandalien.model.EntityStore;
 import de.comyoutech.cowboyandalien.screens.DeadScreen;
 import de.comyoutech.cowboyandalien.screens.GameScreen;
+import de.comyoutech.cowboyandalien.screens.LevelScreen;
 import de.comyoutech.cowboyandalien.screens.MenuScreen;
 
 public class MyGdxGame extends Game {
+
+    /**
+     * Enum for game states.
+     * 
+     * @author BrookZ
+     * 
+     */
+    public enum GameState {
+        PAUSE, RUN,
+    }
+
+    /**
+     * State of the game.
+     */
+    public GameState gameState = GameState.RUN;
 
     @Override
     public void create() {
@@ -21,17 +34,21 @@ public class MyGdxGame extends Game {
         Assets.load();
     }
 
+    /**
+     * Initializes Datas.
+     */
     private void initializeCollector() {
         DataCollector collector = DataCollector.getInstance();
 
         int coins = 0;
-        List<AbstractItem> itemList = new ArrayList<AbstractItem>();
 
         collector.addCoins(coins);
-        collector.addItems(itemList);
 
     }
 
+    /**
+     * Sets the MenuScreen as the actual Screen.
+     */
     public void setMenuScreen() {
         setScreen(new MenuScreen(this));
     }
@@ -41,12 +58,26 @@ public class MyGdxGame extends Game {
         super.render();
     }
 
+    /**
+     * Sets the GameScreen as the actual Screen.
+     */
     public void setGameScreen() {
+        EntityStore.setUp();
         setScreen(new GameScreen(this));
     }
 
+    /**
+     * Sets the DeadScreen as the actual Screen.
+     */
     public void setDeadScreen() {
         setScreen(new DeadScreen(this));
+    }
+
+    /**
+     * Sets the LevelSolvedScreen as the actual Screen.
+     */
+    public void setLevelSolvedScreen() {
+        setScreen(new LevelScreen(this));
     }
 
 }

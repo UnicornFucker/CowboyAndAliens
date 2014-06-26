@@ -3,12 +3,11 @@ package de.comyoutech.cowboyandalien.screens;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 
 import de.comyoutech.cowboyandalien.controller.MyGdxGame;
+import de.comyoutech.cowboyandalien.controller.MyGdxGame.GameState;
 import de.comyoutech.cowboyandalien.controller.WorldController;
-import de.comyoutech.cowboyandalien.model.EntityStore;
+import de.comyoutech.cowboyandalien.model.Assets;
 import de.comyoutech.cowboyandalien.view.WorldRenderer;
 
 /**
@@ -17,23 +16,30 @@ import de.comyoutech.cowboyandalien.view.WorldRenderer;
  * @author BrookZ
  * 
  */
-public class GameScreen implements Screen, InputProcessor {
+public class GameScreen extends AbstractScreen {
 
+    /**
+     * Renderer-object.
+     */
     private WorldRenderer renderer;
 
+    /**
+     * Controller-object.
+     */
     private WorldController controller;
 
-    private MyGdxGame game;
-
+    /**
+     * Width and height of the level.
+     */
     private int width, height;
 
     public GameScreen(MyGdxGame game) {
-        this.game = game;
+        super(game);
     }
 
     @Override
     public void show() {
-        EntityStore.setUp();
+        Assets.soundBackground.loop();
         renderer = new WorldRenderer();
         controller = new WorldController(game);
         Gdx.input.setInputProcessor(this);
@@ -41,8 +47,10 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        controller.update(delta);
-        renderer.render();
+        if (delta < 0.1) {
+            controller.update(delta);
+            renderer.render();
+        }
     }
 
     @Override
@@ -76,8 +84,13 @@ public class GameScreen implements Screen, InputProcessor {
         if (keycode == Keys.X) {
             controller.fireReleased();
         }
-        if (keycode == Keys.ESCAPE) {
-            System.exit(0);
+        if (keycode == Keys.P) {
+            if (game.gameState == GameState.RUN) {
+                game.gameState = GameState.PAUSE;
+            }
+            else if (game.gameState == GameState.PAUSE) {
+                game.gameState = GameState.PAUSE;
+            }
         }
         return true;
     }
@@ -123,6 +136,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void pause() {
+        game.gameState = GameState.PAUSE;
     }
 
     @Override

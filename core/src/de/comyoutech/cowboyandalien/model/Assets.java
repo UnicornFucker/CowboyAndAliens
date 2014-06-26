@@ -5,7 +5,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
@@ -25,19 +24,19 @@ public class Assets {
     public static Sound soundShot;
     public static Sound soundExplosion;
     public static Sound soundBackground;
+    public static Sound soundBackgroundBoss;
 
     /**
      * Die zeitliche Länge in der ein einzelnes Bild in der Laufanimation
      * angezeigt wird
      */
-    private static final float RUNANNIMATIONDURRATION = 0.06f;
+    private static final float RUNANNIMATIONDURRATION = 0.12f;
 
     public static Texture textureExplosion;
 
     public static TextureRegion texturePlayerLeft;
 
-    public static Texture textureCoin;
-    public static Sprite spriteCoin;
+    public static TextureRegion textureCoin;
 
     public static Texture textureBackgroundLevel1;
     public static Sprite backgroundSpriteLevel1;
@@ -48,15 +47,20 @@ public class Assets {
     public static Texture textureBackgroundLevel3;
     public static Sprite backgroundSpriteLevel3;
 
+    public static TextureRegion textureGate;
+
     public static TextureRegion textureSpike;
 
+    public static TextureRegion textureBoss;
+
     public static TextureRegion texturePlayerIdleLeft;
-    public static TextureRegion textureplayerIdleRight;
+    public static TextureRegion texturePlayerIdleRight;
     public static Animation animationWalkLeft;
     public static Animation animationWalkRight;
     public static TextureRegion textureJumpLeft;
     public static TextureRegion textureFallLeft;
     public static TextureRegion[] playerFrames;
+    public static TextureRegion textureIceBlock;
 
     public static TextureRegion textureEnemyUfo;
     public static TextureRegion textureObstacle;
@@ -91,6 +95,7 @@ public class Assets {
         soundExplosion = getSound("sounds/explosion.wav");
         soundShot = getSound("sounds/shito1.wav");
         soundBackground = getSound("sounds/background_music.mp3");
+        soundBackgroundBoss = getSound("sounds/boss.mp3");
     }
 
     /**
@@ -98,34 +103,32 @@ public class Assets {
      */
     private static void loadPlayerTextures() {
 
-        TextureAtlas atlas = new TextureAtlas(
-                Gdx.files.internal("images/textures/textures.pack"));
+        texturePlayerIdleRight = getTextureRegion("player/stand.png");
 
-        texturePlayerIdleLeft = atlas.findRegion("bob-01");
+        texturePlayerIdleLeft = new TextureRegion(texturePlayerIdleRight);
+        texturePlayerIdleLeft.flip(true, false);
 
-        textureplayerIdleRight = new TextureRegion(texturePlayerIdleLeft);
-        textureplayerIdleRight.flip(true, false);
-
-        TextureRegion[] walkLeftFrames = new TextureRegion[5];
-        for (int i = 0; i < 5; i++) {
-            walkLeftFrames[i] = atlas.findRegion("bob-0" + (i + 2));
-        }
-
-        animationWalkLeft = new Animation(RUNANNIMATIONDURRATION,
-                walkLeftFrames);
-
-        TextureRegion[] walkRightFrames = new TextureRegion[5];
-
-        for (int i = 0; i < 5; i++) {
-            walkRightFrames[i] = new TextureRegion(walkLeftFrames[i]);
-            walkRightFrames[i].flip(true, false);
+        TextureRegion[] walkRightFrames = new TextureRegion[3];
+        for (int i = 0; i < 3; i++) {
+            walkRightFrames[i] = new TextureRegion(new Texture(
+                    Gdx.files.internal("player/walking" + (i + 1) + ".png")));
         }
 
         animationWalkRight = new Animation(RUNANNIMATIONDURRATION,
                 walkRightFrames);
 
-        textureJumpLeft = atlas.findRegion("bob-up");
-        textureFallLeft = atlas.findRegion("bob-down");
+        TextureRegion[] walkLeftFrames = new TextureRegion[3];
+
+        for (int i = 0; i < 3; i++) {
+            walkLeftFrames[i] = new TextureRegion(walkRightFrames[i]);
+            walkLeftFrames[i].flip(true, false);
+        }
+
+        animationWalkLeft = new Animation(RUNANNIMATIONDURRATION,
+                walkLeftFrames);
+
+        textureJumpLeft = getTextureRegion("player/jump1.png");
+        textureFallLeft = getTextureRegion("player/jump2.png");
 
     }
 
@@ -134,28 +137,29 @@ public class Assets {
      */
     private static void loadCertainTextures() {
 
-        textureShot = new TextureRegion(new Texture(
-                Gdx.files.internal("images/bullet-flame.png")));
-        textureEnemy = new TextureRegion(new Texture(
-                Gdx.files.internal("enemy/Monster.png")));
-        textureEnemyUfo = new TextureRegion(new Texture(
-                Gdx.files.internal("enemy/ufo.png")));
+        textureShot = getTextureRegion("images/bullet-flame.png");
+        textureEnemy = getTextureRegion("enemy/Monster.png");
+        textureEnemyUfo = getTextureRegion("enemy/ufo.png");
 
-        textureObstacle = new TextureRegion(new Texture(
-                Gdx.files.internal("textures/Kacktus.png")));
+        textureObstacle = getTextureRegion("textures/Kacktus.png");
 
-        textureCoin = new Texture(Gdx.files.internal("textures/coin.gif"));
-        spriteCoin = new Sprite(textureCoin);
-        spriteCoin.flip(true, false);
+        textureCoin = getTextureRegion("textures/coin.gif");
 
-        textureSpike = new TextureRegion(new Texture(
-                Gdx.files.internal("textures/spike.png")));
+        textureGate = getTextureRegion("textures/gate.png");
 
-        textureBlockGround = new TextureRegion(new Texture(
-                Gdx.files.internal("images/block_neu3.png")));
+        textureSpike = getTextureRegion("textures/spike.png");
 
-        textureBlockPlatform = new TextureRegion(new Texture(
-                Gdx.files.internal("images/block_neu2.png")));
+        textureBlockGround = getTextureRegion("images/block_neu3.png");
+
+        textureBlockPlatform = getTextureRegion("images/block_neu2.png");
+
+        textureBoss = getTextureRegion("enemy/final_boss.png");
+
+        textureIceBlock = getTextureRegion("textures/iceblock.png");
+    }
+
+    private static TextureRegion getTextureRegion(String string) {
+        return new TextureRegion(new Texture(Gdx.files.internal(string)));
     }
 
     /**

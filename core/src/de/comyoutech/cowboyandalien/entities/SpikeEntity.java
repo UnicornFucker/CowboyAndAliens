@@ -1,5 +1,11 @@
 package de.comyoutech.cowboyandalien.entities;
 
+/**
+ * Represents a Spike Entity.
+ * 
+ * @author BrookZ
+ * 
+ */
 public class SpikeEntity extends AbstractEntity {
 
     public SpikeEntity(float x, float y) {

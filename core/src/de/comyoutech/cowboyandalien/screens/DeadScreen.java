@@ -2,36 +2,51 @@ package de.comyoutech.cowboyandalien.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.comyoutech.cowboyandalien.controller.MyGdxGame;
 import de.comyoutech.cowboyandalien.model.DataCollector;
 
-public class DeadScreen implements InputProcessor, Screen {
+/**
+ * The Screen that is shown if the player dies.
+ * 
+ * @author BrookZ
+ * 
+ */
+public class DeadScreen extends AbstractScreen {
 
-    private MyGdxGame game;
-    private SpriteBatch spriteBatch;
+    /**
+     * The font that is drawn.
+     */
     private BitmapFont font;
 
+    /**
+     * The coins that have been earned in the last round.
+     */
     private int coinsEarned;
 
+    /**
+     * DataCollector-object.
+     */
     private DataCollector collector;
 
+    /**
+     * The String that tells you that you are dead.
+     */
     private CharSequence str = "YOU ARE DEAD";
 
+    /**
+     * Constructor.
+     * 
+     * @param game
+     */
     public DeadScreen(MyGdxGame game) {
-
+        super(game);
         collector = DataCollector.getInstance();
 
         coinsEarned = collector.getTempCoins();
         collector.transferCoins();
-
-        spriteBatch = new SpriteBatch();
-        this.game = game;
     }
 
     @Override
@@ -39,18 +54,19 @@ public class DeadScreen implements InputProcessor, Screen {
 
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         font = new BitmapFont();
 
-        spriteBatch.begin();
-        font.draw(spriteBatch, str, 500, 500);
+        batch.begin();
+        font.draw(batch, str, 500, 400);
 
         CharSequence coins = "Coins gained: " + coinsEarned;
-        font.draw(spriteBatch, coins, 500, 550);
+        font.draw(batch, coins, 500, 450);
 
         CharSequence allCoins = "Coins overall: " + collector.getCoins();
-        font.draw(spriteBatch, allCoins, 500, 600);
+        font.draw(batch, allCoins, 500, 500);
 
-        spriteBatch.end();
+        batch.end();
 
     }
 
