@@ -456,6 +456,8 @@ public class WorldController {
      */
     private void performPlayerDied() {
         game.setDeadScreen();
+        Assets.soundBackground.stop();
+        Assets.soundBackgroundBoss.stop();
     }
 
     /**

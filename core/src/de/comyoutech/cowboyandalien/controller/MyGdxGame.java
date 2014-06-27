@@ -77,6 +77,7 @@ public class MyGdxGame extends Game {
      * Sets the LevelSolvedScreen as the actual Screen.
      */
     public void setLevelSolvedScreen() {
+        Assets.soundBackgroundBoss.stop();
         setScreen(new LevelScreen(this));
     }
 

@@ -102,7 +102,7 @@ public class WorldRenderer {
      */
     private TextureRegion background;
 
-//    TODO 
+    // TODO
     boolean endBoss = false;
 
     public WorldRenderer() {
@@ -185,7 +185,7 @@ public class WorldRenderer {
 
         float xx = 0;
         float yy = 0;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             spriteBatch.draw(background, xx, yy, CAMERA_WIDTH, CAMERA_HEIGHT);
             xx += CAMERA_WIDTH;
         }
@@ -270,7 +270,7 @@ public class WorldRenderer {
                 if (shot.isFacingLeft()) {
                     textureShot.flip(true, false);
                 }
-//                  TODO putzen
+                // TODO putzen
             }
             else if (e instanceof EnemyEntity) {
 
@@ -313,9 +313,12 @@ public class WorldRenderer {
     /**
      * Draws an Entity.
      * 
-     * @param batch The batch that draws.
-     * @param rect The rect that specifies position and size.
-     * @param region The texture for the entity.
+     * @param batch
+     *            The batch that draws.
+     * @param rect
+     *            The rect that specifies position and size.
+     * @param region
+     *            The texture for the entity.
      */
     private void drawEntity(SpriteBatch batch, Rectangle rect,
             TextureRegion region) {
@@ -337,20 +340,20 @@ public class WorldRenderer {
         PlayerEntity player = EntityStore.player;
         if ((player.getPosition().x > (CAMERA_WIDTH / 2))) {
 
-            if (x > 65) {
-//                System.out.println("1");
-//                if (tempPos == 0) {
-//                    System.out.println("2");
-//                    tempPos = x;
-//                    max = tempPos -= 4F;
-//                }
-//                if (tempPos < max) {
-//                    System.out.println("3");
-//                    tempPos += 0.05F;
-//                }
-//            }
-//            else {
-//                tempPos = x;
+            if (x > 102) {
+                // System.out.println("1");
+                // if (tempPos == 0) {
+                // System.out.println("2");
+                // tempPos = x;
+                // max = tempPos -= 4F;
+                // }
+                // if (tempPos < max) {
+                // System.out.println("3");
+                // tempPos += 0.05F;
+                // }
+                // }
+                // else {
+                // tempPos = x;
 
                 x += 4F;
 
@@ -360,8 +363,7 @@ public class WorldRenderer {
                         Assets.soundBackgroundBoss.loop();
                         endBoss = true;
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     System.out.println("1");
                 }
 

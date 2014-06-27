@@ -24,7 +24,7 @@ public class EntityGenerator {
 
     public static void generateLevelIn(List<AbstractEntity> blockList) {
 
-        generateLevelPresi(blockList);
+        generateLevel1(blockList);
 
         // for (int i = 0; i < 10; i++) {
         // blockList.add(new BlockEntity(i, 0));
@@ -50,45 +50,45 @@ public class EntityGenerator {
 
         blockList.add(new CoinEntity(5, 0, true));
 
-//        blockList.add(new EnemyEntity(5, 0));
-//        blockList.add(new BlockEntity(3, 0));
-//        blockList.add(new BlockEntity(7, 0));
-//        blockList.add(new BlockEntity(10, 0));
-//        blockList.add(new BlockEntity(11, 0));
-//        blockList.add(new BlockEntity(11, 1));
-//        blockList.add(new MovableBlockEntity(5, 5, false));
-//        blockList.add(new BlockEntity(14, 0));
-//        blockList.add(new BlockEntity(15, 0));
-//        blockList.add(new BlockEntity(15, 1));
-//        blockList.add(new BlockEntity(16, 0));
-//        blockList.add(new BlockEntity(16, 1));
-//        blockList.add(new BlockEntity(16, 2));
-//        blockList.add(new BlockEntity(17, 2));
-//        blockList.add(new BlockEntity(18, 2));
-//        blockList.add(new BlockEntity(19, 2));
-//        blockList.add(new BlockEntity(20, 2));
-//        blockList.add(new BlockEntity(20, 3));
-//        blockList.add(new BlockEntity(21, 4));
-//        blockList.add(new BlockEntity(21, 2));
-//        blockList.add(new BlockEntity(11, 1));
-//        blockList.add(new BlockEntity(14, 0));
-//        blockList.add(new BlockEntity(15, 0));
-//        blockList.add(new BlockEntity(15, 1));
-//        blockList.add(new BlockEntity(16, 0));
-//        blockList.add(new BlockEntity(16, 1));
-//        blockList.add(new BlockEntity(26, 2));
-//        blockList.add(new BlockEntity(27, 2));
-//        blockList.add(new BlockEntity(28, 2));
-//        blockList.add(new BlockEntity(29, 2));
-//        blockList.add(new BlockEntity(30, 2));
-//        blockList.add(new BlockEntity(30, 3));
-//        blockList.add(new BlockEntity(31, 4));
-//        blockList.add(new BlockEntity(31, 2));
-//
-//        blockList.add(new CoinEntity(21, 5));
-//        blockList.add(new CoinEntity(13, 2));
-//        blockList.add(new CoinEntity(16, 0));
-//        blockList.add(new CoinEntity(12, 0));
+        // blockList.add(new EnemyEntity(5, 0));
+        // blockList.add(new BlockEntity(3, 0));
+        // blockList.add(new BlockEntity(7, 0));
+        // blockList.add(new BlockEntity(10, 0));
+        // blockList.add(new BlockEntity(11, 0));
+        // blockList.add(new BlockEntity(11, 1));
+        // blockList.add(new MovableBlockEntity(5, 5, false));
+        // blockList.add(new BlockEntity(14, 0));
+        // blockList.add(new BlockEntity(15, 0));
+        // blockList.add(new BlockEntity(15, 1));
+        // blockList.add(new BlockEntity(16, 0));
+        // blockList.add(new BlockEntity(16, 1));
+        // blockList.add(new BlockEntity(16, 2));
+        // blockList.add(new BlockEntity(17, 2));
+        // blockList.add(new BlockEntity(18, 2));
+        // blockList.add(new BlockEntity(19, 2));
+        // blockList.add(new BlockEntity(20, 2));
+        // blockList.add(new BlockEntity(20, 3));
+        // blockList.add(new BlockEntity(21, 4));
+        // blockList.add(new BlockEntity(21, 2));
+        // blockList.add(new BlockEntity(11, 1));
+        // blockList.add(new BlockEntity(14, 0));
+        // blockList.add(new BlockEntity(15, 0));
+        // blockList.add(new BlockEntity(15, 1));
+        // blockList.add(new BlockEntity(16, 0));
+        // blockList.add(new BlockEntity(16, 1));
+        // blockList.add(new BlockEntity(26, 2));
+        // blockList.add(new BlockEntity(27, 2));
+        // blockList.add(new BlockEntity(28, 2));
+        // blockList.add(new BlockEntity(29, 2));
+        // blockList.add(new BlockEntity(30, 2));
+        // blockList.add(new BlockEntity(30, 3));
+        // blockList.add(new BlockEntity(31, 4));
+        // blockList.add(new BlockEntity(31, 2));
+        //
+        // blockList.add(new CoinEntity(21, 5));
+        // blockList.add(new CoinEntity(13, 2));
+        // blockList.add(new CoinEntity(16, 0));
+        // blockList.add(new CoinEntity(12, 0));
     }
 
     /** generate a new Entity of Player **/
@@ -100,7 +100,7 @@ public class EntityGenerator {
     /** generate a Random List for Level 1 **/
 
     private static void generateLevelPresi(List<AbstractEntity> bl) {
-//        BODEN
+        // BODEN
         bVN(0, 23, 0, bl);
         bVN(23, 27, 0, bl, true);
         bVN(27, 29, 0, bl);
@@ -243,30 +243,30 @@ public class EntityGenerator {
         blockList.add(new BlockEntity(44, 5));
         blockList.add(new BlockEntity(49, 0));
         blockList.add(new BlockEntity(49, 1));
-        blockList.add(new BlockEntity(50, 0));
-        blockList.add(new BlockEntity(51, 0));
-        blockList.add(new BlockEntity(52, 0));
-        blockList.add(new BlockEntity(53, 0));
-        blockList.add(new BlockEntity(54, 0));
-        blockList.add(new BlockEntity(55, 0));
-        blockList.add(new BlockEntity(56, 0));
+        blockList.add(new BlockEntity(50, 0, true));
+        blockList.add(new BlockEntity(51, 0, true));
+        blockList.add(new BlockEntity(52, 0, true));
+        blockList.add(new BlockEntity(53, 0, true));
+        blockList.add(new BlockEntity(54, 0, true));
+        blockList.add(new BlockEntity(55, 0, true));
+        blockList.add(new BlockEntity(56, 0, true));
         blockList.add(new BlockEntity(56, 1));
         blockList.add(new BlockEntity(56, 2));
-        blockList.add(new BlockEntity(57, 0));
+        blockList.add(new BlockEntity(57, 0, true));
         blockList.add(new BlockEntity(57, 2));
         blockList.add(new BlockEntity(57, 3));
         blockList.add(new BlockEntity(57, 4));
-        blockList.add(new BlockEntity(58, 0));
+        blockList.add(new BlockEntity(58, 0, true));
         blockList.add(new BlockEntity(58, 4));
-        blockList.add(new BlockEntity(59, 0));
+        blockList.add(new BlockEntity(59, 0, true));
         blockList.add(new BlockEntity(59, 2));
         blockList.add(new BlockEntity(59, 4));
-        blockList.add(new BlockEntity(60, 0));
-        blockList.add(new BlockEntity(61, 0));
+        blockList.add(new BlockEntity(60, 0, true));
+        blockList.add(new BlockEntity(61, 0, true));
         blockList.add(new BlockEntity(61, 4));
         blockList.add(new BlockEntity(61, 5));
         blockList.add(new BlockEntity(61, 6));
-        blockList.add(new BlockEntity(62, 0));
+        blockList.add(new BlockEntity(62, 0, true));
         blockList.add(new BlockEntity(62, 2));
         blockList.add(new BlockEntity(62, 4));
         blockList.add(new BlockEntity(62, 5));
@@ -356,8 +356,9 @@ public class EntityGenerator {
         blockList.add(new BlockEntity(93, 3));
         blockList.add(new BlockEntity(96, 4));
         blockList.add(new BlockEntity(99, 5));
+        blockList.add(new BlockEntity(104, 0));
+        blockList.add(new BlockEntity(104, 1));
         blockList.add(new BlockEntity(105, 0));
-        blockList.add(new BlockEntity(105, 1));
         blockList.add(new BlockEntity(106, 0));
         blockList.add(new BlockEntity(107, 0));
         blockList.add(new BlockEntity(108, 0));
@@ -369,11 +370,24 @@ public class EntityGenerator {
         blockList.add(new BlockEntity(114, 0));
         blockList.add(new BlockEntity(115, 0));
         blockList.add(new BlockEntity(116, 0));
-        blockList.add(new BlockEntity(117, 0));
-        blockList.add(new BlockEntity(117, 1));
+        blockList.add(new BlockEntity(116, 1));
+
+        blockList.add(new SpikeEntity(72, 4));
+        sVN(27, 49, 0, blockList);
+        sVN(63, 71, 0, blockList);
+        sVN(85, 104, 0, blockList);
 
         blockList.add(new GateEntity(111, 3));
+        // endboss
+        blockList.add(new EnemyEntity(108, 1, true));
+        blockList.add(new CoinEntity(12, 1));
         blockList.add(new CoinEntity(12, 5));
+
+        blockList.add(new CoinEntity(11, 1));
+        blockList.add(new CoinEntity(13, 1));
+        blockList.add(new CoinEntity(14, 1));
+        blockList.add(new CoinEntity(15, 1));
+
         blockList.add(new CoinEntity(13, 5));
         blockList.add(new CoinEntity(14, 1));
         blockList.add(new CoinEntity(15, 3));
@@ -397,13 +411,10 @@ public class EntityGenerator {
         blockList.add(new CoinEntity(42, 5));
         blockList.add(new CoinEntity(44, 6));
         blockList.add(new CoinEntity(57, 1));
-        blockList.add(new CoinEntity(57, 2));
-        blockList.add(new CoinEntity(57, 3));
         blockList.add(new CoinEntity(58, 1));
         blockList.add(new CoinEntity(58, 2));
         blockList.add(new CoinEntity(58, 3));
         blockList.add(new CoinEntity(59, 1));
-        blockList.add(new CoinEntity(59, 2));
         blockList.add(new CoinEntity(59, 3));
         blockList.add(new CoinEntity(60, 1));
         blockList.add(new CoinEntity(60, 2));
@@ -417,7 +428,7 @@ public class EntityGenerator {
         blockList.add(new CoinEntity(77, 5));
         blockList.add(new CoinEntity(78, 5));
         blockList.add(new CoinEntity(79, 5));
-        blockList.add(new CoinEntity(80, 1));
+        blockList.add(new CoinEntity(81, 1));
         blockList.add(new CoinEntity(87, 2));
         blockList.add(new CoinEntity(90, 3));
         blockList.add(new CoinEntity(93, 4));
@@ -427,69 +438,70 @@ public class EntityGenerator {
         blockList.add(new EnemyEntity(14, 1));
         blockList.add(new BlockEntity(16, 1));
         blockList.add(new EnemyEntity(17, 1));
-//        blockList.add(new EnemyEntity(28, 2));
-//        blockList.add(new EnemyEntity(51, 1));
-//        blockList.add(new EnemyEntity(53, 1));
-//        blockList.add(new EnemyEntity(75, 1));
-//        blockList.add(new MovableBlockEntity(19, 6, false));
-//        blockList.add(new MovableBlockEntity(20, 2, true));
-//        blockList.add(new MovableBlockEntity(23, 6, false));
-//        blockList.add(new MovableBlockEntity(35, 4, true));
-//        blockList.add(new MovableBlockEntity(64, 3, false));
+        // blockList.add(new EnemyEntity(28, 2));
+
+        blockList.add(new EnemyEntity(51, 1));
+        blockList.add(new EnemyEntity(53, 1));
+        // blockList.add(new EnemyEntity(75, 1));
+        // blockList.add(new MovableBlockEntity(19, 6, false));
+        blockList.add(new MovableBlockEntity(20, 2, true));
+        // blockList.add(new MovableBlockEntity(23, 6, false));
+        // blockList.add(new MovableBlockEntity(35, 4, true));
+        // blockList.add(new MovableBlockEntity(64, 3, false));
     }
 
     public static void generateTestLvl1(List<AbstractEntity> blockList) {
-//        blockList.add(new BlockEntity(2, 0));
-//        blockList.add(new BlockEntity(1, 0));
-//        blockList.add(new MovableBlockEntity(5, 5, false));
-//
-//        blockList.add(new BlockEntity(8, 0));
-//        blockList.add(new BlockEntity(3, 0));
-//        blockList.add(new BlockEntity(7, 0));
-//        List<Integer> holes = new ArrayList<Integer>();
-//        Random random = new Random();
-//
-//        int width = 1000;
-//
-//        for (int i = 0; i < 300; i++) {
-//            int x = random.nextInt(width);
-//            int y = random.nextInt(2);
-//            for (int o = x; o < y; o++) {
-//                holes.add(o);
-//            }
-//            holes.add(x);
-//        }
-//        for (int i = 5; i < width; i++) {
-//            if (!holes.contains(i)) {
-//                blockList.add(new BlockEntity(i, 0));
-//                blockList.add(new CoinEntity(i - 5, 1));
-//            }
-//            else {
-//                // TODO HoleEntity
-//            }
-//        }
-//
-//        List<Integer> coins = new ArrayList<Integer>();
-//        Random randomCoins = new Random();
-//
-//        int widthCoins = 100;
-//
-//        for (int i = 0; i < 30; i++) {
-//            int x = random.nextInt(width);
-//            int y = random.nextInt(2);
-//            for (int o = x; o < y; o++) {
-//                coins.add(o);
-//            }
-//            coins.add(x);
-//        }
-//        for (int i = 5; i < width; i++) {
-//            if (!holes.contains(i)) {
-//                blockList.add(new BlockEntity(i, 0));
-//            }
-//            else {
-//                // TODO HoleEntity
-//            }
-//        }
+        // blockList.add(new BlockEntity(2, 0));
+        // blockList.add(new BlockEntity(1, 0));
+        // blockList.add(new MovableBlockEntity(5, 5, false));
+        //
+        // blockList.add(new BlockEntity(8, 0));
+        // blockList.add(new BlockEntity(3, 0));
+        // blockList.add(new BlockEntity(7, 0));
+        // List<Integer> holes = new ArrayList<Integer>();
+        // Random random = new Random();
+        //
+        // int width = 1000;
+        //
+        // for (int i = 0; i < 300; i++) {
+        // int x = random.nextInt(width);
+        // int y = random.nextInt(2);
+        // for (int o = x; o < y; o++) {
+        // holes.add(o);
+        // }
+        // holes.add(x);
+        // }
+        // for (int i = 5; i < width; i++) {
+        // if (!holes.contains(i)) {
+        // blockList.add(new BlockEntity(i, 0));
+        // blockList.add(new CoinEntity(i - 5, 1));
+        // }
+        // else {
+        // // TODO HoleEntity
+        // }
+        // }
+        //
+        // List<Integer> coins = new ArrayList<Integer>();
+        // Random randomCoins = new Random();
+        //
+        // int widthCoins = 100;
+        //
+        // for (int i = 0; i < 30; i++) {
+        // int x = random.nextInt(width);
+        // int y = random.nextInt(2);
+        // for (int o = x; o < y; o++) {
+        // coins.add(o);
+        // }
+        // coins.add(x);
+        // }
+        // for (int i = 5; i < width; i++) {
+        // if (!holes.contains(i)) {
+        // blockList.add(new BlockEntity(i, 0));
+        // }
+        // else {
+        // // TODO HoleEntity
+        // }
+        // }
         blockList.add(new CoinEntity(5, 0, true));
         blockList.add(new CoinEntity(7, 0));
 

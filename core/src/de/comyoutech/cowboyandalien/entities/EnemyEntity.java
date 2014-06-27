@@ -36,7 +36,7 @@ public class EnemyEntity extends AbstractEntity {
         super(x, y, 4F);
         this.iAmSuper = iAmSuper;
         if (iAmSuper) {
-            lives = 3;
+            lives = 15;
         }
     }
 
