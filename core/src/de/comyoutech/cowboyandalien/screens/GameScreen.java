@@ -13,7 +13,7 @@ import de.comyoutech.cowboyandalien.view.WorldRenderer;
 /**
  * Der Screen der das Spiel repräsentiert.
  * 
- * @author BrookZ
+ * @author Kevin
  * 
  */
 public class GameScreen extends AbstractScreen {

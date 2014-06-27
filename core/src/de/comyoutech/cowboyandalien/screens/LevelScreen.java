@@ -9,7 +9,7 @@ import de.comyoutech.cowboyandalien.controller.MyGdxGame;
 /**
  * The screen that is shown if the level is solved.
  * 
- * @author BrookZ
+ * @author Kevin
  * 
  */
 public class LevelScreen extends AbstractScreen {

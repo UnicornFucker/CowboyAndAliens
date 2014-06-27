@@ -13,7 +13,7 @@ import de.comyoutech.cowboyandalien.entities.PlayerEntity;
 /**
  * Stores all entities and some general informations.
  * 
- * @author BrookZ
+ * @author Leo
  * 
  */
 public class EntityStore {
@@ -59,7 +59,8 @@ public class EntityStore {
     /**
      * Removes an entity from the list.
      * 
-     * @param e the Entity to remvome.
+     * @param e
+     *            the Entity to remvome.
      */
     public static void remove(AbstractEntity e) {
         entityList.remove(e);
@@ -68,8 +69,10 @@ public class EntityStore {
     /**
      * Returns the Block on the specified position.
      * 
-     * @param x The x-position.
-     * @param y The y-position.
+     * @param x
+     *            The x-position.
+     * @param y
+     *            The y-position.
      * @return
      */
     public static BlockEntity get(int x, int y) {

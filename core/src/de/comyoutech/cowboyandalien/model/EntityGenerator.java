@@ -15,7 +15,7 @@ import de.comyoutech.cowboyandalien.entities.SpikeEntity;
 /**
  * Generates several levels.
  * 
- * @author BrookZ
+ * @author Felix
  * 
  */
 public class EntityGenerator {

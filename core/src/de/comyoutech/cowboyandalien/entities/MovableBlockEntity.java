@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Represents a Movable Entity.
  * 
- * @author BrookZ
+ * @author Leo
  * 
  */
 public class MovableBlockEntity extends AbstractEntity {

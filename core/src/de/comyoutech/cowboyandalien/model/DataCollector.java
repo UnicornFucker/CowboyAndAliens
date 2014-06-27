@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.model;
 /**
  * Collects several datas.
  * 
- * @author BrookZ
+ * @author Kevin
  * 
  */
 public class DataCollector {

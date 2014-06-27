@@ -28,7 +28,7 @@ public class WorldController {
     /**
      * Enum for all pressable keys.
      * 
-     * @author BrookZ
+     * @author Leo, Felix, Georg
      * 
      */
     enum Keys {

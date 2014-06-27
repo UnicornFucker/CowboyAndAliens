@@ -9,7 +9,7 @@ import de.comyoutech.cowboyandalien.controller.MyGdxGame;
 /**
  * The abstract screen class.
  * 
- * @author BrookZ
+ * @author Kevin
  * 
  */
 public abstract class AbstractScreen implements Screen, InputProcessor {

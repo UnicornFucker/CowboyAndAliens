@@ -10,14 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /**
  * Zuständig für das Laden aller Bilder/Sounds/Animationen etc.
  * 
- * @author All
+ * @author Leo, Felix, Georg, Kevin, Thorben
  * 
  */
 public class Assets {
 
     /**
-     * Sound-Objekte die verschiedene Sounds repräsentieren.
-     * Static für einfachen Zugriff.
+     * Sound-Objekte die verschiedene Sounds repräsentieren. Static für
+     * einfachen Zugriff.
      */
     public static Sound soundJump;
     public static Sound soundGetCoin;
@@ -73,8 +73,8 @@ public class Assets {
     public static TextureRegion textureShot;
 
     /**
-     * Startet das Laden aller Elemente.
-     * Danach ist jede Klassenvariable initialisiert und ansprechbar.
+     * Startet das Laden aller Elemente. Danach ist jede Klassenvariable
+     * initialisiert und ansprechbar.
      */
     public static void load() {
         loadSounds();
@@ -182,7 +182,8 @@ public class Assets {
     /**
      * Läd einen Sound aus einem angegebenen Pfad.
      * 
-     * @param path Pfad unter dem der Sound zu finden ist.
+     * @param path
+     *            Pfad unter dem der Sound zu finden ist.
      * @return Den Sound.
      */
     private static Sound getSound(String path) {

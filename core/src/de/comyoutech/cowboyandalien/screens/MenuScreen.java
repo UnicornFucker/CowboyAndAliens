@@ -9,7 +9,7 @@ import de.comyoutech.cowboyandalien.controller.MyGdxGame;
 /**
  * The main menu screen.
  * 
- * @author BrookZ
+ * @author Kevin
  * 
  */
 public class MenuScreen extends AbstractScreen {

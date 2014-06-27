@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.entities;
 /**
  * Represents a Cactus.
  * 
- * @author BrookZ
+ * @author Leo
  */
 public class CactusEntity extends AbstractEntity {
 

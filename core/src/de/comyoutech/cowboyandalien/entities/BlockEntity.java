@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.entities;
 /**
  * Represents a block.
  * 
- * @author BrookZ
+ * @author Leo
  * 
  */
 public class BlockEntity extends AbstractEntity {

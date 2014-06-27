@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.entities;
 /**
  * Represents a Spike Entity.
  * 
- * @author BrookZ
+ * @author Georg
  * 
  */
 public class SpikeEntity extends AbstractEntity {

@@ -11,7 +11,7 @@ import de.comyoutech.cowboyandalien.model.DataCollector;
 /**
  * The Screen that is shown if the player dies.
  * 
- * @author BrookZ
+ * @author Kevin
  * 
  */
 public class DeadScreen extends AbstractScreen {

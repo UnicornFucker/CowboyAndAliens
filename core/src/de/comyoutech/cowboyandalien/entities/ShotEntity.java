@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Represents a shot.
  * 
- * @author BrookZ
+ * @author BrookZ, Thorben
  * 
  */
 public class ShotEntity extends AbstractEntity {

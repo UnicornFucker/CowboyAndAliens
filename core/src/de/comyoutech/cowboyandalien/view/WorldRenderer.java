@@ -30,7 +30,7 @@ import de.comyoutech.cowboyandalien.model.EntityStore;
 /**
  * The class that renders the game.
  * 
- * @author BrookZ
+ * @author Leo, Felix, Thorben
  * 
  */
 public class WorldRenderer {
@@ -270,7 +270,6 @@ public class WorldRenderer {
                 if (shot.isFacingLeft()) {
                     textureShot.flip(true, false);
                 }
-                // TODO putzen
             }
             else if (e instanceof EnemyEntity) {
 

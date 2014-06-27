@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.entities;
 /**
  * Represents a coin.
  * 
- * @author BrookZ
+ * @author Felix
  * 
  */
 public class CoinEntity extends AbstractEntity {

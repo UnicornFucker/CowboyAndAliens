@@ -15,7 +15,7 @@ public class MyGdxGame extends Game {
     /**
      * Enum for game states.
      * 
-     * @author BrookZ
+     * @author Leo, Felix
      * 
      */
     public enum GameState {

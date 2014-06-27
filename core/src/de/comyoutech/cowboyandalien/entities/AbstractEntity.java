@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Abstract class which represents any entity that is displayed in the game.
  * 
- * @author BrookZ
+ * @author Leo
  * 
  */
 public abstract class AbstractEntity {
@@ -31,8 +31,10 @@ public abstract class AbstractEntity {
     /**
      * Constructor with x, y. (Position)
      * 
-     * @param x X-Position;
-     * @param y Y-Position.
+     * @param x
+     *            X-Position;
+     * @param y
+     *            Y-Position.
      */
     public AbstractEntity(float x, float y) {
         setSize();
@@ -47,7 +49,8 @@ public abstract class AbstractEntity {
     /**
      * Constructor with custom SIZE.
      * 
-     * @param size Custom size.
+     * @param size
+     *            Custom size.
      */
     public AbstractEntity(float x, float y, float size) {
         position.x = x;

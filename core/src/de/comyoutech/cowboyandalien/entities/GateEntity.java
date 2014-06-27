@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.entities;
 /**
  * Represents the gate to the next level.
  * 
- * @author BrookZ
+ * @author Felix
  * 
  */
 public class GateEntity extends AbstractEntity {

@@ -3,7 +3,7 @@ package de.comyoutech.cowboyandalien.entities;
 /**
  * Represents an enemy.
  * 
- * @author BrookZ
+ * @author Leo
  * 
  */
 public class EnemyEntity extends AbstractEntity {
